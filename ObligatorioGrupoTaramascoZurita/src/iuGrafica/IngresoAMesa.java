@@ -4,10 +4,15 @@
  */
 package iuGrafica;
 
+import logica.Usuario;
+
 /**
  *
  * @author sabrina
  */
 public class IngresoAMesa {
+
+    public IngresoAMesa(Usuario usuario) {
+    }
     
 }

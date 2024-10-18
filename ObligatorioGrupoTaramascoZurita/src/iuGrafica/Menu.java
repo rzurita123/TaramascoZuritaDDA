@@ -6,6 +6,7 @@ package iuGrafica;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import logica.Fachada;
 import logica.Jugador;
 import logica.Mesa;
 
@@ -25,6 +26,7 @@ public class Menu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.jugador = jugador;
         setTitle("MENU  - " + jugador.getNombreCompleto());
+        cargarUsuario();
     }
 
     /**
@@ -101,7 +103,7 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(lbSaldo)
                             .addGap(72, 72, 72)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
+                        .addGap(120, 120, 120)
                         .addComponent(lbPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -115,22 +117,15 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(220, 220, 220))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnIngresarMesa)
-                        .addGap(58, 58, 58))))
+                        .addGap(39, 39, 39))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
+                    .addGap(119, 119, 119)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(119, 119, 119)
-                            .addComponent(lbId, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(119, 119, 119)
-                            .addComponent(lbMinJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(119, 119, 119)
-                            .addComponent(lbApuestaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(119, 119, 119)
-                            .addComponent(lbJugadoresActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbId, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbMinJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbApuestaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbJugadoresActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(223, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -146,11 +141,11 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(lbDetalleMesa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addComponent(lbPorcentajeComision)
-                .addGap(27, 27, 27)
+                .addGap(9, 9, 9)
                 .addComponent(btnIngresarMesa)
-                .addGap(37, 37, 37))
+                .addGap(30, 30, 30))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(376, 376, 376)
@@ -161,7 +156,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(lbApuestaBase)
                     .addGap(12, 12, 12)
                     .addComponent(lbJugadoresActuales)
-                    .addContainerGap(138, Short.MAX_VALUE)))
+                    .addContainerGap(96, Short.MAX_VALUE)))
         );
 
         pack();
@@ -176,6 +171,14 @@ public class Menu extends javax.swing.JFrame {
         //TODO: Hacer método.
         new JugarPoker(this,false, jugador.getCedula()).setVisible(true);
     }//GEN-LAST:event_btnIngresarMesaActionPerformed
+    
+    private void cargarMesasAbiertas(){
+        ArrayList<Mesa> lista = Fachada.getInstancia().getMesasAbiertas();
+        for(CriterioBusqueda cb:lista){
+            cbCriterios.addItem(cb);
+        }
+    
+    }
     
     private void detalles() {
         int pos = listaMesaAbierta.getSelectedIndex();
