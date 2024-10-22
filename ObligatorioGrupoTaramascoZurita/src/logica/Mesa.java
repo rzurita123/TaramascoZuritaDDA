@@ -9,11 +9,34 @@ package logica;
  * @author sabrina
  */
 public class Mesa {
+    private static int contador = 0;
     private int id;
     private int minJugadores;
     private double apuestaBase;
     private int jugadoresActuales;
     private int porcentajeComision;
+    private EstadoMesa estadoMesa;
+
+    public Mesa(int minJugadores, double apuestaBase, int porcentajeComision) {
+        this.id = ++contador;
+        this.minJugadores = minJugadores;
+        this.apuestaBase = apuestaBase;
+        this.porcentajeComision = porcentajeComision;
+        this.estadoMesa = EstadoMesa.ABIERTA;
+        this.jugadoresActuales = 0;
+    }
+    
+    public boolean esAbierta() {
+        return estadoMesa == EstadoMesa.ABIERTA;
+    }
+    
+    public EstadoMesa getEstadoMesa() {
+        return estadoMesa;
+    }
+
+    public void setEstadoMesa(EstadoMesa estadoMesa) {
+        this.estadoMesa = estadoMesa;
+    }
 
     public int getId() {
         return id;
@@ -54,4 +77,9 @@ public class Mesa {
     public void setPorcentajeComision(int porcentajeComision) {
         this.porcentajeComision = porcentajeComision;
     }
+    
+    @Override
+public String toString() {
+    return "Número de mesa: " + id + "\n";
+}
 }

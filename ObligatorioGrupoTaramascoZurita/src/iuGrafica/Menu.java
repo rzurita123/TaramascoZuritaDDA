@@ -6,9 +6,14 @@ package iuGrafica;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import logica.Fachada;
 import logica.Jugador;
 import logica.Mesa;
+import panelCartasPoker.PanelCartasPokerException;
 
 /**
  *
@@ -20,13 +25,15 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
      */
     private Jugador jugador;
-    private ArrayList<Mesa> mesas;
+    private Mesa mesaSeleccionada;
+    private ArrayList<Mesa> mesasAbiertas = new ArrayList();
     public Menu(Jugador jugador) {
         initComponents();
         setLocationRelativeTo(null);
         this.jugador = jugador;
         setTitle("MENU  - " + jugador.getNombreCompleto());
         cargarUsuario();
+        cargarMesasAbiertas();
     }
 
     /**
@@ -91,21 +98,15 @@ public class Menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(24, 24, 24)
-                            .addComponent(lbNombre)
-                            .addGap(411, 411, 411)
-                            .addComponent(lbSaldo)
-                            .addGap(72, 72, 72)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(lbPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(lbNombre)
+                .addGap(411, 411, 411)
+                .addComponent(lbSaldo)
+                .addContainerGap(86, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(lbPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(269, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,6 +119,10 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnIngresarMesa)
                         .addGap(39, 39, 39))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(119, 119, 119)
@@ -163,40 +168,49 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void listaMesaAbiertaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaMesaAbiertaValueChanged
-        // TODO add your handling code here:
         detalles();
     }//GEN-LAST:event_listaMesaAbiertaValueChanged
 
     private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMesaActionPerformed
-        //TODO: Hacer método.
-        new JugarPoker(this,false, jugador.getCedula()).setVisible(true);
+        if (!jugador.validarSaldo(this.mesaSeleccionada.getApuestaBase())) {
+            //TODO: No usar optionPane
+            JOptionPane.showMessageDialog(this, "Saldo insuficiente.", getTitle(), JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                new JugarPoker().setVisible(true);
+            } catch (PanelCartasPokerException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }  
     }//GEN-LAST:event_btnIngresarMesaActionPerformed
-    
-    private void cargarMesasAbiertas(){
-        ArrayList<Mesa> lista = Fachada.getInstancia().getMesasAbiertas();
-        for(CriterioBusqueda cb:lista){
-            cbCriterios.addItem(cb);
-        }
-    
+
+    private void cargarMesasAbiertas() {
+    DefaultListModel<Mesa> model = new DefaultListModel<>();
+    ArrayList<Mesa> lista = Fachada.getInstancia().getMesasAbiertas();
+    for (Mesa mesa : lista) {
+        model.addElement(mesa);
     }
+    this.mesasAbiertas = lista;
+    listaMesaAbierta.setModel(model);
+}
     
     private void detalles() {
         int pos = listaMesaAbierta.getSelectedIndex();
         if(pos!=-1){ //hay seleccion
-            Mesa seleccionada = mesas.get(pos);
-            mostrarDetalles(seleccionada);
+            this.mesaSeleccionada = mesasAbiertas.get(pos);
+            mostrarDetalles();
         }else {//se borro lo seleccionado
-            mostrarDetalles(null);
+            mostrarDetalles();
         }
     }
 
-    private void mostrarDetalles(Mesa seleccionada) {
-       if(seleccionada!=null){
-            lbId.setText("Id: " + seleccionada.getId());
-            lbMinJugadores.setText("Min. jugadores: " + seleccionada.getMinJugadores());
-            lbApuestaBase.setText("Valor apuesta base: " + seleccionada.getApuestaBase());
-            lbJugadoresActuales.setText("Jugadores actuales: " + seleccionada.getJugadoresActuales());
-            lbPorcentajeComision.setText("Porcentaje comisión: " + seleccionada.getPorcentajeComision());
+    private void mostrarDetalles() {
+       if(this.mesaSeleccionada!=null){
+            lbId.setText("Id: " + this.mesaSeleccionada.getId());
+            lbMinJugadores.setText("Min. jugadores: " + this.mesaSeleccionada.getMinJugadores());
+            lbApuestaBase.setText("Valor apuesta base: " + this.mesaSeleccionada.getApuestaBase());
+            lbJugadoresActuales.setText("Jugadores actuales: " + this.mesaSeleccionada.getJugadoresActuales());
+            lbPorcentajeComision.setText("Porcentaje comisión: " + this.mesaSeleccionada.getPorcentajeComision() + '%');
     
        }else{
             lbId.setText("Id: ");

@@ -16,7 +16,7 @@ import logica.Jugador;
 public class LoginJugador extends LoginAbstracto{
 
     public LoginJugador(Frame parent, boolean modal) {
-        super(parent, modal, "Ingreso a la agenda");
+        super(parent, modal, "Login jugadores");
     }
 
     @Override
@@ -26,9 +26,6 @@ public class LoginJugador extends LoginAbstracto{
 
     @Override
     public void proximoCasoUso(Usuario usuario) {
-        new IngresoAMesa(usuario)
+        new Menu((Jugador)usuario).setVisible(true);
     }
-    
-    
-    
 }

@@ -28,5 +28,9 @@ public class DatosPrueba {
 
     fachada.agregarAdministrador("100", "100", "A 100");
     fachada.agregarAdministrador("200", "101", "A 200");
+    
+    fachada.agregarMesa(5, 500, 3);
+    fachada.agregarMesa(4, 50, 4);
+    fachada.agregarMesa(3, 100, 5);
     }
 }

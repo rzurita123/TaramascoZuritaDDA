@@ -4,6 +4,12 @@
  */
 package obligatoriogrupotaramascozurita;
 
+import inicio.DatosPrueba;
+import iuGrafica.LoginAbstracto;
+import iuGrafica.LoginJugador;
+import iuGrafica.Menu;
+import iuGrafica.MenuLogin;
+
 /**
  *
  * @author sabrina
@@ -14,7 +20,8 @@ public class ObligatorioGrupoTaramascoZurita {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        DatosPrueba.cargar();
+        new MenuLogin().setVisible(true);
     }
     
 }

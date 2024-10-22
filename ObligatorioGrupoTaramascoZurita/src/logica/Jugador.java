@@ -15,6 +15,10 @@ public class Jugador extends Usuario{
         super(cedula, contraseña, nombreCompleto);
         this.saldo = saldo;
     }
+    
+    public boolean validarSaldo(double apuestaBase) {
+        return this.saldo > apuestaBase * 10;
+    }
 
     public double getSaldo() {
         return saldo;

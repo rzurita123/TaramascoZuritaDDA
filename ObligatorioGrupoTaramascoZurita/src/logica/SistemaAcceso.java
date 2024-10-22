@@ -21,7 +21,7 @@ public class SistemaAcceso {
         administradores.add(new Administrador(cedula, password, nombreCompleto));
     }
     
-    public Jugador loginAgenda(String cedula,String password){
+    public Jugador loginJugador(String cedula,String password){
        return (Jugador) login(cedula, password, jugadores);
        
     }
