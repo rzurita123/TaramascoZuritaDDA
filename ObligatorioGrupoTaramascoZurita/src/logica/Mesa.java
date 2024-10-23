@@ -4,6 +4,8 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sabrina
@@ -12,6 +14,9 @@ public class Mesa {
     private static int contador = 0;
     private int id;
     private int minJugadores;
+    private ArrayList<Jugador> jugadores = new ArrayList();
+    private ArrayList<Mano> manos = new ArrayList();
+    private Mano manoActual;
     private double apuestaBase;
     private int jugadoresActuales;
     private int porcentajeComision;

@@ -4,10 +4,13 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
- * @author sabrina
+ * @author Carry
  */
-public class FiguraStrategy {
-    
+public interface FiguraStrategy {
+    boolean esFigura(ArrayList<Carta> mano);
+    Figura getFigura();
 }

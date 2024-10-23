@@ -24,13 +24,13 @@ public class JugarPoker extends javax.swing.JFrame {
     public JugarPoker() throws PanelCartasPokerException {
         initComponents();
         //TODO: QUE LAS CARTAS SEAN RANDOM.
+        //Validar que la mesa esté llena
+        //Si lo esta, barajar el mazo y repartir 5 cartas a cada jugador.
         cartas.add(new Carta(CartaPoker.AS, CartaPoker.CORAZON));
         cartas.add(new Carta(CartaPoker.DIEZ, CartaPoker.PIQUE));
         cartas.add(new Carta(CartaPoker.K, CartaPoker.TREBOL));
         cartas.add(new Carta(CartaPoker.Q, CartaPoker.DIAMANTE));
         cartas.add(new Carta(CartaPoker.SIETE, CartaPoker.TREBOL));
-        System.out.println(cartas);
-        System.out.println(cartas.size());
         panelCartas.cargarCartas(cartas);
     }
 
@@ -44,28 +44,73 @@ public class JugarPoker extends javax.swing.JFrame {
     private void initComponents() {
 
         panelCartas = new panelCartasPoker.PanelCartasPoker();
+        lblSaldo = new javax.swing.JLabel();
+        lblPozo = new javax.swing.JLabel();
+        btnApostar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tpFiguras = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblSaldo.setText("Saldo: ");
+
+        lblPozo.setText("Pozo: ");
+
+        btnApostar.setText("Apostar");
+        btnApostar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApostarActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(tpFiguras);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
-                .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(44, 44, 44)
+                .addComponent(lblPozo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblSaldo)
+                .addGap(112, 112, 112))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnApostar)
+                        .addGap(90, 90, 90))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(156, 156, 156)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSaldo)
+                    .addComponent(lblPozo))
+                .addGap(30, 30, 30)
                 .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(btnApostar)
+                .addGap(39, 39, 39))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnApostarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -107,6 +152,11 @@ public class JugarPoker extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnApostar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPozo;
+    private javax.swing.JLabel lblSaldo;
     private panelCartasPoker.PanelCartasPoker panelCartas;
+    private javax.swing.JTextPane tpFiguras;
     // End of variables declaration//GEN-END:variables
 }

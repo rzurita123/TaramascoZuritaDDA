@@ -4,10 +4,22 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sabrina
  */
-public class SinFigura {
+public class SinFigura implements FiguraStrategy {
+
+    @Override
+    public boolean esFigura(ArrayList<Carta> mano) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Figura getFigura() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

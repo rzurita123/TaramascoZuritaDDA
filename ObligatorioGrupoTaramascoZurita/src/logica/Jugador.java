@@ -4,12 +4,32 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sabrina
  */
 public class Jugador extends Usuario{
-    public double saldo;
+    private double saldo;
+    private ArrayList<Carta> cartas = new ArrayList();
+    private ArrayList<Mano> manos = new ArrayList();
+
+    public ArrayList<Carta> getCartas() {
+        return cartas;
+    }
+
+    public void setCartas(ArrayList<Carta> cartas) {
+        this.cartas = cartas;
+    }
+
+    public ArrayList<Mano> getManos() {
+        return manos;
+    }
+
+    public void setManos(ArrayList<Mano> manos) {
+        this.manos = manos;
+    }
 
     public Jugador(String cedula, String contraseña, String nombreCompleto, double saldo) {
         super(cedula, contraseña, nombreCompleto);

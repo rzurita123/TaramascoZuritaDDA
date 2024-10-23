@@ -4,10 +4,24 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sabrina
  */
-public class Poker {
-    
+public class Poker implements FiguraStrategy {
+    @Override
+    public boolean esFigura(ArrayList<Carta> mano) {
+        //TODO: Lógica que determina si una mano es poker
+        return false;
+    }
+
+    @Override
+    public Figura getFigura() {
+        return null;
+        //return new Figura();
+        //return Figura.POKER;
+        //Todo: devolver la figura poker.
+    }
 }

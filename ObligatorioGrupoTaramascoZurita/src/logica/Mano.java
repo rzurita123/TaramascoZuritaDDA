@@ -9,5 +9,13 @@ package logica;
  * @author sabrina
  */
 public class Mano {
-    
+    private Jugador jugadorGanador;
+
+    public Jugador getJugadorGanador() {
+        return jugadorGanador;
+    }
+
+    public void setJugadorGanador(Jugador jugadorGanador) {
+        this.jugadorGanador = jugadorGanador;
+    }
 }
