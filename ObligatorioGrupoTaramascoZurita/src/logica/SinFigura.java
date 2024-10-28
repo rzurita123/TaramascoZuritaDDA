@@ -10,16 +10,21 @@ import java.util.ArrayList;
  *
  * @author sabrina
  */
-public class SinFigura implements FiguraStrategy {
+public class SinFigura extends Figura {
 
-    @Override
-    public boolean esFigura(ArrayList<Carta> mano) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public SinFigura() {
+        super("Sin figura", PrioridadFigura.SIN_FIGURA);
     }
 
     @Override
-    public Figura getFigura() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean cumpleCondicion(int[] conteo) {
+        return true; //Siempre tengo 'sin figura'
     }
-    
+
+    //TODO: Cambiar esto
+    @Override
+    public int obtenerValorClave(ArrayList<Carta> mano) {
+        return 0;
+    }
+
 }

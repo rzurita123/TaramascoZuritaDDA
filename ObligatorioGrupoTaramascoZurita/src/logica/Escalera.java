@@ -8,6 +8,18 @@ package logica;
  *
  * @author sabrina
  */
-public class Escalera {
-    
+public class Escalera extends Figura {
+    public Escalera() {
+        super("Escalera", PrioridadFigura.ESCALERA);
+    }
+
+    @Override
+    protected boolean cumpleCondicion(int[] conteo) {
+        for (int c : conteo) {
+            if (c == 3) {
+                return true;  // Hay una escalera
+            }
+        }
+        return false;
+    }
 }

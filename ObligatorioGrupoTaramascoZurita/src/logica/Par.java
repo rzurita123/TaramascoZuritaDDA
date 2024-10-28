@@ -4,10 +4,25 @@
  */
 package logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sabrina
  */
-public class Par {
-    
+public class Par extends Figura {
+    public Par() {
+        super("Par", PrioridadFigura.PAR);
+    }
+
+    @Override
+    public boolean cumpleCondicion(int[] conteo) {
+        for (int c : conteo) {
+            if (c == 1) {
+                return true;  // Hay un par
+            }
+        }
+        return false;
+    }
+   
 }

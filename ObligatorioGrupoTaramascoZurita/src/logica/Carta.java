@@ -11,18 +11,18 @@ import panelCartasPoker.CartaPoker;
  * @author sabrina
  */
 public class Carta implements CartaPoker {
-    public int numero;
+    public int valor;
     public String palo;
     public boolean visible;
     
-    public Carta(int numero, String palo) {
-        this.numero = numero;
+    public Carta(int valor, String palo) {
+        this.valor = valor;
         this.palo = palo;
     }
 
     @Override
     public int getValorCarta() {
-        return this.numero;
+        return this.valor;
     }
 
     @Override
@@ -39,5 +39,4 @@ public class Carta implements CartaPoker {
     public void setVisible(boolean b) {
         this.visible = b;
     }
-    
 }

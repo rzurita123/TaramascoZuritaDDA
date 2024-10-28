@@ -4,24 +4,18 @@
  */
 package logica;
 
-import java.util.ArrayList;
-
-/**
- *
- * @author sabrina
- */
-public class Poker implements FiguraStrategy {
-    @Override
-    public boolean esFigura(ArrayList<Carta> mano) {
-        //TODO: Lógica que determina si una mano es poker
-        return false;
+public class Poker extends Figura {
+    public Poker() {
+        super("Poker", PrioridadFigura.POKER);
     }
 
     @Override
-    public Figura getFigura() {
-        return null;
-        //return new Figura();
-        //return Figura.POKER;
-        //Todo: devolver la figura poker.
+    protected boolean cumpleCondicion(int[] conteo) {
+        for (int c : conteo) {
+            if (c == 4) {
+                return true;  // Hay un poker
+            }
+        }
+        return false;
     }
 }
