@@ -26,5 +26,10 @@ public class SinFigura extends Figura {
     public int obtenerValorClave(ArrayList<Carta> mano) {
         return 0;
     }
+    
+    @Override
+    public int obtenerConteoEsperado() {
+        return 0;
+    }
 
 }

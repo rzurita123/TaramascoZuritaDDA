@@ -18,11 +18,16 @@ public class Par extends Figura {
     @Override
     public boolean cumpleCondicion(int[] conteo) {
         for (int c : conteo) {
-            if (c == 1) {
+            if (c == 2) {
                 return true;  // Hay un par
             }
         }
         return false;
+    }
+    
+    @Override
+    public int obtenerConteoEsperado() {
+        return 2;
     }
    
 }

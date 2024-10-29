@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Carta;
+import logica.Jugador;
+import logica.Mesa;
+import observador.Observable;
+import observador.Observador;
 import panelCartasPoker.CartaPoker;
 import panelCartasPoker.PanelCartasPokerException;
 
@@ -15,14 +19,24 @@ import panelCartasPoker.PanelCartasPokerException;
  *
  * @author Carry
  */
-public class JugarPoker extends javax.swing.JFrame {
+public class JugarPoker extends javax.swing.JFrame implements Observador {
 
     public ArrayList<CartaPoker> cartas = new ArrayList();
+    private Mesa mesa;
+    private Jugador jugador;
     /**
      * Creates new form JugarPoker
      */
-    public JugarPoker() throws PanelCartasPokerException {
-        initComponents();
+    public JugarPoker(Mesa m, Jugador j) throws PanelCartasPokerException {
+        initComponents();        
+        //Entré a la partida, el estado de la mesa es ABIERTA.
+        mesa = m;
+        jugador = j;
+        mesa.agregarObservador(this);
+        panelCartas.setVisible(false);
+        lblEstadoMano.setVisible(false);
+        this.actualizarDatosPantalla();
+        tpJugadores.setText("Esperando inicio del juego, hay " + mesa.getJugadoresActuales() + " jugadores de " + mesa.getMinJugadores() + " en la mesa.");
         //TODO: QUE LAS CARTAS SEAN RANDOM.
         //Validar que la mesa esté llena
         //Si lo esta, barajar el mazo y repartir 5 cartas a cada jugador.
@@ -32,6 +46,15 @@ public class JugarPoker extends javax.swing.JFrame {
         cartas.add(new Carta(CartaPoker.Q, CartaPoker.DIAMANTE));
         cartas.add(new Carta(CartaPoker.SIETE, CartaPoker.TREBOL));
         panelCartas.cargarCartas(cartas);
+    }
+    
+    public void actualizarDatosPantalla(){
+        lblJugador.setText("Jugador: " + jugador.getNombreCompleto());
+        lblSaldo.setText("Saldo: $" + jugador.getSaldo());
+        lblMesa.setText("Mesa: " + mesa.getId());
+        lblPozo.setText("Pozo: $" + mesa.getPozo());
+        lblMano.setText("Mano: " + mesa.getManos().size());
+        lblEstadoMano.setText("Estado mano: " + mesa.getManoActual().getEstadoMano());
     }
 
     /**
@@ -44,17 +67,24 @@ public class JugarPoker extends javax.swing.JFrame {
     private void initComponents() {
 
         panelCartas = new panelCartasPoker.PanelCartasPoker();
-        lblSaldo = new javax.swing.JLabel();
-        lblPozo = new javax.swing.JLabel();
+        lblMesa = new javax.swing.JLabel();
+        lblJugador = new javax.swing.JLabel();
         btnApostar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        tpJugadores = new javax.swing.JTextPane();
+        btnSalir = new javax.swing.JButton();
+        lblSaldo = new javax.swing.JLabel();
+        lblMano = new javax.swing.JLabel();
+        lblPozo = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tpFiguras = new javax.swing.JTextPane();
+        lblEstadoMano = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        lblSaldo.setText("Saldo: ");
+        lblMesa.setText("Mesa:");
 
-        lblPozo.setText("Pozo: ");
+        lblJugador.setText("Jugador:");
 
         btnApostar.setText("Apostar");
         btnApostar.addActionListener(new java.awt.event.ActionListener() {
@@ -63,46 +93,88 @@ public class JugarPoker extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(tpFiguras);
+        jScrollPane1.setViewportView(tpJugadores);
+
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        lblSaldo.setText("Saldo: ");
+
+        lblMano.setText("Mano actual:");
+
+        lblPozo.setText("Pozo:");
+
+        tpFiguras.setText("Esperando jugadores...");
+        tpFiguras.setPreferredSize(new java.awt.Dimension(500, 20));
+        jScrollPane2.setViewportView(tpFiguras);
+
+        lblEstadoMano.setText("Estado mano:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(lblPozo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblSaldo)
-                .addGap(112, 112, 112))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnApostar)
-                        .addGap(90, 90, 90))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPozo)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstadoMano)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMesa, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblMano, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(253, 253, 253))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(btnSalir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnApostar))
+                    .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMesa)
+                    .addComponent(lblJugador))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSaldo)
-                    .addComponent(lblPozo))
-                .addGap(30, 30, 30)
+                    .addComponent(lblMano))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPozo)
+                    .addComponent(lblEstadoMano))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                .addComponent(btnApostar)
-                .addGap(39, 39, 39))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSalir)
+                            .addComponent(btnApostar)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -112,51 +184,37 @@ public class JugarPoker extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnApostarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JugarPoker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JugarPoker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JugarPoker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JugarPoker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        mesa.quitarObservador(this);
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new JugarPoker().setVisible(true);
-                } catch (PanelCartasPokerException ex) {
-                    Logger.getLogger(JugarPoker.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblEstadoMano;
+    private javax.swing.JLabel lblJugador;
+    private javax.swing.JLabel lblMano;
+    private javax.swing.JLabel lblMesa;
     private javax.swing.JLabel lblPozo;
     private javax.swing.JLabel lblSaldo;
     private panelCartasPoker.PanelCartasPoker panelCartas;
     private javax.swing.JTextPane tpFiguras;
+    private javax.swing.JTextPane tpJugadores;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        if(evento.equals(Mesa.eventos.cambioIniciada)){
+            panelCartas.setVisible(true);
+            lblEstadoMano.setVisible(true);
+            tpJugadores.setText(mesa.listadoJugadores());
+        }
+        else if(evento.equals(Mesa.eventos.cambioCerrada)){
+            //TODO: Mostrar interfaz de mesa cerrada
+        }
+    }
 }

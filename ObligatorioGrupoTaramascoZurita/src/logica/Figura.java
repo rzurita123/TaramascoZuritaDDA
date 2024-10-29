@@ -24,7 +24,7 @@ public abstract class Figura {
         this.prioridad = prioridad;
     }
     
-    //COMPARO FIGURAS. SI SON IGUALES, COMPARO CARTA ALTA DE LA FIGURA
+    //COMPARO FIGURAS. SI SON IGUALES, COMPARO CARTA ALTA DE LA FIGURA, SI SON IGUALES, COMPARO CARTA ALTA EN GENERAL.
     public int compararFigura(Figura otra, ArrayList<Carta> mano1, ArrayList<Carta> mano2) {
         if (this.prioridad.esMayorQue(otra.prioridad)) {
             return 1;  // Esta figura es mayor
@@ -43,19 +43,22 @@ public abstract class Figura {
         }
     }
     
-    //TODO: IMPLEMENTAR SORT (COMPARABLE, COMPARETO) ENTRE CARTAS
     private int compararCartaAlta(ArrayList<Carta> cartas1, ArrayList<Carta> cartas2) {
-        Collections.sort(cartas1);
-        Collections.sort(cartas2);
-
+        int maximo1 = 0;
+        int maximo2 = 0;
         // Comparar las cartas desde la más alta
         for (int i = cartas1.size() - 1; i >= 0; i--) {
             int valor1 = cartas1.get(i).getValorCarta();
             int valor2 = cartas2.get(i).getValorCarta();
-
-            if (valor1 > valor2) return 1;
-            if (valor1 < valor2) return -1;
+            if (valor1 > maximo1) {
+                maximo1 = valor1;
+            }
+            if (valor2 > maximo2) {
+                maximo2 = valor2;
+            }
         }
+        if (maximo1 > maximo2) return 1;
+        if (maximo1 < maximo2) return -1;
         return 0;  // Las manos son iguales
     }
 
@@ -81,6 +84,8 @@ public abstract class Figura {
 
     return 0;  // Si no se encontró ninguna coincidencia relevante
 }
+    
+    public abstract int obtenerConteoEsperado();
 
     public boolean evaluarCartas(ArrayList<Carta> cartas) {
         int[] conteo = new int[13];

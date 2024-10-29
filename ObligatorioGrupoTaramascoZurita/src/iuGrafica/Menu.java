@@ -175,9 +175,12 @@ public class Menu extends javax.swing.JFrame {
         if (!jugador.validarSaldo(this.mesaSeleccionada.getApuestaBase())) {
             //TODO: No usar optionPane
             JOptionPane.showMessageDialog(this, "Saldo insuficiente.", getTitle(), JOptionPane.ERROR_MESSAGE);
+        } else if (!mesaSeleccionada.agregarJugador(jugador)) {
+            JOptionPane.showMessageDialog(this, "La mesa está llena.", getTitle(), JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                new JugarPoker().setVisible(true);
+                ;
+                new JugarPoker(mesaSeleccionada, jugador).setVisible(true);
             } catch (PanelCartasPokerException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }

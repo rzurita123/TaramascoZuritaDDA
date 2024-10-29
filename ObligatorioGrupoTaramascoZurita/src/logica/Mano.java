@@ -10,6 +10,22 @@ package logica;
  */
 public class Mano {
     private Jugador jugadorGanador;
+    private EstadoMano estadoMano;
+    public enum EstadoMano {
+        ESPERANDO_APUESTA, APUESTA_INICIADA, PIDIENDO_CARTAS, TERMINADA
+    }
+
+    public Mano() {
+        this.estadoMano = EstadoMano.ESPERANDO_APUESTA;
+    }
+
+    public EstadoMano getEstadoMano() {
+        return estadoMano;
+    }
+
+    public void setEstadoMano(EstadoMano estadoMano) {
+        this.estadoMano = estadoMano;
+    }
 
     public Jugador getJugadorGanador() {
         return jugadorGanador;

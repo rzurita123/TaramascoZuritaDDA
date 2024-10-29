@@ -16,10 +16,15 @@ public class Pierna extends Figura {
     @Override
     protected boolean cumpleCondicion(int[] conteo) {
         for (int c : conteo) {
-            if (c == 2) {
+            if (c == 3) {
                 return true;  // Hay una pierna
             }
         }
         return false;
+    }
+    
+    @Override
+    public int obtenerConteoEsperado() {
+        return 3;
     }
 }

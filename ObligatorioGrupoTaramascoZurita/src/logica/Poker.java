@@ -18,4 +18,9 @@ public class Poker extends Figura {
         }
         return false;
     }
+
+    @Override
+    public int obtenerConteoEsperado() {
+        return 4;
+    }
 }

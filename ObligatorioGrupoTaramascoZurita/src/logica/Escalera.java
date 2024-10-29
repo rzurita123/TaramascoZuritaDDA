@@ -22,4 +22,9 @@ public class Escalera extends Figura {
         }
         return false;
     }
+    
+    @Override
+    public int obtenerConteoEsperado() {
+        return 5;
+    }
 }
