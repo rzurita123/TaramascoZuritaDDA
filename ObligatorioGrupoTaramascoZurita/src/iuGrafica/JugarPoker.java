@@ -5,13 +5,12 @@
 package iuGrafica;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import logica.Carta;
 import logica.Jugador;
+import logica.Mano;
 import logica.Mesa;
-import observador.Observable;
-import observador.Observador;
+import controlador.ControladorPoker;
+import controlador.VistaPoker;
 import panelCartasPoker.CartaPoker;
 import panelCartasPoker.PanelCartasPokerException;
 
@@ -19,35 +18,48 @@ import panelCartasPoker.PanelCartasPokerException;
  *
  * @author Carry
  */
-public class JugarPoker extends javax.swing.JFrame implements Observador {
+public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
+    private ControladorPoker controladorPoker;
 
-    private Mesa mesa;
-    private Jugador jugador;
-    /**
-     * Creates new form JugarPoker
-     */
     public JugarPoker(Jugador j) throws PanelCartasPokerException {
-        initComponents();        
+        initComponents();
+        controladorPoker = new ControladorPoker(this, j);     
         //Entré a la partida, el estado de la mesa es ABIERTA.
-        jugador = j;
-        mesa = jugador.getMesa();
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
-        this.actualizarDatosPantalla();
-        tpJugadores.setText("Esperando inicio del juego, hay " + mesa.getJugadoresActuales() + " jugadores de " + mesa.getMinJugadores() + " en la mesa.");
-        if(mesa.getJugadoresActuales() == mesa.getMinJugadores()){
-            this.iniciarMesa();
+    }
+
+    @Override
+    public void mostrarMensaje(int jugadoresActuales, int minJugadores) {
+        tpFiguras.setText("Esperando inicio del juego, hay " + jugadoresActuales + " jugadores de " + minJugadores + " en la mesa.");
+    }
+
+    @Override
+    public void mostrarCartas(Jugador jugador, Mesa mesa) {
+        try {
+            ArrayList<CartaPoker> cartasPoker = new ArrayList<CartaPoker>();
+            // Castear cada Carta a CartaPoker
+            for (Carta carta : jugador.getCartas()) {
+                cartasPoker.add(carta);
+            }
+            // Cargar las cartas en el panel
+            panelCartas.cargarCartas(cartasPoker);
+        } catch (PanelCartasPokerException e) {
+            System.err.println("Error al cargar las cartas: " + e.getMessage());
         }
-        mesa.agregarObservador(this);
+        panelCartas.setVisible(true);
+        lblEstadoMano.setVisible(true);
+        tpJugadores.setText(mesa.listadoJugadores());
     }
     
-    public void actualizarDatosPantalla(){
-        lblJugador.setText("Jugador: " + jugador.getNombreCompleto());
-        lblSaldo.setText("Saldo: $" + jugador.getSaldo());
-        lblMesa.setText("Mesa: " + mesa.getId());
-        lblPozo.setText("Pozo: $" + mesa.getPozo());
-        lblMano.setText("Mano: " + mesa.getManos().size());
-        lblEstadoMano.setText("Estado mano: " + mesa.getManoActual().getEstadoMano());
+    @Override
+    public void actualizarDatosPantalla(String nombreJugador, int saldoJugador, int idMesa, int pozoMesa, int manosMesa, Mano.EstadoMano estadoMano){
+        lblJugador.setText("Jugador: " + nombreJugador);
+        lblSaldo.setText("Saldo: $" + saldoJugador);
+        lblMesa.setText("Mesa: " + idMesa);
+        lblPozo.setText("Pozo: $" + pozoMesa);
+        lblMano.setText("Mano: " + manosMesa);
+        lblEstadoMano.setText("Estado mano: " + estadoMano);
     }
 
     /**
@@ -196,12 +208,10 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
     }// </editor-fold>//GEN-END:initComponents
     //#endregion
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
-        jugador.apostar(Integer.parseInt(tfMontoApuesta.getText()), true);
-        this.actualizarDatosPantalla();
+        controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()), true);
     }//GEN-LAST:event_btnApostarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        mesa.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -232,39 +242,5 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
     private javax.swing.JTextPane tpJugadores;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void actualizar(Object evento, Observable origen) {
-        //CASO ENTRÓ LA GENTE NECESARIA PARA INICIAR LA MESA
-        if(evento.equals(Mesa.eventos.cambioIniciada)){
-            this.iniciarMesa();
-        }
-        else if(evento.equals(Mesa.eventos.cambioCerrada)){
-            //TODO: Mostrar interfaz de mesa cerrada
-        }
-    }
-
-    public void iniciarMesa(){
-        this.actualizarDatosPantalla();
-            //Le resto a cada jugador la apuesta base
-            for (Jugador j : mesa.getJugadores()) {
-                j.setMesa(mesa);
-                j.apostar(mesa.getApuestaBase(), false);
-            }
-            mesa.repartir();
-            try {
-                ArrayList<CartaPoker> cartasPoker = new ArrayList<CartaPoker>();
-                // Castear cada Carta a CartaPoker
-                for (Carta carta : jugador.getCartas()) {
-                    cartasPoker.add(carta);
-                }
-                // Cargar las cartas en el panel
-                panelCartas.cargarCartas(cartasPoker);
-            } catch (PanelCartasPokerException e) {
-                System.err.println("Error al cargar las cartas: " + e.getMessage());
-            }
-            panelCartas.setVisible(true);
-            lblEstadoMano.setVisible(true);
-            tpJugadores.setText(mesa.listadoJugadores());
-            this.actualizarDatosPantalla();
-    }
+    
 }

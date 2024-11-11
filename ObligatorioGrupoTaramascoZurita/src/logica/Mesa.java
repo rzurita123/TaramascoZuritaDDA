@@ -40,6 +40,15 @@ public class Mesa extends Observable{
         this.pozo = 0;
         this.mazo = new Mazo();
     }
+
+    public void iniciarMesa(){
+        //Le resto a cada jugador la apuesta base
+        for (Jugador j : jugadores) {
+            j.setMesa(this);
+            j.apostar(apuestaBase, false);
+        }
+        this.repartir();
+    }
     
     public String listadoJugadores(){
        //recorre la lista de jugadores y genera un string con los tostring de cada uno
