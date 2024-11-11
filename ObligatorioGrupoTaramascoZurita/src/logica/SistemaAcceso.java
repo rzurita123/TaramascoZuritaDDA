@@ -14,7 +14,7 @@ public class SistemaAcceso {
         private ArrayList<Jugador> jugadores = new ArrayList();
     private ArrayList<Administrador> administradores = new ArrayList();
     
-    public void agregarJugador(String cedula,String password, String nombreCompleto, double saldo){
+    public void agregarJugador(String cedula,String password, String nombreCompleto, int saldo){
         jugadores.add(new Jugador(cedula, password, nombreCompleto, saldo));
     }
      public void agregarAdministrador(String cedula, String password,String nombreCompleto){

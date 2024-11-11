@@ -172,6 +172,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_listaMesaAbiertaValueChanged
 
     private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMesaActionPerformed
+        System.out.println(this.mesaSeleccionada);
         if (!jugador.validarSaldo(this.mesaSeleccionada.getApuestaBase())) {
             //TODO: No usar optionPane
             JOptionPane.showMessageDialog(this, "Saldo insuficiente.", getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -179,8 +180,8 @@ public class Menu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "La mesa está llena.", getTitle(), JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ;
-                new JugarPoker(mesaSeleccionada, jugador).setVisible(true);
+                jugador.setMesa(mesaSeleccionada);
+                new JugarPoker(jugador).setVisible(true);
             } catch (PanelCartasPokerException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -194,13 +195,16 @@ public class Menu extends javax.swing.JFrame {
         model.addElement(mesa);
     }
     this.mesasAbiertas = lista;
+    //imprimo cada mesa de mesas abiertas
     listaMesaAbierta.setModel(model);
 }
     
     private void detalles() {
         int pos = listaMesaAbierta.getSelectedIndex();
+        System.out.println(pos);
         if(pos!=-1){ //hay seleccion
             this.mesaSeleccionada = mesasAbiertas.get(pos);
+            //System.out.println("Mesa seleccionada: " + mesaSeleccionada);
             mostrarDetalles();
         }else {//se borro lo seleccionado
             mostrarDetalles();

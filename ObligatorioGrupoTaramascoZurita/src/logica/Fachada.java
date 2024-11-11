@@ -28,7 +28,7 @@ public class Fachada {
     
     //DELEGACIONES
 
-    public void agregarJugador(String cedula, String password, String nombreCompleto, double saldo) {
+    public void agregarJugador(String cedula, String password, String nombreCompleto, int saldo) {
         sAcceso.agregarJugador(cedula, password, nombreCompleto, saldo);
     }
     
@@ -36,7 +36,7 @@ public class Fachada {
         return sJuego.getMesasAbiertas();
     }
     
-    public void agregarMesa(int minJugadores, double apuestaBase, int porcentajeComision) {
+    public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         sJuego.agregarMesa(minJugadores, apuestaBase, porcentajeComision);
     }
 

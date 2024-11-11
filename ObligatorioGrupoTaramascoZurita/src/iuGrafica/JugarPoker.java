@@ -21,31 +21,24 @@ import panelCartasPoker.PanelCartasPokerException;
  */
 public class JugarPoker extends javax.swing.JFrame implements Observador {
 
-    public ArrayList<CartaPoker> cartas = new ArrayList();
     private Mesa mesa;
     private Jugador jugador;
     /**
      * Creates new form JugarPoker
      */
-    public JugarPoker(Mesa m, Jugador j) throws PanelCartasPokerException {
+    public JugarPoker(Jugador j) throws PanelCartasPokerException {
         initComponents();        
         //Entré a la partida, el estado de la mesa es ABIERTA.
-        mesa = m;
         jugador = j;
-        mesa.agregarObservador(this);
+        mesa = jugador.getMesa();
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
         this.actualizarDatosPantalla();
         tpJugadores.setText("Esperando inicio del juego, hay " + mesa.getJugadoresActuales() + " jugadores de " + mesa.getMinJugadores() + " en la mesa.");
-        //TODO: QUE LAS CARTAS SEAN RANDOM.
-        //Validar que la mesa esté llena
-        //Si lo esta, barajar el mazo y repartir 5 cartas a cada jugador.
-        cartas.add(new Carta(CartaPoker.AS, CartaPoker.CORAZON));
-        cartas.add(new Carta(CartaPoker.DIEZ, CartaPoker.PIQUE));
-        cartas.add(new Carta(CartaPoker.K, CartaPoker.TREBOL));
-        cartas.add(new Carta(CartaPoker.Q, CartaPoker.DIAMANTE));
-        cartas.add(new Carta(CartaPoker.SIETE, CartaPoker.TREBOL));
-        panelCartas.cargarCartas(cartas);
+        if(mesa.getJugadoresActuales() == mesa.getMinJugadores()){
+            this.iniciarMesa();
+        }
+        mesa.agregarObservador(this);
     }
     
     public void actualizarDatosPantalla(){
@@ -79,6 +72,8 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
         jScrollPane2 = new javax.swing.JScrollPane();
         tpFiguras = new javax.swing.JTextPane();
         lblEstadoMano = new javax.swing.JLabel();
+        tfMontoApuesta = new javax.swing.JTextField();
+        btnNoApostar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -114,6 +109,20 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
 
         lblEstadoMano.setText("Estado mano:");
 
+        tfMontoApuesta.setText("Monto apuesta");
+        tfMontoApuesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfMontoApuestaActionPerformed(evt);
+            }
+        });
+
+        btnNoApostar.setText("No Apostar");
+        btnNoApostar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNoApostarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,7 +152,11 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btnSalir)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNoApostar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnApostar))
                     .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31))
@@ -172,16 +185,19 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSalir)
-                            .addComponent(btnApostar)))
+                            .addComponent(btnApostar)
+                            .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNoApostar)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //#endregion
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
-        // TODO add your handling code here:
+        jugador.apostar(Integer.parseInt(tfMontoApuesta.getText()), true);
+        this.actualizarDatosPantalla();
     }//GEN-LAST:event_btnApostarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -189,9 +205,18 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void tfMontoApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMontoApuestaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfMontoApuestaActionPerformed
+
+    private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoApostarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNoApostarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
+    private javax.swing.JButton btnNoApostar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -202,19 +227,44 @@ public class JugarPoker extends javax.swing.JFrame implements Observador {
     private javax.swing.JLabel lblPozo;
     private javax.swing.JLabel lblSaldo;
     private panelCartasPoker.PanelCartasPoker panelCartas;
+    private javax.swing.JTextField tfMontoApuesta;
     private javax.swing.JTextPane tpFiguras;
     private javax.swing.JTextPane tpJugadores;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actualizar(Object evento, Observable origen) {
+        //CASO ENTRÓ LA GENTE NECESARIA PARA INICIAR LA MESA
         if(evento.equals(Mesa.eventos.cambioIniciada)){
-            panelCartas.setVisible(true);
-            lblEstadoMano.setVisible(true);
-            tpJugadores.setText(mesa.listadoJugadores());
+            this.iniciarMesa();
         }
         else if(evento.equals(Mesa.eventos.cambioCerrada)){
             //TODO: Mostrar interfaz de mesa cerrada
         }
+    }
+
+    public void iniciarMesa(){
+        this.actualizarDatosPantalla();
+            //Le resto a cada jugador la apuesta base
+            for (Jugador j : mesa.getJugadores()) {
+                j.setMesa(mesa);
+                j.apostar(mesa.getApuestaBase(), false);
+            }
+            mesa.repartir();
+            try {
+                ArrayList<CartaPoker> cartasPoker = new ArrayList<CartaPoker>();
+                // Castear cada Carta a CartaPoker
+                for (Carta carta : jugador.getCartas()) {
+                    cartasPoker.add(carta);
+                }
+                // Cargar las cartas en el panel
+                panelCartas.cargarCartas(cartasPoker);
+            } catch (PanelCartasPokerException e) {
+                System.err.println("Error al cargar las cartas: " + e.getMessage());
+            }
+            panelCartas.setVisible(true);
+            lblEstadoMano.setVisible(true);
+            tpJugadores.setText(mesa.listadoJugadores());
+            this.actualizarDatosPantalla();
     }
 }

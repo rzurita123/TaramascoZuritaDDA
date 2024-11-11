@@ -18,17 +18,18 @@ public class Mesa extends Observable{
     private ArrayList<Jugador> jugadores = new ArrayList();
     private ArrayList<Mano> manos = new ArrayList();
     private Mano manoActual;
-    private double pozo;
-    private double apuestaBase;
+    private int pozo;
+    private int apuestaBase;
     private int jugadoresActuales;
     private int porcentajeComision;
     private EstadoMesa estadoMesa;
+    private Mazo mazo;
     public enum EstadoMesa {
         ABIERTA, FINALIZADA, INICIADA
     }
-    public enum eventos {cambioIniciada, cambioCerrada};
+    public enum eventos {cambioIniciada, cambioCerrada, entroJugador};
 
-    public Mesa(int minJugadores, double apuestaBase, int porcentajeComision) {
+    public Mesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         this.id = ++contador;
         this.minJugadores = minJugadores;
         this.apuestaBase = apuestaBase;
@@ -37,6 +38,7 @@ public class Mesa extends Observable{
         this.manoActual = new Mano();
         this.jugadoresActuales = 0;
         this.pozo = 0;
+        this.mazo = new Mazo();
     }
     
     public String listadoJugadores(){
@@ -54,6 +56,7 @@ public class Mesa extends Observable{
             this.jugadoresActuales++;
             this.jugadores.add(j);
             agregueJugador = true;
+            avisar(eventos.entroJugador);
         }
         //Después de agregar al jugador, valido estado de la mesa
         if (this.jugadoresActuales == this.minJugadores) {
@@ -61,6 +64,13 @@ public class Mesa extends Observable{
             avisar(eventos.cambioIniciada);
         }
         return agregueJugador;
+    }
+
+    public void repartir(){
+        //Para cada jugador, llama al metodo repartir de mazo
+        for (Jugador j : jugadores) {
+            mazo.repartir(j);
+        }
     }
     
     public boolean esAbierta() {
@@ -99,15 +109,13 @@ public class Mesa extends Observable{
         this.manoActual = manoActual;
     }
 
-    public double getPozo() {
+    public int getPozo() {
         return pozo;
     }
 
-    public void setPozo(double pozo) {
+    public void setPozo(int pozo) {
         this.pozo = pozo;
     }
-    
-    
     
     public EstadoMesa getEstadoMesa() {
         return estadoMesa;
@@ -133,11 +141,11 @@ public class Mesa extends Observable{
         this.minJugadores = minJugadores;
     }
 
-    public double getApuestaBase() {
+    public int getApuestaBase() {
         return apuestaBase;
     }
 
-    public void setApuestaBase(double apuestaBase) {
+    public void setApuestaBase(int apuestaBase) {
         this.apuestaBase = apuestaBase;
     }
 

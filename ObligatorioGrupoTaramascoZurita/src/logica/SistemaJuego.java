@@ -24,7 +24,7 @@ class SistemaJuego {
         return mesasAbiertas;
     }
     
-    public void agregarMesa(int minJugadores, double apuestaBase, int porcentajeComision) {
+    public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         Mesa nuevaMesa = new Mesa(minJugadores, apuestaBase, porcentajeComision);
         mesas.add(nuevaMesa);
     }

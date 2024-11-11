@@ -9,5 +9,17 @@ package logica;
  * @author sabrina
  */
 public class Apuesta {
-    
+    int monto;
+
+    public Apuesta(int monto) {
+        this.monto = monto;
+    }
+
+    public int getMonto() {
+        return monto;
+    }
+
+    public void setMonto(int monto) {
+        this.monto = monto;
+    }
 }

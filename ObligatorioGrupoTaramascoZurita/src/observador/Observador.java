@@ -4,6 +4,8 @@
  */
 package observador;
 
+import panelCartasPoker.PanelCartasPokerException;
+
 /**
  *
  * @author Dario
