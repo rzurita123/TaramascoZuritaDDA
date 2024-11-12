@@ -106,4 +106,10 @@ public abstract class Figura {
     public PrioridadFigura getPrioridad() {
         return prioridad;
     }
+
+    //tostring de figura
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

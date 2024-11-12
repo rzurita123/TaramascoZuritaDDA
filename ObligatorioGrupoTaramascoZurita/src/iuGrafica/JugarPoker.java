@@ -6,6 +6,7 @@ package iuGrafica;
 
 import java.util.ArrayList;
 import logica.Carta;
+import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
 import logica.Mesa;
@@ -29,8 +30,18 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }
 
     @Override
-    public void mostrarMensaje(int jugadoresActuales, int minJugadores) {
+    public void mostrarMensajeInicial(int jugadoresActuales, int minJugadores) {
         tpFiguras.setText("Esperando inicio del juego, hay " + jugadoresActuales + " jugadores de " + minJugadores + " en la mesa.");
+    }
+
+    @Override
+    public void mostrarFigurasDefinidas(ArrayList<Figura> figuras) {
+        String texto = "";
+        for(Figura f : figuras){
+            texto = texto + f.toString() + "\n";
+            System.out.println(texto);
+        }   
+        tpFiguras.setText(texto);
     }
 
     @Override

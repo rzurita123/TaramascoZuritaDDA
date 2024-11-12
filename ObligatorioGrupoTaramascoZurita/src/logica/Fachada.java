@@ -28,6 +28,14 @@ public class Fachada {
     
     //DELEGACIONES
 
+    public void agregarFiguras() {
+        sJuego.agregarFiguras();
+    }
+
+    public ArrayList<Figura> getFiguras() {
+        return sJuego.getFiguras();
+    }
+
     public void agregarJugador(String cedula, String password, String nombreCompleto, int saldo) {
         sAcceso.agregarJugador(cedula, password, nombreCompleto, saldo);
     }

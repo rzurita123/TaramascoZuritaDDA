@@ -5,6 +5,7 @@
 package inicio;
 
 import logica.Fachada;
+import logica.Figura;
 
 /**
  *
@@ -32,5 +33,8 @@ public class DatosPrueba {
     fachada.agregarMesa(5, 500, 3);
     fachada.agregarMesa(4, 50, 4);
     fachada.agregarMesa(2, 100, 5);
+    
+    fachada.agregarFiguras();
+
     }
 }

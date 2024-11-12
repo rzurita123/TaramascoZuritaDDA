@@ -4,6 +4,9 @@
  */
 package controlador;
 
+import java.util.ArrayList;
+
+import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
 import logica.Mesa;
@@ -13,7 +16,8 @@ import logica.Mesa;
  * @author Carry
  */
 public interface VistaPoker {
-    public void mostrarMensaje(int jugadoresActuales, int minJugadores);
+    public void mostrarMensajeInicial(int jugadoresActuales, int minJugadores);
     public void actualizarDatosPantalla(String nombreJugador, int saldoJugador, int idMesa, int pozoMesa, int manosMesa, Mano.EstadoMano estadoMano);
     public void mostrarCartas(Jugador jugador, Mesa mesa);
+    public void mostrarFigurasDefinidas(ArrayList<Figura> figuras);
 }

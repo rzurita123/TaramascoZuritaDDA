@@ -3,6 +3,8 @@ package controlador;
 import java.util.ArrayList;
 
 import logica.Carta;
+import logica.Fachada;
+import logica.Figura;
 import logica.Jugador;
 import logica.Mesa;
 import observador.Observable;
@@ -32,7 +34,9 @@ public class ControladorPoker implements Observador{
         if(mesa.esIniciada()){
             this.iniciarMesa();
         }
-        vistaPoker.mostrarMensaje(mesa.getJugadoresActuales(), mesa.getMinJugadores());
+        else{
+            vistaPoker.mostrarMensajeInicial(mesa.getJugadoresActuales(), mesa.getMinJugadores());
+        }
         this.actualizarDatosPantalla();
     }
 
@@ -42,6 +46,7 @@ public class ControladorPoker implements Observador{
 
     public void iniciarMesa(){
         vistaPoker.mostrarCartas(jugador, mesa);
+        vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
         this.actualizarDatosPantalla();
     }
 
