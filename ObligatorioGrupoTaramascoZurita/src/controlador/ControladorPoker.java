@@ -24,11 +24,14 @@ public class ControladorPoker implements Observador{
     private Mesa mesa;
     private Jugador jugador;
 
-    public ControladorPoker(VistaPoker vistaPoker, Jugador jugador) {
-        this.jugador = jugador;
+    public ControladorPoker(VistaPoker vistaPoker, Jugador j) {
+        this.vistaPoker = vistaPoker;
+        this.jugador = j;
         this.mesa = jugador.getMesa();
         mesa.agregarObservador(this);
-        this.vistaPoker = vistaPoker;
+        if(mesa.esIniciada()){
+            this.iniciarMesa();
+        }
         vistaPoker.mostrarMensaje(mesa.getJugadoresActuales(), mesa.getMinJugadores());
         this.actualizarDatosPantalla();
     }
@@ -38,7 +41,6 @@ public class ControladorPoker implements Observador{
     }
 
     public void iniciarMesa(){
-        mesa.iniciarMesa();
         vistaPoker.mostrarCartas(jugador, mesa);
         this.actualizarDatosPantalla();
     }
@@ -52,6 +54,7 @@ public class ControladorPoker implements Observador{
     public void actualizar(Object evento, Observable origen) {
         //CASO ENTRÓ LA GENTE NECESARIA PARA INICIAR LA MESA
         if(evento.equals(Mesa.eventos.cambioIniciada)){
+            System.out.println("La mesa se ha iniciado");
             this.iniciarMesa();
         }
         else if(evento.equals(Mesa.eventos.cambioCerrada)){

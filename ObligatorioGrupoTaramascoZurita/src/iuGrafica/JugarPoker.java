@@ -23,10 +23,9 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
     public JugarPoker(Jugador j) throws PanelCartasPokerException {
         initComponents();
-        controladorPoker = new ControladorPoker(this, j);     
-        //Entré a la partida, el estado de la mesa es ABIERTA.
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
+        controladorPoker = new ControladorPoker(this, j);
     }
 
     @Override

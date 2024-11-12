@@ -27,10 +27,10 @@ public class Menu extends javax.swing.JFrame {
     private Jugador jugador;
     private Mesa mesaSeleccionada;
     private ArrayList<Mesa> mesasAbiertas = new ArrayList();
-    public Menu(Jugador jugador) {
+    public Menu(Jugador j) {
         initComponents();
         setLocationRelativeTo(null);
-        this.jugador = jugador;
+        jugador = j;
         setTitle("MENU  - " + jugador.getNombreCompleto());
         cargarUsuario();
         cargarMesasAbiertas();
@@ -173,6 +173,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMesaActionPerformed
         System.out.println(this.mesaSeleccionada);
+        jugador.setMesa(mesaSeleccionada);
         if (!jugador.validarSaldo(this.mesaSeleccionada.getApuestaBase())) {
             //TODO: No usar optionPane
             JOptionPane.showMessageDialog(this, "Saldo insuficiente.", getTitle(), JOptionPane.ERROR_MESSAGE);
@@ -180,7 +181,6 @@ public class Menu extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "La mesa está llena.", getTitle(), JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                jugador.setMesa(mesaSeleccionada);
                 new JugarPoker(jugador).setVisible(true);
             } catch (PanelCartasPokerException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);

@@ -41,10 +41,9 @@ public class Mesa extends Observable{
         this.mazo = new Mazo();
     }
 
-    public void iniciarMesa(){
+    public void comienzoPartida(){
         //Le resto a cada jugador la apuesta base
         for (Jugador j : jugadores) {
-            j.setMesa(this);
             j.apostar(apuestaBase, false);
         }
         this.repartir();
@@ -65,11 +64,12 @@ public class Mesa extends Observable{
             this.jugadoresActuales++;
             this.jugadores.add(j);
             agregueJugador = true;
-            avisar(eventos.entroJugador);
+            //avisar(eventos.entroJugador);
         }
         //Después de agregar al jugador, valido estado de la mesa
         if (this.jugadoresActuales == this.minJugadores) {
             estadoMesa = EstadoMesa.INICIADA;
+            comienzoPartida();
             avisar(eventos.cambioIniciada);
         }
         return agregueJugador;
@@ -84,6 +84,10 @@ public class Mesa extends Observable{
     
     public boolean esAbierta() {
         return estadoMesa == EstadoMesa.ABIERTA;
+    }
+
+    public boolean esIniciada() {
+        return estadoMesa == EstadoMesa.INICIADA;
     }
 
     public static int getContador() {
