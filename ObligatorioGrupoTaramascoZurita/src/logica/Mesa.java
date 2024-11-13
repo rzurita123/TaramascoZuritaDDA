@@ -58,12 +58,17 @@ public class Mesa extends Observable{
         return listado;
     }
     
-    public boolean agregarJugador(Jugador j) {
-        boolean agregueJugador = false;
-        if (this.jugadoresActuales < this.minJugadores) {
+    public void agregarJugador(Jugador j) throws MesaException {
+        if (j.getSaldo() < this.apuestaBase) {
+            throw new MesaException("Saldo insuficiente");
+        } else if (this.jugadoresActuales >= this.minJugadores) {
+            throw new MesaException("La mesa está llena");
+        } else if (j.getMesa() != null) {
+            throw new MesaException("El jugador ya está en una mesa");
+        } else {
             this.jugadoresActuales++;
             this.jugadores.add(j);
-            agregueJugador = true;
+            j.setMesa(this);
             //avisar(eventos.entroJugador);
         }
         //Después de agregar al jugador, valido estado de la mesa
@@ -72,7 +77,6 @@ public class Mesa extends Observable{
             comienzoPartida();
             avisar(eventos.cambioIniciada);
         }
-        return agregueJugador;
     }
 
     public void repartir(){

@@ -4,6 +4,9 @@
  */
 package iuGrafica;
 
+import controlador.ControladorIngresoAMesa;
+import controlador.VistaIngresoAMesa;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -11,7 +14,9 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import logica.Fachada;
+import logica.Figura;
 import logica.Jugador;
+import logica.Mano.EstadoMano;
 import logica.Mesa;
 import panelCartasPoker.PanelCartasPokerException;
 
@@ -19,21 +24,20 @@ import panelCartasPoker.PanelCartasPokerException;
  *
  * @author PC
  */
-public class Menu extends javax.swing.JFrame {
+public class Menu extends javax.swing.JFrame implements VistaIngresoAMesa {
 
     /**
      * Creates new form Menu
      */
+    private ControladorIngresoAMesa controladorIngresoAMesa;
     private Jugador jugador;
-    private Mesa mesaSeleccionada;
-    private ArrayList<Mesa> mesasAbiertas = new ArrayList();
+    private ArrayList<Mesa> mesas = null;
+    
     public Menu(Jugador j) {
         initComponents();
         setLocationRelativeTo(null);
+        controladorIngresoAMesa = new ControladorIngresoAMesa(this, j);
         jugador = j;
-        setTitle("MENU  - " + jugador.getNombreCompleto());
-        cargarUsuario();
-        cargarMesasAbiertas();
     }
 
     /**
@@ -167,70 +171,69 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void listaMesaAbiertaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaMesaAbiertaValueChanged
+    private void listaMesaAbiertaValueChanged(javax.swing.event.ListSelectionEvent evt) {
         detalles();
-    }//GEN-LAST:event_listaMesaAbiertaValueChanged
-
-    private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMesaActionPerformed
-        System.out.println(this.mesaSeleccionada);
-        jugador.setMesa(mesaSeleccionada);
-        if (!jugador.validarSaldo(this.mesaSeleccionada.getApuestaBase())) {
-            //TODO: No usar optionPane
-            JOptionPane.showMessageDialog(this, "Saldo insuficiente.", getTitle(), JOptionPane.ERROR_MESSAGE);
-        } else if (!mesaSeleccionada.agregarJugador(jugador)) {
-            JOptionPane.showMessageDialog(this, "La mesa está llena.", getTitle(), JOptionPane.ERROR_MESSAGE);
-        } else {
-            try {
-                new JugarPoker(jugador).setVisible(true);
-            } catch (PanelCartasPokerException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }  
-    }//GEN-LAST:event_btnIngresarMesaActionPerformed
-
-    private void cargarMesasAbiertas() {
-    DefaultListModel<Mesa> model = new DefaultListModel<>();
-    ArrayList<Mesa> lista = Fachada.getInstancia().getMesasAbiertas();
-    for (Mesa mesa : lista) {
-        model.addElement(mesa);
     }
-    this.mesasAbiertas = lista;
-    //imprimo cada mesa de mesas abiertas
-    listaMesaAbierta.setModel(model);
-}
-    
-    private void detalles() {
-        int pos = listaMesaAbierta.getSelectedIndex();
-        System.out.println(pos);
-        if(pos!=-1){ //hay seleccion
-            this.mesaSeleccionada = mesasAbiertas.get(pos);
-            //System.out.println("Mesa seleccionada: " + mesaSeleccionada);
-            mostrarDetalles();
-        }else {//se borro lo seleccionado
-            mostrarDetalles();
+
+    private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {
+        controladorIngresoAMesa.ingresarAMesa();
+        try {
+            this.setVisible(false);
+            new JugarPoker(jugador, this).setVisible(true);
+        } catch (PanelCartasPokerException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void mostrarDetalles() {
-       if(this.mesaSeleccionada!=null){
-            lbId.setText("Id: " + this.mesaSeleccionada.getId());
-            lbMinJugadores.setText("Min. jugadores: " + this.mesaSeleccionada.getMinJugadores());
-            lbApuestaBase.setText("Valor apuesta base: " + this.mesaSeleccionada.getApuestaBase());
-            lbJugadoresActuales.setText("Jugadores actuales: " + this.mesaSeleccionada.getJugadoresActuales());
-            lbPorcentajeComision.setText("Porcentaje comisión: " + this.mesaSeleccionada.getPorcentajeComision() + '%');
-    
-       }else{
-            lbId.setText("Id: ");
-            lbMinJugadores.setText("Min. jugadores: ");
-            lbApuestaBase.setText("Valor apuesta base: ");
-            lbJugadoresActuales.setText("Jugadores actuales: ");
-            lbPorcentajeComision.setText("Porcentaje comisión: ");
-       }
+    @Override
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, getTitle(), JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void mostrarDatosJugador(String nombre, int saldo) {
+        lbNombre.setText("Nombre: " + nombre);
+        lbSaldo.setText("Saldo: $" + saldo);
+        setTitle("Bienvenido " + nombre);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void cargarMesasAbiertas(ArrayList<Mesa> listaMesas) {
+    mesas = listaMesas;
+    DefaultListModel<Mesa> model = new DefaultListModel<>();
+    for (Mesa mesa : listaMesas) {
+        model.addElement(mesa);
+    }
+    listaMesaAbierta.setModel(model);
     }
     
-    private void cargarUsuario(){
-        lbNombre.setText("Nombre: " + jugador.getNombreCompleto());
-        lbSaldo.setText("Saldo: $" + jugador.getSaldo());
+    private void detalles() {
+        int pos = listaMesaAbierta.getSelectedIndex();
+        if(pos!=-1){ //hay seleccion
+            Mesa mesaSeleccionada = mesas.get(pos);
+            controladorIngresoAMesa.seleccionMesa(mesaSeleccionada);
+        }else {//se borro lo seleccionado
+            controladorIngresoAMesa.seleccionMesa(null);
+        }
+    }
+
+    @Override
+    public void mostrarDetalles(int id, int minJugadores, int apuestaBase, int jugadoresActuales, int porcentajeComision) {
+        lbId.setText("Id: " + id);
+        lbMinJugadores.setText("Min. jugadores: " + minJugadores);
+        lbApuestaBase.setText("Valor apuesta base: " + apuestaBase);
+        lbJugadoresActuales.setText("Jugadores actuales: " + jugadoresActuales);
+        lbPorcentajeComision.setText("Porcentaje comisión: " + porcentajeComision + '%');
+    }
+
+    @Override
+    public void borrarDetalles() {
+        lbId.setText("Id: ");
+        lbMinJugadores.setText("Min. jugadores: ");
+        lbApuestaBase.setText("Valor apuesta base: ");
+        lbJugadoresActuales.setText("Jugadores actuales: ");
+        lbPorcentajeComision.setText("Porcentaje comisión: ");
     }
     
 
@@ -248,4 +251,5 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lbSaldo;
     private javax.swing.JList listaMesaAbierta;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -10,8 +10,12 @@ import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
 import logica.Mesa;
+import controlador.ControladorIngresoAMesa;
 import controlador.ControladorPoker;
 import controlador.VistaPoker;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import panelCartasPoker.CartaPoker;
 import panelCartasPoker.PanelCartasPokerException;
 
@@ -21,12 +25,22 @@ import panelCartasPoker.PanelCartasPokerException;
  */
 public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private ControladorPoker controladorPoker;
-
-    public JugarPoker(Jugador j) throws PanelCartasPokerException {
+    private JFrame ventanaPadre;
+    
+    public JugarPoker(Jugador j, JFrame ventanaMenu) throws PanelCartasPokerException {
         initComponents();
+        this.setLocationRelativeTo(ventanaMenu);
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
         controladorPoker = new ControladorPoker(this, j);
+        ventanaPadre = ventanaMenu;
+        //Capturar evento al cerrar ventana, para mostrar menu al salir.
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarYMostrarMenu();
+            }
+        });
     }
 
     @Override
@@ -97,7 +111,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         tfMontoApuesta = new javax.swing.JTextField();
         btnNoApostar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         lblMesa.setText("Mesa:");
 
@@ -221,8 +235,13 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()), true);
     }//GEN-LAST:event_btnApostarActionPerformed
 
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+    private void cerrarYMostrarMenu(){
+        ventanaPadre.setVisible(true);
         this.dispose();
+    }
+    
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        cerrarYMostrarMenu();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void tfMontoApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMontoApuestaActionPerformed
