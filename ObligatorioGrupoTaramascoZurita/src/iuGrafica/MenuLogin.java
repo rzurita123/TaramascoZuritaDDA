@@ -4,10 +4,15 @@
  */
 package iuGrafica;
 
+import vistaEscritorio.LoginJugador;
+import vistaEscritorio.LoginAdministrador;
+
 /**
  *
  * @author PC
  */
+
+
 public class MenuLogin extends javax.swing.JFrame {
 
     /**

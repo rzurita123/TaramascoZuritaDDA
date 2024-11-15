@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package iuGrafica;
+package vistaEscritorio;
 
+import controlador.ControladorLoginAbstracto;
+import controlador.VistaLogin;
 import javax.swing.JOptionPane;
 import logica.Usuario;
 
@@ -11,16 +13,16 @@ import logica.Usuario;
  *
  * @author PC
  */
-public abstract class LoginAbstracto extends javax.swing.JDialog {
+public abstract class LoginAbstracto extends javax.swing.JDialog implements VistaLogin{
 
-    /**
-     * Creates new form Login
-     */
+    private ControladorLoginAbstracto controlador;
+    
     public LoginAbstracto(java.awt.Frame parent, boolean modal,String titulo) {
         super(parent, modal);
         initComponents();
         setTitle(titulo);
         setLocationRelativeTo(parent);
+        this.controlador = crearControlador();
     }
 
     /**
@@ -42,7 +44,7 @@ public abstract class LoginAbstracto extends javax.swing.JDialog {
 
         jLabel1.setText("Usuario:");
 
-        jLabel2.setText("Contraseña:");
+        jLabel2.setText("Conrtaseña:");
 
         tfPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,10 +77,10 @@ public abstract class LoginAbstracto extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tfPassword)))
                 .addGap(54, 54, 54))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(71, 71, 71)
                 .addComponent(bLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,22 +122,23 @@ public abstract class LoginAbstracto extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     
-    //TEMPLATE METHOD
+    
     private void login() {
         String nombre = tfNombre.getText();
         String password = new String(tfPassword.getPassword());
-        
-       
-        Usuario usuario = llamarLogin(nombre,password);
-        if(usuario==null){
-            JOptionPane.showMessageDialog(this, "Acceso denegado", getTitle(), JOptionPane.ERROR_MESSAGE);
-        }else{
-            dispose();
-            //new MonitorConexiones(null, false).setVisible(true);
-            proximoCasoUso(usuario);
-        }
+        controlador.login(nombre, password);
+    }
+
+    @Override
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this,mensaje, getTitle(), JOptionPane.ERROR);
+    }
+
+    @Override
+    public void cerrar() {
+        dispose();
     }
     
-    public abstract Usuario llamarLogin(String nombre,String password);
-    public abstract void proximoCasoUso(Usuario usuario);
+    public abstract ControladorLoginAbstracto crearControlador();
+    
 }

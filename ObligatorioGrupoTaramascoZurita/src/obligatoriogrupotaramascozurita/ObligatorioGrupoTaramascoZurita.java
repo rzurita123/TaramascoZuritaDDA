@@ -5,8 +5,8 @@
 package obligatoriogrupotaramascozurita;
 
 import inicio.DatosPrueba;
-import iuGrafica.LoginAbstracto;
-import iuGrafica.LoginJugador;
+import vistaEscritorio.LoginAbstracto;
+import vistaEscritorio.LoginJugador;
 import iuGrafica.Menu;
 import iuGrafica.MenuLogin;
 
