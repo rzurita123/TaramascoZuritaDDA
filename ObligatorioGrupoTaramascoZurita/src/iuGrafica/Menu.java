@@ -178,7 +178,6 @@ public class Menu extends javax.swing.JFrame implements VistaIngresoAMesa {
     private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {
         controladorIngresoAMesa.ingresarAMesa();
         try {
-            this.setVisible(false);
             new JugarPoker(jugador, this).setVisible(true);
         } catch (PanelCartasPokerException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);

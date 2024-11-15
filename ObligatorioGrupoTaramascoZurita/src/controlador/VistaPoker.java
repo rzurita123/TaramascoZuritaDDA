@@ -19,5 +19,9 @@ public interface VistaPoker {
     public void mostrarMensajeInicial(int jugadoresActuales, int minJugadores);
     public void actualizarDatosPantalla(String nombreJugador, int saldoJugador, int idMesa, int pozoMesa, int manosMesa, Mano.EstadoMano estadoMano);
     public void mostrarCartas(Jugador jugador, Mesa mesa);
+    public void mostrarFiguraMasAlta(Figura figura);
     public void mostrarFigurasDefinidas(ArrayList<Figura> figuras);
+    public void mostrarApuestaRealizada(String nombre, int monto);
+    public void mostrarEstadoMano(Mano.EstadoMano estadoMano);
+    public void mostrarError(String mensaje);
 }

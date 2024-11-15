@@ -41,11 +41,17 @@ public class Mesa extends Observable{
         this.mazo = new Mazo();
     }
 
+    public void apostar(Jugador j, int apuesta) {
+        this.pozo += apuesta;
+        manoActual.setJugadasRealizadas(manoActual.getJugadasRealizadas() + 1);
+    }
+
     public void comienzoPartida(){
         //Le resto a cada jugador la apuesta base
         for (Jugador j : jugadores) {
-            j.apostar(apuestaBase, false);
+            j.descontarSaldo(apuestaBase);
         }
+        this.pozo = jugadores.size() * apuestaBase;
         this.repartir();
     }
     

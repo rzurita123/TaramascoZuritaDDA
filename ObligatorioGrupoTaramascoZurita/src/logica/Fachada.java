@@ -48,6 +48,10 @@ public class Fachada {
         sJuego.agregarMesa(minJugadores, apuestaBase, porcentajeComision);
     }
 
+    public Figura getFiguraMasAlta(ArrayList<Carta> cartas) {
+        return sJuego.getFiguraMasAlta(cartas);
+    }
+
     public Jugador loginJugador(String cedula, String password) {
         return sAcceso.loginJugador(cedula, password);
     }

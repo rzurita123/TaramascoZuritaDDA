@@ -30,15 +30,26 @@ class SistemaJuego {
     }
 
     public void agregarFiguras(){
+        figuras.add(new SinFigura());
         figuras.add(new Par());
+        figuras.add(new Pierna());
         figuras.add(new Escalera());
         figuras.add(new Poker());
-        figuras.add(new Pierna());
-        figuras.add(new SinFigura());
     }
     
     public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         Mesa nuevaMesa = new Mesa(minJugadores, apuestaBase, porcentajeComision);
         mesas.add(nuevaMesa);
     }
+
+    public Figura getFiguraMasAlta(ArrayList<Carta> cartas) {
+        Figura figuraMasAlta = new SinFigura();
+        for (Figura figura : figuras) {
+            if (figura.evaluarCartas(cartas)) {
+                figuraMasAlta = figura;
+            }
+        }
+        return figuraMasAlta;
+    }
 }
+

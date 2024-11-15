@@ -23,6 +23,7 @@ public class Jugador extends Usuario{
     public EstadoJugador estadoJugador;
     public Mesa mesa;
     public Apuesta ultimaApuesta;
+    public Figura figura;
 
     public Jugador(String cedula, String contraseña, String nombreCompleto, int saldo) {
         super(cedula, contraseña, nombreCompleto);
@@ -31,15 +32,17 @@ public class Jugador extends Usuario{
         this.ultimaApuesta = new Apuesta(0);
     }
 
-    public void apostar(int monto, boolean actualizarEstadoMano) {
+    //Jugador analiza cual es la mejor figura que tiene con sus cartas.
+    public Figura figuraMasAlta() {
+        figura = Fachada.getInstancia().getFiguraMasAlta(cartas);
+        System.out.println("Figura: " + figura.getNombre());
+        return figura;
+    }
+
+    public void descontarSaldo(int monto){
+        this.ultimaApuesta.setMonto(monto);
         this.saldo -= monto;
-        this.ultimaApuesta = new Apuesta(monto);
-        System.out.println("Saldo restante: " + this.saldo);
-        System.out.println("Monto apostado: " + monto);
         mesa.setPozo(mesa.getPozo() + monto);
-        if(actualizarEstadoMano){
-            mesa.getManoActual().setEstadoMano(EstadoMano.APUESTA_INICIADA);
-        }
     }
 
     public ArrayList<Carta> getCartas() {
@@ -84,7 +87,7 @@ public class Jugador extends Usuario{
 
     @Override
     public String toString() {
-        return "Nombre: " + nombreCompleto + " | " + "Estado: " + estadoJugador + " | " + "Última apuesta: " + ultimaApuesta.getMonto();
+        return "Nombre: " + nombreCompleto + " | " + "Situación: " + estadoJugador + " | " + "Última apuesta: " + ultimaApuesta.getMonto();
     }
 
 

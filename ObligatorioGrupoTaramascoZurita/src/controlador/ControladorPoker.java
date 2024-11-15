@@ -6,6 +6,7 @@ import logica.Carta;
 import logica.Fachada;
 import logica.Figura;
 import logica.Jugador;
+import logica.Mano;
 import logica.Mesa;
 import observador.Observable;
 import observador.Observador;
@@ -25,11 +26,12 @@ public class ControladorPoker implements Observador{
     private VistaPoker vistaPoker;
     private Mesa mesa;
     private Jugador jugador;
-
+    private Mano mano;
     public ControladorPoker(VistaPoker vistaPoker, Jugador j) {
         this.vistaPoker = vistaPoker;
         this.jugador = j;
         this.mesa = jugador.getMesa();
+        this.mano = mesa.getManoActual();
         mesa.agregarObservador(this);
         if(mesa.esIniciada()){
             this.iniciarMesa();
@@ -37,6 +39,7 @@ public class ControladorPoker implements Observador{
         else{
             vistaPoker.mostrarMensajeInicial(mesa.getJugadoresActuales(), mesa.getMinJugadores());
         }
+        //TODO: Ver si actualizarDatosPantalla se maneja mejor con un observador.
         this.actualizarDatosPantalla();
     }
 
@@ -47,12 +50,28 @@ public class ControladorPoker implements Observador{
     public void iniciarMesa(){
         vistaPoker.mostrarCartas(jugador, mesa);
         vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
-        this.actualizarDatosPantalla();
+        determinarFiguraMasAlta();
+        actualizarDatosPantalla();
     }
 
-    public void apostar(int monto, boolean actualizarEstadoMano){
-        jugador.apostar(monto, actualizarEstadoMano);
-        this.actualizarDatosPantalla();
+    public void determinarFiguraMasAlta(){
+        Figura figura = jugador.figuraMasAlta();
+        vistaPoker.mostrarFiguraMasAlta(figura);
+        System.out.println("Figura: " + figura.getNombre());
+    }
+
+    public void apostar(int monto){
+        //TODO: METODO APARTE PARA APUESTA INICIAL.
+        boolean apuestaRealizada = mano.apostar(monto, jugador);
+        if (apuestaRealizada) {
+            // Actualizar la vista con el valor de la apuesta y el estado de la mano
+            vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), monto);
+            vistaPoker.mostrarEstadoMano(mano.getEstadoMano());
+            this.actualizarDatosPantalla();
+        } else {
+            // Muestra un mensaje de error en la vista si la apuesta no es válida
+            vistaPoker.mostrarError("La apuesta no se pudo realizar. Verifica el monto y el saldo disponible.");
+        }
     }
 
     @Override

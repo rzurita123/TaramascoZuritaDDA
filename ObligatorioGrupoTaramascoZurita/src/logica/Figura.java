@@ -12,7 +12,7 @@ public abstract class Figura {
     private PrioridadFigura prioridad;
 
     public enum PrioridadFigura {
-        SIN_FIGURA, PAR, NUEVA_FIGURA, PIERNA, ESCALERA, POKER;
+        SIN_FIGURA, PAR, PIERNA, ESCALERA, POKER;
 
         public boolean esMayorQue(PrioridadFigura otra) {
             return this.ordinal() > otra.ordinal();

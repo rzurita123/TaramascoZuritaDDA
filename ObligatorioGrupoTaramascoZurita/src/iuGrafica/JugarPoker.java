@@ -9,6 +9,7 @@ import logica.Carta;
 import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
+import logica.Mano.EstadoMano;
 import logica.Mesa;
 import controlador.ControladorIngresoAMesa;
 import controlador.ControladorPoker;
@@ -29,18 +30,11 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     
     public JugarPoker(Jugador j, JFrame ventanaMenu) throws PanelCartasPokerException {
         initComponents();
-        this.setLocationRelativeTo(ventanaMenu);
+        ventanaPadre = ventanaMenu;
+        this.setLocationRelativeTo(ventanaPadre);
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
         controladorPoker = new ControladorPoker(this, j);
-        ventanaPadre = ventanaMenu;
-        //Capturar evento al cerrar ventana, para mostrar menu al salir.
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                cerrarYMostrarMenu();
-            }
-        });
     }
 
     @Override
@@ -74,6 +68,11 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         panelCartas.setVisible(true);
         lblEstadoMano.setVisible(true);
         tpJugadores.setText(mesa.listadoJugadores());
+    }
+
+    @Override
+    public void mostrarFiguraMasAlta(Figura figura) {
+        lblFiguraActual.setText("Figura más alta: " + figura.getNombre());
     }
     
     @Override
@@ -110,8 +109,10 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblEstadoMano = new javax.swing.JLabel();
         tfMontoApuesta = new javax.swing.JTextField();
         btnNoApostar = new javax.swing.JButton();
+        lblFiguraActual = new javax.swing.JLabel();
+        lblMontoApostado = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblMesa.setText("Mesa:");
 
@@ -159,6 +160,10 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
             }
         });
 
+        lblFiguraActual.setText("Tu figura actual: ");
+
+        lblMontoApostado.setText("Monto apostado: ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,15 +191,23 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                         .addComponent(jScrollPane2)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(btnSalir)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnNoApostar)
+                    .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSalir)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnNoApostar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblFiguraActual)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnApostar))
-                    .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMontoApostado)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnApostar)))))
                 .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
@@ -218,13 +231,18 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblFiguraActual)
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSalir)
                             .addComponent(btnApostar)
                             .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnNoApostar)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblMontoApostado)))
                 .addGap(20, 20, 20))
         );
 
@@ -232,7 +250,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }// </editor-fold>//GEN-END:initComponents
     //#endregion
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
-        controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()), true);
+        controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()));
     }//GEN-LAST:event_btnApostarActionPerformed
 
     private void cerrarYMostrarMenu(){
@@ -260,9 +278,11 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblEstadoMano;
+    private javax.swing.JLabel lblFiguraActual;
     private javax.swing.JLabel lblJugador;
     private javax.swing.JLabel lblMano;
     private javax.swing.JLabel lblMesa;
+    private javax.swing.JLabel lblMontoApostado;
     private javax.swing.JLabel lblPozo;
     private javax.swing.JLabel lblSaldo;
     private panelCartasPoker.PanelCartasPoker panelCartas;
@@ -270,6 +290,23 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private javax.swing.JTextPane tpFiguras;
     private javax.swing.JTextPane tpJugadores;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarApuestaRealizada(String nombre, int monto) {
+        lblMontoApostado.setText("Monto apostado: " + monto);
+        //TODO: Actualizar en la vista de todos los jugadores la ultima apuesta.
+    }
+
+    @Override
+    public void mostrarEstadoMano(EstadoMano estadoMano) {
+        lblEstadoMano.setText("Estado mano: " + estadoMano);
+    }
+
+    @Override
+    public void mostrarError(String mensaje) {
+        System.out.println(mensaje);
+        //TODO: Mostrar error como ventana en vez de sout.
+    }
 
     
 }
