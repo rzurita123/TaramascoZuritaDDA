@@ -5,8 +5,6 @@
 package inicio;
 
 import logica.Fachada;
-import logica.Figura;
-
 /**
  *
  * @author sabrina

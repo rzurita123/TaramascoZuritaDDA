@@ -5,10 +5,6 @@
 package controlador;
 
 import java.util.ArrayList;
-
-import logica.Figura;
-import logica.Jugador;
-import logica.Mano;
 import logica.Mesa;
 
 /**

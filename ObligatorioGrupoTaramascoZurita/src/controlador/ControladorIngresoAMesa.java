@@ -1,18 +1,11 @@
 package controlador;
 
-import java.util.ArrayList;
-
-import logica.Carta;
 import logica.Fachada;
-import logica.Figura;
 import logica.Jugador;
-import logica.JugadorException;
 import logica.Mesa;
 import logica.MesaException;
 import observador.Observable;
 import observador.Observador;
-import panelCartasPoker.CartaPoker;
-import panelCartasPoker.PanelCartasPokerException;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

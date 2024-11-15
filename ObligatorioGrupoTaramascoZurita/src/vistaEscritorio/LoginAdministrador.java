@@ -7,9 +7,6 @@ package vistaEscritorio;
 import controlador.ControladorLoginAbstracto;
 import controlador.ControladorLoginAdministrador;
 import java.awt.Frame;
-import logica.Administrador;
-import logica.Fachada;
-import logica.Usuario;
 
 /**
  *
