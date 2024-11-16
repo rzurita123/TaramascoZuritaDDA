@@ -21,6 +21,7 @@ public class Mesa extends Observable{
     private int pozo;
     private int apuestaBase;
     private int jugadoresActuales;
+    private int ultimaApuesta;
     private int porcentajeComision;
     private EstadoMesa estadoMesa;
     private Mazo mazo;
@@ -33,6 +34,7 @@ public class Mesa extends Observable{
         this.id = ++contador;
         this.minJugadores = minJugadores;
         this.apuestaBase = apuestaBase;
+        this.ultimaApuesta = 0;
         this.porcentajeComision = porcentajeComision;
         this.estadoMesa = EstadoMesa.ABIERTA;
         this.jugadoresActuales = 0;
@@ -50,7 +52,7 @@ public class Mesa extends Observable{
         //Le resto a cada jugador la apuesta base
         for (Jugador j : jugadores) {
             //Si no se pudo descontar el saldo, elimino al jugador de la mesa.
-            if(!j.descontarSaldo(apuestaBase)){
+            if(!j.descontarSaldo(apuestaBase, true)){
                 jugadores.remove(j);
             }
         }
@@ -60,6 +62,11 @@ public class Mesa extends Observable{
         avisar(eventos.nuevaMano);
         this.pozo += jugadores.size() * apuestaBase;
         this.repartir();
+    }
+
+    public void agregarApuesta(int monto){
+        this.pozo += monto;
+        ultimaApuesta = monto;
     }
     
     public String listadoJugadores(){
@@ -161,6 +168,14 @@ public class Mesa extends Observable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUltimaApuesta() {
+        return ultimaApuesta;
+    }
+
+    public void setUltimaApuesta(int ultimaApuesta) {
+        this.ultimaApuesta = ultimaApuesta;
     }
 
     public int getMinJugadores() {

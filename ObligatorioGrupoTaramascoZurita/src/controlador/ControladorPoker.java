@@ -28,6 +28,7 @@ public class ControladorPoker implements Observador{
         this.mesa = jugador.getMesa();
         mesa.agregarObservador(this);
         mano = mesa.getManoActual();
+        mano.agregarObservador(this);
         if(mesa.esIniciada()){
             this.iniciarMesa();
         }
@@ -75,24 +76,32 @@ public class ControladorPoker implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        System.out.println("ENTRÉ A ACTUALIZAR");
-        System.out.println("EVENTO: " + evento);
-        if(evento.equals(Mesa.eventos.cambioIniciada)){
-            this.iniciarMesa();
+        //Eventos mesa
+        if(origen instanceof Mesa){
+            if(evento.equals(Mesa.eventos.cambioIniciada)){
+                this.iniciarMesa();
+            }
+            else if(evento.equals(Mesa.eventos.nuevaMano)){
+                mano = mesa.getManoActual();
+                mano.agregarObservador(this);
+            }
         }
-        else if(evento.equals(Mesa.eventos.nuevaMano)){
-            mano = mesa.getManoActual();
-            mano.agregarObservador(this);
-        }
-        else if(evento.equals(Mano.eventos.cambioEstadoMano)) {
-            Mano.EstadoMano estado = mano.getEstadoMano();
-            vistaPoker.mostrarEstadoMano(estado);
-            if (estado == EstadoMano.TERMINADA) {
-                terminarMano();
+        //Eventos mano
+        if(origen instanceof Mano){
+            //Cambio de estado
+            if(evento.equals(Mano.eventos.cambioEstadoMano)) {
+                Mano.EstadoMano estado = mano.getEstadoMano();
+                vistaPoker.mostrarEstadoMano(estado);
+                if (estado == EstadoMano.TERMINADA) {
+                    terminarMano();
+                } else if (estado == EstadoMano.APUESTA_INICIADA) {
+                    if(jugador.getEstadoJugador() != Jugador.EstadoJugador.APUESTA_INICIADA){
+                        vistaPoker.mostrarMensajeApuesta(mesa.getUltimaApuesta(), jugador.getNombreCompleto());
+                    }
+                    
+                }
             }
         }
         this.actualizarDatosPantalla();
     }
-
-
 }

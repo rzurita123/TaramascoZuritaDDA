@@ -31,6 +31,9 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         this.setLocationRelativeTo(ventanaPadre);
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
+        lblPagar.setVisible(false);
+        btnPagar.setVisible(false);
+        btnNoPagar.setVisible(false);
         controladorPoker = new ControladorPoker(this, j);
     }
 
@@ -106,6 +109,10 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         btnNoApostar = new javax.swing.JButton();
         lblFiguraActual = new javax.swing.JLabel();
         lblMontoApostado = new javax.swing.JLabel();
+        lblMontoApuesta = new javax.swing.JLabel();
+        lblPagar = new javax.swing.JLabel();
+        btnPagar = new javax.swing.JButton();
+        btnNoPagar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -141,7 +148,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
         lblEstadoMano.setText("Estado mano:");
 
-        tfMontoApuesta.setText("Monto apuesta");
         tfMontoApuesta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfMontoApuestaActionPerformed(evt);
@@ -158,6 +164,19 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblFiguraActual.setText("Tu figura actual: ");
 
         lblMontoApostado.setText("Monto apostado: ");
+
+        lblMontoApuesta.setText("Monto apuesta");
+
+        lblPagar.setText("El jugador ___ ha apostado $___. ¿Pagas la apuesta?");
+
+        btnPagar.setText("SI");
+
+        btnNoPagar.setText("NO");
+        btnNoPagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNoPagarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,13 +209,26 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblFiguraActual)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnSalir)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnNoApostar))
+                                .addComponent(btnNoApostar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lblFiguraActual)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(102, 102, 102)
+                                .addComponent(btnPagar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnNoPagar)
+                                .addGap(201, 201, 201)
+                                .addComponent(lblMontoApuesta))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(lblPagar)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMontoApostado)
                             .addGroup(layout.createSequentialGroup()
@@ -227,13 +259,22 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblFiguraActual)
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSalir)
-                            .addComponent(btnApostar)
-                            .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnNoApostar)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblFiguraActual)
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnSalir)
+                                    .addComponent(btnApostar)
+                                    .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnNoApostar)
+                                    .addComponent(lblMontoApuesta)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPagar)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnPagar)
+                                    .addComponent(btnNoPagar)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -261,7 +302,11 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfMontoApuestaActionPerformed
 
-    private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoApostarActionPerformed
+    private void btnNoPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoPagarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNoPagarActionPerformed
+
+    private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {                                             
         controladorPoker.noApostar();
     }
 
@@ -269,6 +314,8 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
     private javax.swing.JButton btnNoApostar;
+    private javax.swing.JButton btnNoPagar;
+    private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -278,6 +325,8 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private javax.swing.JLabel lblMano;
     private javax.swing.JLabel lblMesa;
     private javax.swing.JLabel lblMontoApostado;
+    private javax.swing.JLabel lblMontoApuesta;
+    private javax.swing.JLabel lblPagar;
     private javax.swing.JLabel lblPozo;
     private javax.swing.JLabel lblSaldo;
     private panelCartasPoker.PanelCartasPoker panelCartas;
@@ -301,6 +350,14 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     public void mostrarError(String mensaje) {
         System.out.println(mensaje);
         //TODO: Mostrar error como ventana en vez de sout.
+    }
+
+    @Override
+    public void mostrarMensajeApuesta(int monto, String nombreJugador) {
+        lblPagar.setText("El jugador " + nombreJugador + " ha apostado $" + monto + ". ¿Pagas la apuesta?");
+        lblPagar.setVisible(true);
+        btnPagar.setVisible(true);
+        btnNoPagar.setVisible(true);
     }
 
     

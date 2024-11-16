@@ -38,17 +38,18 @@ public class Jugador extends Usuario{
         return figura;
     }
 
-    public boolean descontarSaldo(int monto){
+    public boolean descontarSaldo(int monto, boolean esApuestaBase){
         if(this.saldo < monto){
             return false;
         } else {
             this.ultimaApuesta.setMonto(monto);
-            this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
+            if(!esApuestaBase){
+                this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
+            }
             this.saldo -= monto;
-            mesa.setPozo(mesa.getPozo() + monto);
+            mesa.agregarApuesta(monto);
             return true;
         }
-        
     }
 
     public ArrayList<Carta> getCartas() {

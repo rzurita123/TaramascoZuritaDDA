@@ -40,7 +40,7 @@ public class Mano extends Observable {
             System.out.println("Apuesta inválida. El monto debe ser positivo y dentro del saldo del jugador.");
             return false;
         }
-        jugador.descontarSaldo(monto);
+        jugador.descontarSaldo(monto, false);
         //pozo += monto;
         estadoMano = EstadoMano.APUESTA_INICIADA;
         System.out.println("Estado actual de la mano: " + estadoMano);

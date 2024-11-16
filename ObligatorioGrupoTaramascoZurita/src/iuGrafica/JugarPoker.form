@@ -57,16 +57,32 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                              <Component id="lblFiguraActual" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnSalir" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnNoApostar" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="lblFiguraActual" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="91" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                              <Component id="btnPagar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnNoPagar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
+                              <Component id="lblMontoApuesta" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                              <Component id="lblPagar" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblMontoApostado" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -106,13 +122,26 @@
                   <Group type="102" attributes="0">
                       <Component id="jScrollPane2" min="-2" pref="134" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblFiguraActual" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnSalir" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnApostar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tfMontoApuesta" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnNoApostar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="lblFiguraActual" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnSalir" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnApostar" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfMontoApuesta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnNoApostar" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblMontoApuesta" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="lblPagar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnPagar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnNoPagar" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -204,9 +233,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tfMontoApuesta">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Monto apuesta"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfMontoApuestaActionPerformed"/>
       </Events>
@@ -228,6 +254,29 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Monto apostado: "/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMontoApuesta">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Monto apuesta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPagar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="El jugador ___ ha apostado $___. &#xbf;Pagas la apuesta?"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnPagar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="SI"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnNoPagar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="NO"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNoPagarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
