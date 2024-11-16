@@ -59,6 +59,7 @@ public class Mesa extends Observable{
         //Se genera la mano con los jugadores que tengan saldo suficiente.
         System.out.println("JUGADORES MESA: " + jugadores.size());
         manoActual = new Mano(jugadores);
+        manos.add(manoActual);
         avisar(eventos.nuevaMano);
         this.pozo += jugadores.size() * apuestaBase;
         this.repartir();

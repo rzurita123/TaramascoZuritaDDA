@@ -66,6 +66,11 @@ public class Jugador extends Usuario{
         }
     }
 
+    public void noPagar(){
+        this.estadoJugador = EstadoJugador.NO_PAGO_APUESTA;
+        avisar(eventos.cambioEstadoJugador);
+    }
+
     public ArrayList<Carta> getCartas() {
         return cartas;
     }

@@ -72,6 +72,7 @@ public class ControladorPoker implements Observador{
     }
 
     public void terminarMano(){
+        System.out.println("La mano ha terminado");
         mesa.comienzoMano();
     }
 
@@ -84,7 +85,8 @@ public class ControladorPoker implements Observador{
     }
 
     public void noPagar(){
-
+        jugador.noPagar();
+        vistaPoker.ocultarMensajeApuesta();
     }
 
     @Override
@@ -119,7 +121,10 @@ public class ControladorPoker implements Observador{
         //Eventos jugador
         if(origen instanceof Jugador){
             if(evento.equals(Jugador.eventos.cambioEstadoJugador)){
-                System.out.println("Cambio de estado jugador");
+                if(jugador.getEstadoJugador() == Jugador.EstadoJugador.NO_PAGO_APUESTA){
+                    mano.getJugadores().remove(jugador);
+                }
+                mano.validarEstadoJugadores();
             }
         }
         this.actualizarDatosPantalla();
