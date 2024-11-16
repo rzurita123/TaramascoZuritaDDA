@@ -113,6 +113,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblPagar = new javax.swing.JLabel();
         btnPagar = new javax.swing.JButton();
         btnNoPagar = new javax.swing.JButton();
+        btnDescartar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -183,6 +184,13 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
             }
         });
 
+        btnDescartar.setText("Descartar");
+        btnDescartar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescartarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,10 +214,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +241,13 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnApostar)))))
+                                .addComponent(btnApostar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDescartar)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
@@ -271,7 +281,8 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                                     .addComponent(btnApostar)
                                     .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnNoApostar)
-                                    .addComponent(lblMontoApuesta)))
+                                    .addComponent(lblMontoApuesta)
+                                    .addComponent(btnDescartar)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblPagar)
                                 .addGap(18, 18, 18)
@@ -313,6 +324,10 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         controladorPoker.pagar();
     }//GEN-LAST:event_btnPagarActionPerformed
 
+    private void btnDescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescartarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDescartarActionPerformed
+
     private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {                                             
         controladorPoker.noApostar();
     }
@@ -320,6 +335,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
+    private javax.swing.JButton btnDescartar;
     private javax.swing.JButton btnNoApostar;
     private javax.swing.JButton btnNoPagar;
     private javax.swing.JButton btnPagar;
