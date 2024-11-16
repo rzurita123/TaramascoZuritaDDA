@@ -44,7 +44,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         String texto = "";
         for(Figura f : figuras){
             texto = texto + f.toString() + "\n";
-            System.out.println(texto);
         }   
         tpFiguras.setText(texto);
     }

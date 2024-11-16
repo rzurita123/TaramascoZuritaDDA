@@ -27,7 +27,7 @@ public class Mesa extends Observable{
     public enum EstadoMesa {
         ABIERTA, FINALIZADA, INICIADA
     }
-    public enum eventos {cambioIniciada, cambioCerrada, entroJugador};
+    public enum eventos {cambioIniciada, nuevaMano};
 
     public Mesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         this.id = ++contador;
@@ -57,6 +57,7 @@ public class Mesa extends Observable{
         //Se genera la mano con los jugadores que tengan saldo suficiente.
         System.out.println("JUGADORES MESA: " + jugadores.size());
         manoActual = new Mano(jugadores);
+        avisar(eventos.nuevaMano);
         this.pozo += jugadores.size() * apuestaBase;
         this.repartir();
     }

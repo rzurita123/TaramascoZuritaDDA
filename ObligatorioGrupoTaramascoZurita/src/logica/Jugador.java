@@ -35,7 +35,6 @@ public class Jugador extends Usuario{
     //Jugador analiza cual es la mejor figura que tiene con sus cartas.
     public Figura figuraMasAlta() {
         figura = Fachada.getInstancia().getFiguraMasAlta(cartas);
-        System.out.println("Figura: " + figura.getNombre());
         return figura;
     }
 

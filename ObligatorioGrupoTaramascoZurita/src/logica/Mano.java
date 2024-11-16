@@ -27,6 +27,7 @@ public class Mano extends Observable {
         jugadores = jugadoresMesa;
         this.estadoMano = EstadoMano.ESPERANDO_APUESTA;
         avisar(eventos.cambioEstadoMano);
+        System.out.println("AVISÉ LA MANO");
     }
     //Constructor para mano cuando la mesa no inició.
     public Mano() {
