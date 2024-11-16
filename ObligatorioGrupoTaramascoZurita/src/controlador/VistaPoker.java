@@ -25,4 +25,5 @@ public interface VistaPoker {
     public void mostrarEstadoMano(Mano.EstadoMano estadoMano);
     public void mostrarError(String mensaje);
     public void mostrarMensajeApuesta(int monto, String nombreJugador);
+    public void ocultarMensajeApuesta();
 }

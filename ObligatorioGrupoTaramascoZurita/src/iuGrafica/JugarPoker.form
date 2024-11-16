@@ -59,13 +59,11 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Component id="lblFiguraActual" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btnSalir" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnNoApostar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="91" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -137,7 +135,7 @@
                           <Group type="102" attributes="0">
                               <Component id="lblPagar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="btnPagar" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnNoPagar" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -269,6 +267,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="SI"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPagarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnNoPagar">
       <Properties>

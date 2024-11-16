@@ -25,6 +25,7 @@ public class ControladorPoker implements Observador{
     public ControladorPoker(VistaPoker vistaPoker, Jugador j) {
         this.vistaPoker = vistaPoker;
         this.jugador = j;
+        j.agregarObservador(this);
         this.mesa = jugador.getMesa();
         mesa.agregarObservador(this);
         mano = mesa.getManoActual();
@@ -74,8 +75,21 @@ public class ControladorPoker implements Observador{
         mesa.comienzoMano();
     }
 
+    public void pagar(){
+        //TODO: Que pasa si no le da la $?
+        boolean saldoDescontado = jugador.pagar(mesa.getUltimaApuesta());
+        if (saldoDescontado){
+            vistaPoker.ocultarMensajeApuesta();
+        }
+    }
+
+    public void noPagar(){
+
+    }
+
     @Override
     public void actualizar(Object evento, Observable origen) {
+        System.out.println("Evento: " + evento + " Origen: " + origen);
         //Eventos mesa
         if(origen instanceof Mesa){
             if(evento.equals(Mesa.eventos.cambioIniciada)){
@@ -100,6 +114,12 @@ public class ControladorPoker implements Observador{
                     }
                     
                 }
+            }
+        }
+        //Eventos jugador
+        if(origen instanceof Jugador){
+            if(evento.equals(Jugador.eventos.cambioEstadoJugador)){
+                System.out.println("Cambio de estado jugador");
             }
         }
         this.actualizarDatosPantalla();

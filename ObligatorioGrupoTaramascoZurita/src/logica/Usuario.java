@@ -4,11 +4,13 @@
  */
 package logica;
 
+import observador.Observable;
+
 /**
  *
  * @author sabrina
  */
-public abstract class Usuario {
+public abstract class Usuario extends Observable {
     public String cedula;
     public String contraseña;
     public String nombreCompleto;

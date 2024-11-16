@@ -20,16 +20,17 @@ public class Jugador extends Usuario{
     public enum EstadoJugador {
         ACCION_PENDIENTE, APUESTA_INICIADA, APUESTA_PAGADA, NO_PAGO_APUESTA
     }
+    public enum eventos {cambioEstadoJugador};
     public EstadoJugador estadoJugador;
     public Mesa mesa;
-    public Apuesta ultimaApuesta;
+    public int ultimaApuesta;
     public Figura figura;
 
     public Jugador(String cedula, String contraseña, String nombreCompleto, int saldo) {
         super(cedula, contraseña, nombreCompleto);
         this.saldo = saldo;
         this.estadoJugador = EstadoJugador.ACCION_PENDIENTE;
-        this.ultimaApuesta = new Apuesta(0);
+        this.ultimaApuesta = 0;
     }
 
     //Jugador analiza cual es la mejor figura que tiene con sus cartas.
@@ -42,12 +43,25 @@ public class Jugador extends Usuario{
         if(this.saldo < monto){
             return false;
         } else {
-            this.ultimaApuesta.setMonto(monto);
+            this.ultimaApuesta = monto;
             if(!esApuestaBase){
                 this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
             }
             this.saldo -= monto;
             mesa.agregarApuesta(monto);
+            return true;
+        }
+    }
+
+    public boolean pagar(int monto){
+        if(this.saldo < monto){
+            return false;
+        } else {
+            this.ultimaApuesta = monto;
+            this.estadoJugador = EstadoJugador.APUESTA_PAGADA;
+            this.saldo -= monto;
+            mesa.agregarApuesta(monto);
+            avisar(eventos.cambioEstadoJugador);
             return true;
         }
     }
@@ -94,10 +108,7 @@ public class Jugador extends Usuario{
 
     @Override
     public String toString() {
-        return "Nombre: " + nombreCompleto + " | " + "Situación: " + estadoJugador + " | " + "Última apuesta: " + ultimaApuesta.getMonto();
+        return "Nombre: " + nombreCompleto + " | " + "Situación: " + estadoJugador + " | " + "Última apuesta: " + ultimaApuesta;
     }
-
-
-    
     
 }
