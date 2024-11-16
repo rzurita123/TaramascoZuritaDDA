@@ -34,8 +34,6 @@ public class ControladorPoker implements Observador{
         else{
             vistaPoker.mostrarMensajeInicial(mesa.getJugadoresActuales(), mesa.getMinJugadores());
         }
-        //TODO: Ver si actualizarDatosPantalla se maneja mejor con un observador.
-        mano.agregarObservador(this);
         this.actualizarDatosPantalla();
     }
 
@@ -48,7 +46,6 @@ public class ControladorPoker implements Observador{
         vistaPoker.mostrarCartas(jugador, mesa);
         vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
         determinarFiguraMasAlta();
-        actualizarDatosPantalla();
     }
 
     public void determinarFiguraMasAlta(){
@@ -62,7 +59,6 @@ public class ControladorPoker implements Observador{
             // Actualizar la vista con el valor de la apuesta y el estado de la mano
             vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), monto);
             vistaPoker.mostrarEstadoMano(mano.getEstadoMano());
-            this.actualizarDatosPantalla();
         } else {
             // Muestra un mensaje de error en la vista si la apuesta no es válida
             vistaPoker.mostrarError("La apuesta no se pudo realizar. Verifica el monto y el saldo disponible.");
@@ -79,7 +75,6 @@ public class ControladorPoker implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        //EVENTOS MESA.
         System.out.println("ENTRÉ A ACTUALIZAR");
         System.out.println("EVENTO: " + evento);
         if(evento.equals(Mesa.eventos.cambioIniciada)){
@@ -87,6 +82,7 @@ public class ControladorPoker implements Observador{
         }
         else if(evento.equals(Mesa.eventos.nuevaMano)){
             mano = mesa.getManoActual();
+            mano.agregarObservador(this);
         }
         else if(evento.equals(Mano.eventos.cambioEstadoMano)) {
             Mano.EstadoMano estado = mano.getEstadoMano();
