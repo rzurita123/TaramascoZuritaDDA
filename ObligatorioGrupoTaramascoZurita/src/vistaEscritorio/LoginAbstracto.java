@@ -42,7 +42,7 @@ public abstract class LoginAbstracto extends javax.swing.JDialog implements Vist
 
         jLabel1.setText("Usuario:");
 
-        jLabel2.setText("Conrtaseña:");
+        jLabel2.setText("Contraseña:");
 
         tfPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

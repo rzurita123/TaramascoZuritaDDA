@@ -263,8 +263,8 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }//GEN-LAST:event_tfMontoApuestaActionPerformed
 
     private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoApostarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnNoApostarActionPerformed
+        controladorPoker.noApostar();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

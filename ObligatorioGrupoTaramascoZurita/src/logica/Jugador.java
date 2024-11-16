@@ -39,10 +39,17 @@ public class Jugador extends Usuario{
         return figura;
     }
 
-    public void descontarSaldo(int monto){
-        this.ultimaApuesta.setMonto(monto);
-        this.saldo -= monto;
-        mesa.setPozo(mesa.getPozo() + monto);
+    public boolean descontarSaldo(int monto){
+        if(this.saldo < monto){
+            return false;
+        } else {
+            this.ultimaApuesta.setMonto(monto);
+            this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
+            this.saldo -= monto;
+            mesa.setPozo(mesa.getPozo() + monto);
+            return true;
+        }
+        
     }
 
     public ArrayList<Carta> getCartas() {

@@ -35,10 +35,10 @@ public class Mesa extends Observable{
         this.apuestaBase = apuestaBase;
         this.porcentajeComision = porcentajeComision;
         this.estadoMesa = EstadoMesa.ABIERTA;
-        this.manoActual = new Mano();
         this.jugadoresActuales = 0;
         this.pozo = 0;
         this.mazo = new Mazo();
+        this.manoActual = new Mano();
     }
 
     public void apostar(Jugador j, int apuesta) {
@@ -46,12 +46,18 @@ public class Mesa extends Observable{
         manoActual.setJugadasRealizadas(manoActual.getJugadasRealizadas() + 1);
     }
 
-    public void comienzoPartida(){
+    public void comienzoMano(){
         //Le resto a cada jugador la apuesta base
         for (Jugador j : jugadores) {
-            j.descontarSaldo(apuestaBase);
+            //Si no se pudo descontar el saldo, elimino al jugador de la mesa.
+            if(!j.descontarSaldo(apuestaBase)){
+                jugadores.remove(j);
+            }
         }
-        this.pozo = jugadores.size() * apuestaBase;
+        //Se genera la mano con los jugadores que tengan saldo suficiente.
+        System.out.println("JUGADORES MESA: " + jugadores.size());
+        manoActual = new Mano(jugadores);
+        this.pozo += jugadores.size() * apuestaBase;
         this.repartir();
     }
     
@@ -80,7 +86,7 @@ public class Mesa extends Observable{
         //Después de agregar al jugador, valido estado de la mesa
         if (this.jugadoresActuales == this.minJugadores) {
             estadoMesa = EstadoMesa.INICIADA;
-            comienzoPartida();
+            comienzoMano();
             avisar(eventos.cambioIniciada);
         }
     }

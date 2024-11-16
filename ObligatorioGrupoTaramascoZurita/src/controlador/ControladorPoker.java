@@ -4,6 +4,7 @@ import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
 import logica.Mesa;
+import logica.Mano.EstadoMano;
 import observador.Observable;
 import observador.Observador;
 
@@ -25,8 +26,9 @@ public class ControladorPoker implements Observador{
         this.vistaPoker = vistaPoker;
         this.jugador = j;
         this.mesa = jugador.getMesa();
-        this.mano = mesa.getManoActual();
         mesa.agregarObservador(this);
+        mano = mesa.getManoActual();
+        mano.agregarObservador(this);
         if(mesa.esIniciada()){
             this.iniciarMesa();
         }
@@ -42,6 +44,7 @@ public class ControladorPoker implements Observador{
     }
 
     public void iniciarMesa(){
+        //se llama cuando se observó que la mesa pasó a iniciada.
         vistaPoker.mostrarCartas(jugador, mesa);
         vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
         determinarFiguraMasAlta();
@@ -55,7 +58,6 @@ public class ControladorPoker implements Observador{
     }
 
     public void apostar(int monto){
-        //TODO: METODO APARTE PARA APUESTA INICIAL.
         boolean apuestaRealizada = mano.apostar(monto, jugador);
         if (apuestaRealizada) {
             // Actualizar la vista con el valor de la apuesta y el estado de la mano
@@ -68,15 +70,34 @@ public class ControladorPoker implements Observador{
         }
     }
 
+    public void noApostar(){
+        mano.noApostar(jugador);
+    }
+
+    public void terminarMano(){
+        mesa.comienzoMano();
+    }
+
     @Override
     public void actualizar(Object evento, Observable origen) {
-        //CASO ENTRÓ LA GENTE NECESARIA PARA INICIAR LA MESA
+        //EVENTOS MESA.
         if(evento.equals(Mesa.eventos.cambioIniciada)){
-            System.out.println("La mesa se ha iniciado");
             this.iniciarMesa();
         }
         else if(evento.equals(Mesa.eventos.cambioCerrada)){
             //TODO: Mostrar interfaz de mesa cerrada
+        }
+        //EVENTOS MANO.
+        else if(evento.equals(Mano.eventos.cambioEstadoMano)) {
+            System.out.println("Estado de la mano: " + mano.getEstadoMano());
+            Mano.EstadoMano estado = mano.getEstadoMano();
+            vistaPoker.mostrarEstadoMano(estado);
+            if (estado == EstadoMano.TERMINADA) {
+                terminarMano();
+            } else if (estado == EstadoMano.ESPERANDO_APUESTA) {
+                mano = mesa.getManoActual();
+                System.out.println("Nueva mano: " + mano + "jugadores: " + mano.getJugadores());
+            }
         }
     }
 
