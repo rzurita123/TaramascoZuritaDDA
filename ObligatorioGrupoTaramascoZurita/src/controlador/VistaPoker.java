@@ -29,4 +29,5 @@ public interface VistaPoker {
     public void mostrarGanador(Jugador jugador, Figura figura);
     public void mostrarGanaste(int montoGanado);
     public void recargarPanel();
+    public void cerrarVentana();
 }

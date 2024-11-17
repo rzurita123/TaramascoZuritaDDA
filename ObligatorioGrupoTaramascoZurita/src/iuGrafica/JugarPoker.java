@@ -192,14 +192,14 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
         lblPagar.setText("El jugador ___ ha apostado $___. ¿Pagas la apuesta?");
 
-        btnPagar.setText("SI");
+        btnPagar.setText("PAGAR");
         btnPagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPagarActionPerformed(evt);
             }
         });
 
-        btnNoPagar.setText("NO");
+        btnNoPagar.setText("PASAR");
         btnNoPagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNoPagarActionPerformed(evt);
@@ -475,6 +475,12 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         System.out.println("Recargando panel...");
         panelCartas = new PanelCartasPoker();
         panelCartas.setVisible(true);
+    }
+
+    @Override
+    public void cerrarVentana() {
+        //ya saqué al jugador de la mesa.
+        dispose();
     }
 
     

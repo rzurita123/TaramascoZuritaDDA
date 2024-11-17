@@ -30,7 +30,7 @@ public class Mesa extends Observable{
     public enum EstadoMesa {
         ABIERTA, FINALIZADA, INICIADA
     }
-    public enum eventos {cambioIniciada, nuevaMano, seCambiaronCartas};
+    public enum eventos {cambioIniciada, nuevaMano, seCambiaronCartas, quedoUnJugador};
 
     public Mesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         this.id = ++contador;
@@ -48,17 +48,26 @@ public class Mesa extends Observable{
 
 
     //Cuando un jugador quiere volver a jugar. Si tiene saldo, se lo agrega. si todos estan listos, inicia la mano.
-    public void esperarComienzoSiguienteMano(Jugador j){
-        System.out.println("ENTRE A ESPERARCOMIENZO SIGUIENTEMANO");
-        if(!j.descontarSaldo(apuestaBase, true)){
-            jugadores.remove(j);
+    public void esperarComienzoSiguienteMano(Jugador j) throws PokerException {
+        boolean saldoDescontado = j.descontarSaldo(apuestaBase, true);
+        if (!saldoDescontado) {
+            quitarJugador(j);
+            validarCantidadJugadores();
         } else {
             j.setEstadoJugador(EstadoJugador.ACCION_PENDIENTE);
         }
         boolean todosProntos = validarEstadoJugadores();
-        System.out.println("TODOS PRONTOS: " + todosProntos);
         if (todosProntos) {
             nuevaMano();
+        }
+        if (!saldoDescontado) {
+            throw new PokerException("No tienes saldo para continuar jugando.");
+        }
+    }
+
+    public void validarCantidadJugadores(){
+        if(jugadoresActuales == 1){
+            avisar(eventos.quedoUnJugador);
         }
     }
 
@@ -77,7 +86,7 @@ public class Mesa extends Observable{
         for (Jugador j : jugadores) {
             //Si no se pudo descontar el saldo, elimino al jugador de la mesa.
             if(!j.descontarSaldo(apuestaBase, true)){
-                jugadores.remove(j);
+                quitarJugador(j);
             }
         }
         //Se genera la mano con los jugadores que tengan saldo suficiente.
@@ -92,9 +101,20 @@ public class Mesa extends Observable{
         avisar(eventos.nuevaMano);
     }
 
-    public void pedirCartas(Jugador j, ArrayList<Carta> cartasACambiar){
+    public void pedirCartas(Jugador j, ArrayList<Carta> cartasACambiar) throws PokerException{
+        //Si el jugador no pagó la apuesta, no puede pedir cartas.
+        //Si las cartas del jugador no contienen las cartas a cambiar, no se pueden cambiar.
+        if(manoActual.getPidieronCartas().contains(j)){
+            throw new PokerException("Ya pediste cartas en esta mano.");
+        }
+        if(j.getEstadoJugador() == EstadoJugador.NO_PAGO_APUESTA){
+            throw new PokerException("No pagaste la apuesta. No puedes pedir cartas.");
+        }
+        if(manoActual.getEstadoMano() != Mano.EstadoMano.PIDIENDO_CARTAS){
+            throw new PokerException("No es posible pedir cartas en este momento.");
+        }
         mazo.cambiarCartas(j, cartasACambiar);
-        manoActual.pidieronCartas();
+        manoActual.pidieronCartas(j);
         avisar(eventos.seCambiaronCartas);
     }
 

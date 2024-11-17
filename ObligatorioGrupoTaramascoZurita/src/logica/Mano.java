@@ -15,7 +15,7 @@ public class Mano extends Observable {
     private Jugador jugadorGanador;
     private EstadoMano estadoMano;
     private ArrayList<Jugador> jugadores = new ArrayList();
-    private int pidieronCartas = 0;
+    private ArrayList<Jugador> pidieronCartas = new ArrayList();
     public enum EstadoMano {
         ESPERANDO_APUESTA, APUESTA_INICIADA, PIDIENDO_CARTAS, TERMINADA
     }
@@ -33,12 +33,17 @@ public class Mano extends Observable {
     }
 
     public void apostar(int monto, Jugador jugador) throws PokerException{
-        //TODO: Manejar SOUTS con excepciones.
+        if (jugador.getEstadoJugador() == Jugador.EstadoJugador.NO_PAGO_APUESTA) {
+            throw new PokerException("Ya no puede apostar");
+        }
         if (estadoMano != EstadoMano.ESPERANDO_APUESTA) {
             throw new PokerException("No es posible realizar una apuesta en este momento.");
         }
-        if (monto <= 0 || monto > jugador.getSaldo()) {
-            throw new PokerException("El monto ingresado no es válido.");
+        if (monto <= 0) {
+            throw new PokerException("Apuesta mínima: 1$");
+        }
+        if (monto > jugador.getSaldo()){
+            throw new PokerException("Apuesta máxima $ " + jugador.getSaldo());
         }
         jugador.descontarSaldo(monto, false);
         estadoMano = EstadoMano.APUESTA_INICIADA;
@@ -103,9 +108,9 @@ public class Mano extends Observable {
     }
     
 
-    public void pidieronCartas(){
-        pidieronCartas++;
-        if(pidieronCartas == jugadores.size()){
+    public void pidieronCartas(Jugador j){
+        pidieronCartas.add(j);
+        if(pidieronCartas.size() == jugadores.size()){
             terminarMano();
         }
     }
@@ -115,14 +120,6 @@ public class Mano extends Observable {
         System.out.println("El ganador de la mano es: " + jugadorGanador.getNombreCompleto());
         estadoMano = EstadoMano.TERMINADA;
         avisar(eventos.cambioEstadoMano);
-    }
-
-    public void setPidieronCartas(int pidieronCartas) {
-        this.pidieronCartas = pidieronCartas;
-    }
-
-    public int getPidieronCartas() {
-        return pidieronCartas;
     }
 
     public void noApostar(Jugador j) throws PokerException{
@@ -147,6 +144,14 @@ public class Mano extends Observable {
 
     public void setJugadores(ArrayList<Jugador> jugadores) {
         this.jugadores = jugadores;
+    }
+
+    public ArrayList<Jugador> getPidieronCartas() {
+        return pidieronCartas;
+    }
+
+    public void setPidieronCartas(ArrayList<Jugador> pidieronCartas) {
+        this.pidieronCartas = pidieronCartas;
     }
 
     public Jugador getJugadorGanador() {

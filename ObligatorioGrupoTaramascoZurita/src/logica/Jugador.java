@@ -4,6 +4,7 @@
  */
 package logica;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import logica.Mano.EstadoMano;
@@ -42,15 +43,14 @@ public class Jugador extends Usuario{
     public boolean descontarSaldo(int monto, boolean esApuestaBase){
         if(this.saldo < monto){
             return false;
-        } else {
-            this.ultimaApuesta = monto;
-            if(!esApuestaBase){
-                this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
-            }
-            this.saldo -= monto;
-            mesa.agregarApuesta(monto, this);
-            return true;
         }
+        this.ultimaApuesta = monto;
+        if(!esApuestaBase){
+            this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
+        }
+        this.saldo -= monto;
+        mesa.agregarApuesta(monto, this);
+        return true;
     }
 
     public void darVueltaCartas(){
@@ -69,20 +69,36 @@ public class Jugador extends Usuario{
         return aCambiar;
     }
 
-    public boolean pagar(int monto){
-        if(this.saldo < monto){
-            return false;
-        } else {
-            this.ultimaApuesta = monto;
-            this.estadoJugador = EstadoJugador.APUESTA_PAGADA;
-            this.saldo -= monto;
-            mesa.agregarApuesta(monto, this);
-            avisar(eventos.cambioEstadoJugador);
-            return true;
+    public void pagar(int monto) throws PokerException {
+        Mano mano = mesa.getManoActual();
+        if(mano.getEstadoMano() != EstadoMano.APUESTA_INICIADA){
+            throw new PokerException("No es posible pagar una apuesta en este momento.");
         }
+        if(monto > saldo){
+            throw new PokerException("Saldo insuficiente");
+        }
+        if(estadoJugador == EstadoJugador.APUESTA_PAGADA){
+            throw new PokerException("Ya pagaste esta apuesta.");
+        }
+        if(mesa.getUltimaApuesta().getJugador().equals(this)){
+            throw new PokerException("Tú iniciaste esta apuesta");
+        }
+        this.ultimaApuesta = monto;
+        this.estadoJugador = EstadoJugador.APUESTA_PAGADA;
+        this.saldo -= monto;
+        mesa.agregarApuesta(monto, this);
+        avisar(eventos.cambioEstadoJugador);
     }
 
-    public void noPagar(){
+    public void noPagar() throws PokerException {
+        Mano mano = mesa.getManoActual();
+        if(mano.getEstadoMano() != EstadoMano.APUESTA_INICIADA){
+            throw new PokerException("No es posible pasar en este momento.");
+        }if(estadoJugador == EstadoJugador.NO_PAGO_APUESTA){
+            throw new PokerException("Ya pasaste esta apuesta.");
+        }if(mesa.getUltimaApuesta().getJugador().equals(this)){
+            throw new PokerException("Tú iniciaste esta apuesta");
+        }
         this.estadoJugador = EstadoJugador.NO_PAGO_APUESTA;
         avisar(eventos.cambioEstadoJugador);
     }

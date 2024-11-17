@@ -39,4 +39,13 @@ public class Carta implements CartaPoker {
     public void setVisible(boolean b) {
         this.visible = b;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Carta){
+            Carta carta = (Carta) obj;
+            return this.valor == carta.valor && this.palo.equals(carta.palo);
+        }
+        return false;
+    }
 }

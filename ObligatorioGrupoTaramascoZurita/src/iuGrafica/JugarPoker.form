@@ -305,7 +305,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnPagar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SI"/>
+        <Property name="text" type="java.lang.String" value="PAGAR"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPagarActionPerformed"/>
@@ -313,7 +313,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnNoPagar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="NO"/>
+        <Property name="text" type="java.lang.String" value="PASAR"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNoPagarActionPerformed"/>

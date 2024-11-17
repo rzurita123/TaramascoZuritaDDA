@@ -96,24 +96,41 @@ public class ControladorPoker implements Observador{
     }
 
     public void comenzarMano(){
-        mesa.esperarComienzoSiguienteMano(jugador);
+        try {
+            mesa.esperarComienzoSiguienteMano(jugador);
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
+            vistaPoker.cerrarVentana();
+        }
     }
 
     public void pagar(){
-        //TODO: Que pasa si no le da la $?
-        boolean saldoDescontado = jugador.pagar(mesa.getUltimaApuesta().getMonto());
+        try {
+            jugador.pagar(mesa.getUltimaApuesta().getMonto());
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
+        }
+        
     }
     
     public int pedirCartas(){
         //Se valida cuantas de las cartas estan dadas vuelta, esas se descartan y se piden nuevas
         ArrayList<Carta> cartasACambiar = jugador.cartasACambiar();
         int cantidadCartasPedidas = cartasACambiar.size();
-        mesa.pedirCartas(jugador, cartasACambiar);
+        try {
+            mesa.pedirCartas(jugador, cartasACambiar);
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
+        }
         return cantidadCartasPedidas;
     }
 
     public void noPagar(){
-        jugador.noPagar();
+        try {
+            jugador.noPagar();
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
+        }
     }
 
     public void quitarJugadorDeMesa(){
@@ -137,6 +154,8 @@ public class ControladorPoker implements Observador{
             } else if(evento.equals(Mesa.eventos.seCambiaronCartas)){
                 vistaPoker.mostrarCartas(jugador, mesa);
                 determinarFiguraMasAlta();
+            } else if(evento.equals(Mesa.eventos.quedoUnJugador)){
+                vistaPoker.mostrarError("La mesa ha finalizado.");
             }
         }
         //Eventos mano
