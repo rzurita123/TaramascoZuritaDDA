@@ -33,10 +33,11 @@ public class Mazo {
         Collections.shuffle(cartasMazo);
     }
 
-    //método para repartir (recibe por parametro un jugador)
+    //Reparte 5 cartas al jugador si quedan 5 en el mazo.
     public void repartir(Jugador jugador) {
         if(jugador.getCartas().size() < 5 && cartasMazo.size() > 4){
             for (int i = 0; i < 5; i++) {
+                System.out.println("Repartiendo carta" + cartasMazo.get(i).getValorCarta());
                 jugador.getCartas().add(cartasMazo.get(0));
                 cartasMazo.remove(0);
             }

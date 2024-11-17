@@ -17,6 +17,7 @@ import controlador.ControladorPoker;
 import controlador.VistaPoker;
 import javax.swing.JFrame;
 import panelCartasPoker.CartaPoker;
+import panelCartasPoker.PanelCartasPoker;
 import panelCartasPoker.PanelCartasPokerException;
 
 /**
@@ -31,6 +32,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         initComponents();
         ventanaPadre = ventanaMenu;
         this.setLocationRelativeTo(ventanaPadre);
+        this.setTitle("Jugando! - Jugador " + j.getNombreCompleto());
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
         lblCartasPedidas.setVisible(false);
@@ -366,6 +368,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }//GEN-LAST:event_btnPagarActionPerformed
 
     private void btnPedirCartasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedirCartasActionPerformed
+        panelCartas.setEnabled(false);
         int cartasPedidas = controladorPoker.pedirCartas();
         lblCartasPedidas.setVisible(true);
         lblCartasPedidas.setText("Pediste " + cartasPedidas + " cartas nuevas.");
@@ -432,7 +435,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
     @Override
     public void mostrarGanador(Jugador jugador, Figura figura) {
-        
+        panelCartas.setEnabled(true);
         lblGanador.setText("Ganador: " + jugador.getNombreCompleto() + " con " + figura.getNombre());
         lblGanador.setVisible(true);
     }
@@ -441,6 +444,13 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     public void mostrarGanaste(int montoGanado) {
         lblGanaste.setText("Ganaste $" + montoGanado + " !");
         lblGanaste.setVisible(true);
+    }
+
+    @Override
+    public void recargarPanel() {
+        System.out.println("Recargando panel...");
+        panelCartas = new PanelCartasPoker();
+        panelCartas.setVisible(true);
     }
 
     

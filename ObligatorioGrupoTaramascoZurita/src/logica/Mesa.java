@@ -50,13 +50,16 @@ public class Mesa extends Observable{
         manoActual.setJugadasRealizadas(manoActual.getJugadasRealizadas() + 1);
     }
 
+    //Cuando un jugador quiere volver a jugar. Si tiene saldo, se lo agrega. si todos estan listos, inicia la mano.
     public void esperarComienzoSiguienteMano(Jugador j){
+        System.out.println("ENTRE A ESPERARCOMIENZO SIGUIENTEMANO");
         if(!j.descontarSaldo(apuestaBase, true)){
             jugadores.remove(j);
         } else {
             j.setEstadoJugador(EstadoJugador.ACCION_PENDIENTE);
         }
         boolean todosProntos = validarEstadoJugadores();
+        System.out.println("TODOS PRONTOS: " + todosProntos);
         if (todosProntos) {
             nuevaMano();
         }
@@ -88,9 +91,9 @@ public class Mesa extends Observable{
         System.out.println("JUGADORES MESA: " + jugadores.size());
         manoActual = new Mano(jugadores);
         manos.add(manoActual);
-        avisar(eventos.nuevaMano);
-        this.pozo += jugadores.size() * apuestaBase;
         this.repartir();
+        this.pozo += jugadores.size() * apuestaBase;
+        avisar(eventos.nuevaMano);
     }
 
     public void pedirCartas(Jugador j, ArrayList<Carta> cartasACambiar){

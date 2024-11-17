@@ -20,10 +20,6 @@ public class Carta implements CartaPoker {
         this.palo = palo;
     }
 
-    public void cambiarSiEstaDadaVuelta(){
-        this.visible = !this.visible;
-    }
-
     @Override
     public int getValorCarta() {
         return this.valor;

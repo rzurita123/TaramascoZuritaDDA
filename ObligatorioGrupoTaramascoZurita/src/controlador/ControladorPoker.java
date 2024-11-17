@@ -34,7 +34,7 @@ public class ControladorPoker implements Observador{
         mano = mesa.getManoActual();
         mano.agregarObservador(this);
         if(mesa.esIniciada()){
-            this.iniciarMesa();
+            this.iniciarMano();
         }
         else{
             vistaPoker.mostrarMensajeInicial(mesa.getJugadoresActuales(), mesa.getMinJugadores());
@@ -46,11 +46,15 @@ public class ControladorPoker implements Observador{
         vistaPoker.actualizarDatosPantalla(jugador.getNombreCompleto(), jugador.getSaldo(), mesa.getId(), mesa.getPozo(), mesa.getManos().size(), mesa.getManoActual().getEstadoMano());
     }
 
-    public void iniciarMesa(){
+    public void iniciarMano(){
         //se llama cuando se observó que la mesa pasó a iniciada.
         vistaPoker.mostrarCartas(jugador, mesa);
         vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
         determinarFiguraMasAlta();
+    }
+
+    public void recargarPanel(){
+        vistaPoker.recargarPanel();
     }
 
     public void determinarFiguraMasAlta(){
@@ -81,6 +85,7 @@ public class ControladorPoker implements Observador{
         int montoGanado = mesa.calcularMontoGanado();
         //Tengo que mostrar, la figura ganadora, el jugador ganador, y el pozo.
         vistaPoker.mostrarGanador(ganador, figuraGanadora);
+        mesa.getManoActual().darVueltaCartas();
         if (jugador == ganador) {
             vistaPoker.mostrarGanaste(montoGanado);
         }
@@ -113,11 +118,14 @@ public class ControladorPoker implements Observador{
         //Eventos mesa
         if(origen instanceof Mesa){
             if(evento.equals(Mesa.eventos.cambioIniciada)){
-                this.iniciarMesa();
+                this.iniciarMano();
             }
             else if(evento.equals(Mesa.eventos.nuevaMano)){
+                System.out.println("ENTRE AL IF DE MESA EVENTOS NUEVAMANO");
+                mano.quitarObservador(this);
                 mano = mesa.getManoActual();
                 mano.agregarObservador(this);
+                this.iniciarMano();
             } else if(evento.equals(Mesa.eventos.seCambiaronCartas)){
                 vistaPoker.mostrarCartas(jugador, mesa);
                 determinarFiguraMasAlta();
@@ -135,8 +143,7 @@ public class ControladorPoker implements Observador{
                     if(jugador.getEstadoJugador() != Jugador.EstadoJugador.APUESTA_INICIADA){
                         vistaPoker.mostrarMensajeApuesta(mesa.getUltimaApuesta());
                     }
-                    
-                }
+                } 
             }
         }
         //Eventos jugador

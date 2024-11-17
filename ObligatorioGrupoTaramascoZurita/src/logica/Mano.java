@@ -21,14 +21,13 @@ public class Mano extends Observable {
         ESPERANDO_APUESTA, APUESTA_INICIADA, PIDIENDO_CARTAS, TERMINADA
     }
     public enum eventos {cambioEstadoMano};
+
     public Mano(ArrayList<Jugador> jugadoresMesa) {
         //Cuando arranca la mano tiene a todos los jugadores de la mesa.
-        System.out.println("CREO UNA NUEVA MANO CON JUGADORES: " + jugadoresMesa.size());
         jugadores = jugadoresMesa;
         this.estadoMano = EstadoMano.ESPERANDO_APUESTA;
-        avisar(eventos.cambioEstadoMano);
-        System.out.println("AVISÉ LA MANO");
     }
+    
     //Constructor para mano cuando la mesa no inició.
     public Mano() {
 
@@ -52,26 +51,28 @@ public class Mano extends Observable {
     }
 
     public void validarEstadoJugadores(){
-        boolean ningunoAposto = true;
         boolean quedanSinJugar = false;
         System.out.println("CANTIDAD JUGADORES: " + jugadores.size());
         for (Jugador j : jugadores) {
             //Caso alguno hizo una apuesta
             System.out.println("Estado del jugador " + j.getNombreCompleto() + ": " + j.getEstadoJugador());
-            if(j.getEstadoJugador() != Jugador.EstadoJugador.NO_PAGO_APUESTA && j.getEstadoJugador() != Jugador.EstadoJugador.APUESTA_INICIADA){
-                ningunoAposto = false;
-            }
             if(j.getEstadoJugador() == Jugador.EstadoJugador.ACCION_PENDIENTE){
                 quedanSinJugar = true;
             }
         }
         //Si ninguno apostó, la mano termina. Si alguno apostó y todos jugaron, se piden cartas.
-        if (ningunoAposto){
+        if (jugadores.size() == 1 && jugadores.get(0).getEstadoJugador() == Jugador.EstadoJugador.APUESTA_INICIADA) {
             estadoMano = EstadoMano.TERMINADA;
             avisar(eventos.cambioEstadoMano);
         } else if (!quedanSinJugar) {
             estadoMano = EstadoMano.PIDIENDO_CARTAS;
             avisar(eventos.cambioEstadoMano);
+        }
+    }
+
+    public void darVueltaCartas(){
+        for (Jugador j : jugadores) {
+            j.darVueltaCartas();
         }
     }
 

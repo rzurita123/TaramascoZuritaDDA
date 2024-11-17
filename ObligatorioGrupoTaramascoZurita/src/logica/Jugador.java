@@ -53,6 +53,12 @@ public class Jugador extends Usuario{
         }
     }
 
+    public void darVueltaCartas(){
+        for (Carta carta : cartas) {
+            carta.setVisible(true);
+        }
+    }
+
     public ArrayList<Carta> cartasACambiar(){
         ArrayList<Carta> aCambiar = new ArrayList();
         for (Carta carta : cartas) {
