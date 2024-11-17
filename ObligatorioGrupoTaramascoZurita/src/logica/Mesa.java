@@ -118,13 +118,13 @@ public class Mesa extends Observable{
         return montoGanado;
     }
     
-    public void agregarJugador(Jugador j) throws MesaException {
+    public void agregarJugador(Jugador j) throws PokerException {
         if (!j.validarSaldo(apuestaBase)) {
-            throw new MesaException("Saldo insuficiente");
+            throw new PokerException("Saldo insuficiente");
         } else if (this.jugadoresActuales >= this.minJugadores) {
-            throw new MesaException("La mesa está llena");
+            throw new PokerException("La mesa está llena");
         } else if (j.getMesa() != null) {
-            throw new MesaException("El jugador ya está en una mesa");
+            throw new PokerException("El jugador ya está en una mesa");
         } else {
             this.jugadoresActuales++;
             this.jugadores.add(j);

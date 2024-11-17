@@ -7,6 +7,7 @@ import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
 import logica.Mesa;
+import logica.PokerException;
 import logica.Mano.EstadoMano;
 import observador.Observable;
 import observador.Observador;
@@ -43,7 +44,7 @@ public class ControladorPoker implements Observador{
     }
 
     public void actualizarDatosPantalla(){
-        vistaPoker.actualizarDatosPantalla(jugador.getNombreCompleto(), jugador.getSaldo(), mesa.getId(), mesa.getPozo(), mesa.getManos().size(), mesa.getManoActual().getEstadoMano());
+        vistaPoker.actualizarDatosPantalla(jugador.getNombreCompleto(), jugador.getSaldo(), mesa);
     }
 
     public void iniciarMano(){
@@ -63,19 +64,22 @@ public class ControladorPoker implements Observador{
     }
 
     public void apostar(int monto){
-        boolean apuestaRealizada = mano.apostar(monto, jugador);
-        if (apuestaRealizada) {
-            // Actualizar la vista con el valor de la apuesta y el estado de la mano
-            vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), monto);
-            vistaPoker.mostrarEstadoMano(mano.getEstadoMano());
-        } else {
-            // Muestra un mensaje de error en la vista si la apuesta no es válida
-            vistaPoker.mostrarError("La apuesta no se pudo realizar. Verifica el monto y el saldo disponible.");
+        try {
+            mano.apostar(monto, jugador);
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
         }
+        // Actualizar la vista con el valor de la apuesta y el estado de la mano
+        vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), monto);
+        vistaPoker.mostrarEstadoMano(mano.getEstadoMano());
     }
 
     public void noApostar(){
-        mano.noApostar(jugador);
+        try {
+            mano.noApostar(jugador);
+        } catch (PokerException e) {
+            vistaPoker.mostrarError(e.getMessage());
+        }
     }
 
     public void terminarMano(){

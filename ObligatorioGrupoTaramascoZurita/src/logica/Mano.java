@@ -32,20 +32,18 @@ public class Mano extends Observable {
 
     }
 
-    public boolean apostar(int monto, Jugador jugador) {
+    public void apostar(int monto, Jugador jugador) throws PokerException{
         //TODO: Manejar SOUTS con excepciones.
-         if (monto <= 0 || monto > jugador.getSaldo()) {
-            System.out.println("Apuesta inválida. El monto debe ser positivo y dentro del saldo del jugador.");
-            return false;
+        if (estadoMano != EstadoMano.ESPERANDO_APUESTA) {
+            throw new PokerException("No es posible realizar una apuesta en este momento.");
+        }
+        if (monto <= 0 || monto > jugador.getSaldo()) {
+            throw new PokerException("El monto ingresado no es válido.");
         }
         jugador.descontarSaldo(monto, false);
         estadoMano = EstadoMano.APUESTA_INICIADA;
-        System.out.println("Estado actual de la mano: " + estadoMano);
         avisar(eventos.cambioEstadoMano);
         validarEstadoJugadores();
-        System.out.println("El jugador " + jugador.getNombreCompleto() + " ha iniciado una apuesta de $" + monto);
-        System.out.println("Estado actual de la mano: " + estadoMano);
-        return true;
     }
 
     public void validarEstadoJugadores(){
@@ -127,7 +125,10 @@ public class Mano extends Observable {
         return pidieronCartas;
     }
 
-    public void noApostar(Jugador j){
+    public void noApostar(Jugador j) throws PokerException{
+        if(estadoMano != EstadoMano.ESPERANDO_APUESTA){
+            throw new PokerException("No es posible indicar que no deseas iniciar una apuesta en este momento.");
+        }
         j.setEstadoJugador(Jugador.EstadoJugador.NO_APUESTA);
         validarEstadoJugadores();
     }

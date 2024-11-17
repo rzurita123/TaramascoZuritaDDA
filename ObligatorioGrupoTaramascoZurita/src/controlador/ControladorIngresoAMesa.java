@@ -3,7 +3,7 @@ package controlador;
 import logica.Fachada;
 import logica.Jugador;
 import logica.Mesa;
-import logica.MesaException;
+import logica.PokerException;
 import observador.Observable;
 import observador.Observador;
 
@@ -31,7 +31,7 @@ public class ControladorIngresoAMesa implements Observador{
     public void ingresarAMesa(){
         try{
             mesaSeleccionada.agregarJugador(jugador);
-        } catch (MesaException e) {
+        } catch (PokerException e) {
             vistaIngresoAMesa.mostrarError(e.getMessage());
         }
     }
