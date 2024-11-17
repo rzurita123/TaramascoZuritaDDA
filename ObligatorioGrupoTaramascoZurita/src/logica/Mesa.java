@@ -146,6 +146,7 @@ public class Mesa extends Observable{
     public void repartir(){
         //Para cada jugador, llama al metodo repartir de mazo
         for (Jugador j : jugadores) {
+            j.getCartas().clear();
             mazo.repartir(j);
         }
     }
