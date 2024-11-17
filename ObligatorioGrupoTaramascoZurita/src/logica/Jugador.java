@@ -18,7 +18,7 @@ public class Jugador extends Usuario{
     private ArrayList<Carta> cartas = new ArrayList();
     private ArrayList<Mano> manos = new ArrayList();
     public enum EstadoJugador {
-        ACCION_PENDIENTE, APUESTA_INICIADA, APUESTA_PAGADA, NO_PAGO_APUESTA
+        ACCION_PENDIENTE, NO_APUESTA, APUESTA_INICIADA, APUESTA_PAGADA, NO_PAGO_APUESTA
     }
     public enum eventos {cambioEstadoJugador};
     public EstadoJugador estadoJugador;

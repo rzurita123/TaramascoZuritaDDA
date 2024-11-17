@@ -15,12 +15,11 @@ public class Mano extends Observable {
     private Jugador jugadorGanador;
     private EstadoMano estadoMano;
     private ArrayList<Jugador> jugadores = new ArrayList();
-    private int jugadasRealizadas = 0;
     private int pidieronCartas = 0;
     public enum EstadoMano {
         ESPERANDO_APUESTA, APUESTA_INICIADA, PIDIENDO_CARTAS, TERMINADA
     }
-    public enum eventos {cambioEstadoMano};
+    public enum eventos {cambioEstadoMano, nadieAposto};
 
     public Mano(ArrayList<Jugador> jugadoresMesa) {
         //Cuando arranca la mano tiene a todos los jugadores de la mesa.
@@ -40,7 +39,6 @@ public class Mano extends Observable {
             return false;
         }
         jugador.descontarSaldo(monto, false);
-        //pozo += monto;
         estadoMano = EstadoMano.APUESTA_INICIADA;
         System.out.println("Estado actual de la mano: " + estadoMano);
         avisar(eventos.cambioEstadoMano);
@@ -52,6 +50,7 @@ public class Mano extends Observable {
 
     public void validarEstadoJugadores(){
         boolean quedanSinJugar = false;
+        boolean todosNoApostaron = true;
         System.out.println("CANTIDAD JUGADORES: " + jugadores.size());
         for (Jugador j : jugadores) {
             //Caso alguno hizo una apuesta
@@ -59,14 +58,20 @@ public class Mano extends Observable {
             if(j.getEstadoJugador() == Jugador.EstadoJugador.ACCION_PENDIENTE){
                 quedanSinJugar = true;
             }
+            if(j.getEstadoJugador() != Jugador.EstadoJugador.NO_APUESTA){
+                todosNoApostaron = false;
+            }
         }
         //Si ninguno apostó, la mano termina. Si alguno apostó y todos jugaron, se piden cartas.
         if (jugadores.size() == 1 && jugadores.get(0).getEstadoJugador() == Jugador.EstadoJugador.APUESTA_INICIADA) {
             estadoMano = EstadoMano.TERMINADA;
             avisar(eventos.cambioEstadoMano);
-        } else if (!quedanSinJugar) {
+        } else if (!quedanSinJugar && !todosNoApostaron) {
             estadoMano = EstadoMano.PIDIENDO_CARTAS;
             avisar(eventos.cambioEstadoMano);
+        } else if (todosNoApostaron) {
+            estadoMano = EstadoMano.TERMINADA;
+            avisar(eventos.nadieAposto);
         }
     }
 
@@ -122,16 +127,9 @@ public class Mano extends Observable {
         return pidieronCartas;
     }
 
-    public void noApostar(Jugador jugador){
-        jugador.noPagar();
-    }
-
-    public int getJugadasRealizadas() {
-        return jugadasRealizadas;
-    }
-
-    public void setJugadasRealizadas(int jugadasRealizadas) {
-        this.jugadasRealizadas = jugadasRealizadas;
+    public void noApostar(Jugador j){
+        j.setEstadoJugador(Jugador.EstadoJugador.NO_APUESTA);
+        validarEstadoJugadores();
     }
 
     public EstadoMano getEstadoMano() {

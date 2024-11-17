@@ -45,10 +45,7 @@ public class Mesa extends Observable{
         this.manoActual = new Mano();
     }
 
-    public void apostar(Jugador j, int apuesta) {
-        this.pozo += apuesta;
-        manoActual.setJugadasRealizadas(manoActual.getJugadasRealizadas() + 1);
-    }
+
 
     //Cuando un jugador quiere volver a jugar. Si tiene saldo, se lo agrega. si todos estan listos, inicia la mano.
     public void esperarComienzoSiguienteMano(Jugador j){
@@ -92,7 +89,6 @@ public class Mesa extends Observable{
         manoActual = new Mano(jugadores);
         manos.add(manoActual);
         this.repartir();
-        this.pozo += jugadores.size() * apuestaBase;
         avisar(eventos.nuevaMano);
     }
 
