@@ -15,9 +15,10 @@ public class Escalera extends Figura {
 
     @Override
     protected boolean cumpleCondicion(int[] conteo) {
-        for (int c : conteo) {
-            if (c == 3) {
-                return true;  // Hay una escalera
+        //Si hay 5 cartas consecutivas, entonces hay escalera.
+        for (int i = 0; i < conteo.length - 4; i++) {
+            if (conteo[i] == 1 && conteo[i + 1] == 1 && conteo[i + 2] == 1 && conteo[i + 3] == 1 && conteo[i + 4] == 1) {
+                return true;
             }
         }
         return false;

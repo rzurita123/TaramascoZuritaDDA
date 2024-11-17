@@ -1,4 +1,7 @@
 package controlador;
+import java.util.ArrayList;
+
+import logica.Carta;
 import logica.Fachada;
 import logica.Figura;
 import logica.Jugador;
@@ -72,21 +75,36 @@ public class ControladorPoker implements Observador{
     }
 
     public void terminarMano(){
-        System.out.println("La mano ha terminado");
-        mesa.comienzoMano();
+        //Determinar ganador
+        Jugador ganador = mano.determinarGanador();
+        Figura figuraGanadora = ganador.figuraMasAlta();
+        int montoGanado = mesa.calcularMontoGanado();
+        //Tengo que mostrar, la figura ganadora, el jugador ganador, y el pozo.
+        vistaPoker.mostrarGanador(ganador, figuraGanadora);
+        if (jugador == ganador) {
+            vistaPoker.mostrarGanaste(montoGanado);
+        }
+    }
+
+    public void comenzarMano(){
+        mesa.esperarComienzoSiguienteMano(jugador);
     }
 
     public void pagar(){
         //TODO: Que pasa si no le da la $?
-        boolean saldoDescontado = jugador.pagar(mesa.getUltimaApuesta());
-        if (saldoDescontado){
-            vistaPoker.ocultarMensajeApuesta();
-        }
+        boolean saldoDescontado = jugador.pagar(mesa.getUltimaApuesta().getMonto());
+    }
+    
+    public int pedirCartas(){
+        //Se valida cuantas de las cartas estan dadas vuelta, esas se descartan y se piden nuevas
+        ArrayList<Carta> cartasACambiar = jugador.cartasACambiar();
+        int cantidadCartasPedidas = cartasACambiar.size();
+        mesa.pedirCartas(jugador, cartasACambiar);
+        return cantidadCartasPedidas;
     }
 
     public void noPagar(){
         jugador.noPagar();
-        vistaPoker.ocultarMensajeApuesta();
     }
 
     @Override
@@ -100,6 +118,9 @@ public class ControladorPoker implements Observador{
             else if(evento.equals(Mesa.eventos.nuevaMano)){
                 mano = mesa.getManoActual();
                 mano.agregarObservador(this);
+            } else if(evento.equals(Mesa.eventos.seCambiaronCartas)){
+                vistaPoker.mostrarCartas(jugador, mesa);
+                determinarFiguraMasAlta();
             }
         }
         //Eventos mano
@@ -112,7 +133,7 @@ public class ControladorPoker implements Observador{
                     terminarMano();
                 } else if (estado == EstadoMano.APUESTA_INICIADA) {
                     if(jugador.getEstadoJugador() != Jugador.EstadoJugador.APUESTA_INICIADA){
-                        vistaPoker.mostrarMensajeApuesta(mesa.getUltimaApuesta(), jugador.getNombreCompleto());
+                        vistaPoker.mostrarMensajeApuesta(mesa.getUltimaApuesta());
                     }
                     
                 }

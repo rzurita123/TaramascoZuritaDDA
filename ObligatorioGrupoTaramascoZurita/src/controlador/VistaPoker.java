@@ -6,6 +6,7 @@ package controlador;
 
 import java.util.ArrayList;
 
+import logica.Apuesta;
 import logica.Figura;
 import logica.Jugador;
 import logica.Mano;
@@ -24,6 +25,7 @@ public interface VistaPoker {
     public void mostrarApuestaRealizada(String nombre, int monto);
     public void mostrarEstadoMano(Mano.EstadoMano estadoMano);
     public void mostrarError(String mensaje);
-    public void mostrarMensajeApuesta(int monto, String nombreJugador);
-    public void ocultarMensajeApuesta();
+    public void mostrarMensajeApuesta(Apuesta apuesta);
+    public void mostrarGanador(Jugador jugador, Figura figura);
+    public void mostrarGanaste(int montoGanado);
 }

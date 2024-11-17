@@ -29,7 +29,7 @@ public class DatosPrueba {
     fachada.agregarAdministrador("200", "101", "A 200");
     
     fachada.agregarMesa(5, 500, 3);
-    fachada.agregarMesa(4, 50, 4);
+    fachada.agregarMesa(3, 50, 4);
     fachada.agregarMesa(2, 100, 5);
     
     fachada.agregarFiguras();

@@ -48,9 +48,19 @@ public class Jugador extends Usuario{
                 this.estadoJugador = EstadoJugador.APUESTA_INICIADA;
             }
             this.saldo -= monto;
-            mesa.agregarApuesta(monto);
+            mesa.agregarApuesta(monto, this);
             return true;
         }
+    }
+
+    public ArrayList<Carta> cartasACambiar(){
+        ArrayList<Carta> aCambiar = new ArrayList();
+        for (Carta carta : cartas) {
+            if (!carta.estaVisible()){
+                aCambiar.add(carta);
+            }
+        }
+        return aCambiar;
     }
 
     public boolean pagar(int monto){
@@ -60,7 +70,7 @@ public class Jugador extends Usuario{
             this.ultimaApuesta = monto;
             this.estadoJugador = EstadoJugador.APUESTA_PAGADA;
             this.saldo -= monto;
-            mesa.agregarApuesta(monto);
+            mesa.agregarApuesta(monto, this);
             avisar(eventos.cambioEstadoJugador);
             return true;
         }

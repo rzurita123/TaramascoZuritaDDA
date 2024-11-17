@@ -3,18 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Mazo.java</file>
             <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Poker.java</file>
-            <file>jar:file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/lib/PanelCartasPoker.jar!/panelCartasPoker/PanelCartasPokerException.java</file>
-            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Par.java</file>
             <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Escalera.java</file>
-            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/SinFigura.java</file>
             <file>jar:file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/lib/PanelCartasPoker.jar!/panelCartasPoker/CartaPoker.java</file>
             <file>jar:file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/lib/PanelCartasPoker.jar!/panelCartasPoker/BotonCartaPoker.java</file>
             <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Carta.java</file>
             <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/iuGrafica/JugarPoker.java</file>
-            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Figura.java</file>
             <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Pierna.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Mazo.java</file>
+            <file>jar:file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/lib/PanelCartasPoker.jar!/panelCartasPoker/PanelCartasPoker.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Par.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/controlador/ControladorPoker.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/SinFigura.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/controlador/VistaPoker.java</file>
+            <file>file:/home/rzurita/Desktop/TaramascoZuritaDDA-main/ObligatorioGrupoTaramascoZurita/src/logica/Figura.java</file>
         </group>
     </open-files>
 </project-private>

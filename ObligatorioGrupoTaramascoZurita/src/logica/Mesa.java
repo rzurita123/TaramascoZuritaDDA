@@ -5,6 +5,8 @@
 package logica;
 
 import java.util.ArrayList;
+
+import logica.Jugador.EstadoJugador;
 import observador.Observable;
 
 /**
@@ -21,20 +23,20 @@ public class Mesa extends Observable{
     private int pozo;
     private int apuestaBase;
     private int jugadoresActuales;
-    private int ultimaApuesta;
+    private Apuesta ultimaApuesta;
     private int porcentajeComision;
     private EstadoMesa estadoMesa;
     private Mazo mazo;
     public enum EstadoMesa {
         ABIERTA, FINALIZADA, INICIADA
     }
-    public enum eventos {cambioIniciada, nuevaMano};
+    public enum eventos {cambioIniciada, nuevaMano, seCambiaronCartas};
 
     public Mesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         this.id = ++contador;
         this.minJugadores = minJugadores;
         this.apuestaBase = apuestaBase;
-        this.ultimaApuesta = 0;
+        this.ultimaApuesta = new Apuesta();
         this.porcentajeComision = porcentajeComision;
         this.estadoMesa = EstadoMesa.ABIERTA;
         this.jugadoresActuales = 0;
@@ -48,6 +50,28 @@ public class Mesa extends Observable{
         manoActual.setJugadasRealizadas(manoActual.getJugadasRealizadas() + 1);
     }
 
+    public void esperarComienzoSiguienteMano(Jugador j){
+        if(!j.descontarSaldo(apuestaBase, true)){
+            jugadores.remove(j);
+        } else {
+            j.setEstadoJugador(EstadoJugador.ACCION_PENDIENTE);
+        }
+        boolean todosProntos = validarEstadoJugadores();
+        if (todosProntos) {
+            nuevaMano();
+        }
+    }
+
+    public boolean validarEstadoJugadores(){
+        boolean todosProntos = true;
+        for(Jugador j : jugadores){
+            if(j.getEstadoJugador() != EstadoJugador.ACCION_PENDIENTE){
+                todosProntos = false;
+            }
+        }
+        return todosProntos;
+    }
+
     public void comienzoMano(){
         //Le resto a cada jugador la apuesta base
         for (Jugador j : jugadores) {
@@ -57,6 +81,10 @@ public class Mesa extends Observable{
             }
         }
         //Se genera la mano con los jugadores que tengan saldo suficiente.
+        nuevaMano();
+    }
+
+    public void nuevaMano(){
         System.out.println("JUGADORES MESA: " + jugadores.size());
         manoActual = new Mano(jugadores);
         manos.add(manoActual);
@@ -65,9 +93,16 @@ public class Mesa extends Observable{
         this.repartir();
     }
 
-    public void agregarApuesta(int monto){
+    public void pedirCartas(Jugador j, ArrayList<Carta> cartasACambiar){
+        mazo.cambiarCartas(j, cartasACambiar);
+        manoActual.pidieronCartas();
+        avisar(eventos.seCambiaronCartas);
+    }
+
+    public void agregarApuesta(int monto, Jugador jugador){
         this.pozo += monto;
-        ultimaApuesta = monto;
+        ultimaApuesta.setMonto(monto);
+        ultimaApuesta.setJugador(jugador);
     }
     
     public String listadoJugadores(){
@@ -78,9 +113,14 @@ public class Mesa extends Observable{
         }
         return listado;
     }
+
+    public int calcularMontoGanado() {
+        int montoGanado = pozo - (pozo * porcentajeComision / 100);
+        return montoGanado;
+    }
     
     public void agregarJugador(Jugador j) throws MesaException {
-        if (j.getSaldo() < this.apuestaBase) {
+        if (!j.validarSaldo(apuestaBase)) {
             throw new MesaException("Saldo insuficiente");
         } else if (this.jugadoresActuales >= this.minJugadores) {
             throw new MesaException("La mesa está llena");
@@ -171,12 +211,8 @@ public class Mesa extends Observable{
         this.id = id;
     }
 
-    public int getUltimaApuesta() {
+    public Apuesta getUltimaApuesta() {
         return ultimaApuesta;
-    }
-
-    public void setUltimaApuesta(int ultimaApuesta) {
-        this.ultimaApuesta = ultimaApuesta;
     }
 
     public int getMinJugadores() {

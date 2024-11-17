@@ -16,7 +16,7 @@ public class Mano extends Observable {
     private EstadoMano estadoMano;
     private ArrayList<Jugador> jugadores = new ArrayList();
     private int jugadasRealizadas = 0;
-
+    private int pidieronCartas = 0;
     public enum EstadoMano {
         ESPERANDO_APUESTA, APUESTA_INICIADA, PIDIENDO_CARTAS, TERMINADA
     }
@@ -73,6 +73,52 @@ public class Mano extends Observable {
             estadoMano = EstadoMano.PIDIENDO_CARTAS;
             avisar(eventos.cambioEstadoMano);
         }
+    }
+
+    public Jugador determinarGanador() {
+        Jugador ganador = null;
+        Figura mejorFigura = null;
+        for (Jugador jugador : jugadores) {
+            Figura figuraActual = jugador.figuraMasAlta(); // Método que retorna la figura del jugador
+            ArrayList<Carta> cartasJugador = jugador.getCartas(); // Método que retorna las cartas del jugador
+            if (mejorFigura == null) {
+                // Primer jugador, inicializamos el ganador
+                mejorFigura = figuraActual;
+                ganador = jugador;
+            } else {
+                // Comparamos la figura actual con la mejor figura hasta ahora
+                int comparacion = mejorFigura.compararFigura(figuraActual, ganador.getCartas(), cartasJugador);
+                if (comparacion < 0) {
+                    // La figura actual es mejor, actualizamos el ganador
+                    mejorFigura = figuraActual;
+                    ganador = jugador;
+                }
+            }
+        }
+        return ganador;
+    }
+    
+
+    public void pidieronCartas(){
+        pidieronCartas++;
+        if(pidieronCartas == jugadores.size()){
+            terminarMano();
+        }
+    }
+
+    public void terminarMano(){
+        jugadorGanador = determinarGanador();
+        System.out.println("El ganador de la mano es: " + jugadorGanador.getNombreCompleto());
+        estadoMano = EstadoMano.TERMINADA;
+        avisar(eventos.cambioEstadoMano);
+    }
+
+    public void setPidieronCartas(int pidieronCartas) {
+        this.pidieronCartas = pidieronCartas;
+    }
+
+    public int getPidieronCartas() {
+        return pidieronCartas;
     }
 
     public void noApostar(Jugador jugador){

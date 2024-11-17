@@ -43,6 +43,20 @@ public class Mazo {
         }
     }
 
+    public void cambiarCartas(Jugador jugador, ArrayList<Carta> cartasACambiar){
+        if (cartasMazo.size() > cartasACambiar.size()){
+            for (Carta carta : cartasACambiar) {
+                int index = jugador.getCartas().indexOf(carta);
+                if (index != -1) {
+                    jugador.getCartas().remove(index);
+                    jugador.getCartas().add(index, cartasMazo.get(0));
+                    cartasMazo.remove(0);
+                }
+            }
+        }
+        
+    }
+
     // Método para obtener el mazo de cartasMazo
     public ArrayList<Carta> getcartasMazo() {
         return cartasMazo;

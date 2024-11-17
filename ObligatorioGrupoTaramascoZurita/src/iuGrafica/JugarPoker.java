@@ -5,6 +5,8 @@
 package iuGrafica;
 
 import java.util.ArrayList;
+
+import logica.Apuesta;
 import logica.Carta;
 import logica.Figura;
 import logica.Jugador;
@@ -31,9 +33,10 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         this.setLocationRelativeTo(ventanaPadre);
         panelCartas.setVisible(false);
         lblEstadoMano.setVisible(false);
-        lblPagar.setVisible(false);
-        btnPagar.setVisible(false);
-        btnNoPagar.setVisible(false);
+        lblCartasPedidas.setVisible(false);
+        lblGanador.setVisible(false);
+        lblGanaste.setVisible(false);
+        lblPagar.setText("Ningún jugador ha realizado una apuesta.");
         controladorPoker = new ControladorPoker(this, j);
     }
 
@@ -113,7 +116,11 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblPagar = new javax.swing.JLabel();
         btnPagar = new javax.swing.JButton();
         btnNoPagar = new javax.swing.JButton();
-        btnDescartar = new javax.swing.JButton();
+        btnPedirCartas = new javax.swing.JButton();
+        lblCartasPedidas = new javax.swing.JLabel();
+        btnVolverAJugar = new javax.swing.JButton();
+        lblGanador = new javax.swing.JLabel();
+        lblGanaste = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -184,12 +191,25 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
             }
         });
 
-        btnDescartar.setText("Descartar");
-        btnDescartar.addActionListener(new java.awt.event.ActionListener() {
+        btnPedirCartas.setText("Pedir Cartas");
+        btnPedirCartas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDescartarActionPerformed(evt);
+                btnPedirCartasActionPerformed(evt);
             }
         });
+
+        lblCartasPedidas.setText("Pediste __ cartas nuevas.");
+
+        btnVolverAJugar.setText("Volver a jugar");
+        btnVolverAJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverAJugarActionPerformed(evt);
+            }
+        });
+
+        lblGanador.setText("Ganador: ");
+
+        lblGanaste.setText("Ganaste $ ___ !");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,57 +218,70 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPozo)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEstadoMano)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblMesa, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblMano, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(253, 253, 253))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(19, 19, 19)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(panelCartas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(lblPagar)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(6, 6, 6)
+                                            .addComponent(lblFiguraActual))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(btnSalir)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnNoApostar)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnPagar)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnNoPagar)
+                                    .addGap(74, 74, 74)
+                                    .addComponent(btnPedirCartas)
+                                    .addGap(67, 67, 67)
+                                    .addComponent(lblMontoApuesta)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblMontoApostado)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnApostar))))
+                                .addComponent(btnVolverAJugar, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCartasPedidas)
+                                .addGap(366, 366, 366)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lblFiguraActual))
+                                .addComponent(lblGanador)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblGanaste))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSalir)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnNoApostar)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addComponent(btnPagar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnNoPagar)
-                                .addGap(201, 201, 201)
-                                .addComponent(lblMontoApuesta))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(lblPagar)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblMontoApostado)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnApostar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDescartar)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(31, 31, 31))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPozo)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblJugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 697, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblEstadoMano)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(3, 3, 3)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblMesa, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblMano, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                        .addGap(253, 253, 253))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,35 +298,43 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPozo)
                     .addComponent(lblEstadoMano))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblGanador)
+                    .addComponent(lblGanaste))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnApostar)
+                                .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblMontoApuesta))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblFiguraActual)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblFiguraActual)
+                                    .addComponent(lblPagar))
                                 .addGap(22, 22, 22)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnSalir)
-                                    .addComponent(btnApostar)
-                                    .addComponent(tfMontoApuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnNoApostar)
-                                    .addComponent(lblMontoApuesta)
-                                    .addComponent(btnDescartar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblPagar)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnPagar)
-                                    .addComponent(btnNoPagar)))))
+                                    .addComponent(btnNoApostar)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnPagar)
+                                .addComponent(btnPedirCartas)
+                                .addComponent(btnNoPagar))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblMontoApostado)))
-                .addGap(20, 20, 20))
+                .addGap(18, 18, 18)
+                .addComponent(lblCartasPedidas)
+                .addGap(31, 31, 31)
+                .addComponent(btnVolverAJugar)
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -324,26 +365,35 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         controladorPoker.pagar();
     }//GEN-LAST:event_btnPagarActionPerformed
 
-    private void btnDescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescartarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDescartarActionPerformed
+    private void btnPedirCartasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedirCartasActionPerformed
+        int cartasPedidas = controladorPoker.pedirCartas();
+        lblCartasPedidas.setVisible(true);
+        lblCartasPedidas.setText("Pediste " + cartasPedidas + " cartas nuevas.");
+    }//GEN-LAST:event_btnPedirCartasActionPerformed
+
+    private void btnVolverAJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAJugarActionPerformed
+        controladorPoker.comenzarMano();
+    }//GEN-LAST:event_btnVolverAJugarActionPerformed
 
     private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {                                             
         controladorPoker.noApostar();
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
-    private javax.swing.JButton btnDescartar;
     private javax.swing.JButton btnNoApostar;
     private javax.swing.JButton btnNoPagar;
     private javax.swing.JButton btnPagar;
+    private javax.swing.JButton btnPedirCartas;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnVolverAJugar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblCartasPedidas;
     private javax.swing.JLabel lblEstadoMano;
     private javax.swing.JLabel lblFiguraActual;
+    private javax.swing.JLabel lblGanador;
+    private javax.swing.JLabel lblGanaste;
     private javax.swing.JLabel lblJugador;
     private javax.swing.JLabel lblMano;
     private javax.swing.JLabel lblMesa;
@@ -376,18 +426,21 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }
 
     @Override
-    public void mostrarMensajeApuesta(int monto, String nombreJugador) {
-        lblPagar.setText("El jugador " + nombreJugador + " ha apostado $" + monto + ". ¿Pagas la apuesta?");
-        lblPagar.setVisible(true);
-        btnPagar.setVisible(true);
-        btnNoPagar.setVisible(true);
+    public void mostrarMensajeApuesta(Apuesta apuesta) {
+        lblPagar.setText("El jugador " + apuesta.getJugador().getNombreCompleto() + " ha apostado $" + apuesta.getMonto() + ". ¿Pagas la apuesta?");
     }
 
     @Override
-    public void ocultarMensajeApuesta() {
-        lblPagar.setVisible(false);
-        btnPagar.setVisible(false);
-        btnNoPagar.setVisible(false);
+    public void mostrarGanador(Jugador jugador, Figura figura) {
+        
+        lblGanador.setText("Ganador: " + jugador.getNombreCompleto() + " con " + figura.getNombre());
+        lblGanador.setVisible(true);
+    }
+
+    @Override
+    public void mostrarGanaste(int montoGanado) {
+        lblGanaste.setText("Ganaste $" + montoGanado + " !");
+        lblGanaste.setVisible(true);
     }
 
     
