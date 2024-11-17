@@ -15,6 +15,8 @@ import logica.Mano.EstadoMano;
 import logica.Mesa;
 import controlador.ControladorPoker;
 import controlador.VistaPoker;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import panelCartasPoker.CartaPoker;
 import panelCartasPoker.PanelCartasPoker;
@@ -40,6 +42,12 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblGanaste.setVisible(false);
         lblPagar.setText("Ningún jugador ha realizado una apuesta.");
         controladorPoker = new ControladorPoker(this, j);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                salir();
+            }
+        });
     }
 
     @Override
@@ -124,7 +132,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblGanador = new javax.swing.JLabel();
         lblGanaste = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         lblMesa.setText("Mesa:");
 
@@ -345,14 +353,14 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
         controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()));
     }//GEN-LAST:event_btnApostarActionPerformed
-
-    private void cerrarYMostrarMenu(){
-        ventanaPadre.setVisible(true);
+    
+    private void salir(){
+        controladorPoker.quitarJugadorDeMesa();
         this.dispose();
     }
-    
+
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        cerrarYMostrarMenu();
+        salir();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void tfMontoApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMontoApuestaActionPerformed

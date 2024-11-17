@@ -150,6 +150,12 @@ public class Mesa extends Observable{
             mazo.repartir(j);
         }
     }
+
+    public void quitarJugador(Jugador j){
+        jugadores.remove(j);
+        jugadoresActuales--;
+        j.setMesa(null);
+    }
     
     public boolean esAbierta() {
         return estadoMesa == EstadoMesa.ABIERTA;

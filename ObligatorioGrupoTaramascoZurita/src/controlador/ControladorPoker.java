@@ -112,6 +112,10 @@ public class ControladorPoker implements Observador{
         jugador.noPagar();
     }
 
+    public void quitarJugadorDeMesa(){
+        mesa.quitarJugador(jugador);
+    }
+
     @Override
     public void actualizar(Object evento, Observable origen) {
         System.out.println("Evento: " + evento + " Origen: " + origen);
