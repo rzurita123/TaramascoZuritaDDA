@@ -55,6 +55,10 @@ public class Mano extends Observable {
         validarEstadoJugadores();
     }
 
+    void agregarApostadoEnLaMano(int monto) {
+        apostadoEnLaMano += monto;
+    }
+
     public void validarEstadoJugadores(){
         boolean quedanSinJugar = false;
         boolean todosNoApostaron = true;

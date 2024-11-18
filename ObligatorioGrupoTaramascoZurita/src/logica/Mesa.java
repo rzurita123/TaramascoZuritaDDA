@@ -137,7 +137,7 @@ public class Mesa extends Observable{
     }
 
     public void agregarApuesta(int monto, Jugador jugador){
-        manoActual.setApostadoEnLaMano(manoActual.getApostadoEnLaMano() + monto);
+        manoActual.agregarApostadoEnLaMano(monto);
         this.totalApostado += monto;
         this.pozo += monto;
         ultimaApuesta.setMonto(monto);
