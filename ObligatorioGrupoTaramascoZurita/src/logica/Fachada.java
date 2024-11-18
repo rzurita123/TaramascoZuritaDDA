@@ -6,11 +6,13 @@ package logica;
 
 import java.util.ArrayList;
 
+import observador.Observable;
+
 /**
  *
  * @author sabrina
  */
-public class Fachada {
+public class Fachada extends Observable {
         
     private SistemaAcceso sAcceso = new SistemaAcceso();
     private SistemaJuego sJuego = new SistemaJuego();
@@ -18,12 +20,13 @@ public class Fachada {
     //SINGLETON
 
     private static Fachada instancia = new Fachada();
-
     public static Fachada getInstancia() {
         return instancia;
     }
+
+    public enum Eventos{seCreoMesa};
     
-    private Fachada() {
+    private Fachada () {
     }
     
     //DELEGACIONES
@@ -52,8 +55,8 @@ public class Fachada {
         return sJuego.getMesas();
     }
     
-    public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
-        sJuego.agregarMesa(minJugadores, apuestaBase, porcentajeComision);
+    public String agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
+        return sJuego.agregarMesa(minJugadores, apuestaBase, porcentajeComision);
     }
 
     public Figura getFiguraMasAlta(ArrayList<Carta> cartas) {

@@ -225,4 +225,9 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
         throw new UnsupportedOperationException("Unimplemented method 'borrarManos'");
     }
 
+    @Override
+    public void actualizarMesas(ArrayList<Mesa> listaMesas) {
+        this.cargarMesas(listaMesas);
+    }
+
 }

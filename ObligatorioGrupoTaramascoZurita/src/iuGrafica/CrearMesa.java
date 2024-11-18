@@ -4,11 +4,6 @@
  */
 package iuGrafica;
 
-import controlador.ControladorAdministrarMesas;
-import controlador.ControladorIngresoAMesa;
-import controlador.VistaAdministrarMesas;
-import controlador.VistaIngresoAMesa;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -16,6 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
+import controlador.ControladorCrearMesa;
+import controlador.VistaCrearMesa;
 import logica.Administrador;
 import logica.Jugador;
 import logica.Mano;
@@ -26,12 +23,12 @@ import panelCartasPoker.PanelCartasPokerException;
  *
  * @author PC
  */
-public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMesas {
+public class CrearMesa extends javax.swing.JFrame implements VistaCrearMesa {
 
     /**
      * Creates new form Menu
      */
-    private ControladorAdministrarMesas controladorAdministrarMesas;
+    private ControladorCrearMesa controladorCrearMesa;
     private ArrayList<Mesa> mesas = null;
     private Mesa mesaSeleccionada = null;
     private ArrayList<Mano> manos = null;
@@ -41,8 +38,8 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
         
         initComponents();
         setLocationRelativeTo(null);
-        controladorAdministrarMesas = new ControladorAdministrarMesas(this, administrador);
-        //controladorIngresoAMesa = new ControladorIngresoAMesa(this, j);
+        lblMesaCreada.setVisible(false);
+        controladorCrearMesa = new ControladorCrearMesa(this);
     }
 
     /**
@@ -60,7 +57,8 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
         tfCantJugadores = new javax.swing.JTextField();
         tfApuestaBase = new javax.swing.JTextField();
         tfPorcentajeComision = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnCrearMesa = new javax.swing.JButton();
+        lblMesaCreada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,41 +71,55 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
 
         jLabel5.setText("Porcentaje Comision");
 
-        jButton1.setText("Crear Mesa");
+        btnCrearMesa.setText("Crear Mesa");
+        btnCrearMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearMesaActionPerformed(evt);
+            }
+        });
+
+        lblMesaCreada.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMesaCreada.setForeground(new java.awt.Color(51, 153, 0));
+        lblMesaCreada.setText("Mesa creada exitosamente.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(8, 8, 8))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfApuestaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(215, 215, 215))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(8, 8, 8))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel4))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfApuestaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfCantJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6)
+                                .addGap(188, 188, 188))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(lblMesaCreada)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCrearMesa)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel6)
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -121,60 +133,44 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(tfPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearMesa)
+                    .addComponent(lblMesaCreada))
                 .addGap(22, 22, 22))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCrearMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMesaActionPerformed
+        controladorCrearMesa.crearMesa(tfCantJugadores.getText(), tfApuestaBase.getText(), (tfPorcentajeComision.getText()));
+    }//GEN-LAST:event_btnCrearMesaActionPerformed
+
     @Override
-    public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, getTitle(), JOptionPane.ERROR_MESSAGE);
+    public void mostrarMensajeError(String mensaje) {
+        lblMesaCreada.setText(mensaje);
+        lblMesaCreada.setForeground(new java.awt.Color(255, 0, 0));
+        lblMesaCreada.setVisible(true);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void cargarMesas(ArrayList<Mesa> listaDeMesas) {
-    mesas = listaDeMesas;
-    DefaultListModel<String> model = new DefaultListModel<>();
-    for (Mesa mesa : listaDeMesas) {
-        model.addElement(mesa.datosAdministrador());
-
-    }
+    public void mostrarMensajeExito() {
+        lblMesaCreada.setText("Mesa creada exitosamente.");
+        lblMesaCreada.setForeground(new java.awt.Color(51, 153, 0));
+        lblMesaCreada.setVisible(true);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCrearMesa;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lblMesaCreada;
     private javax.swing.JTextField tfApuestaBase;
     private javax.swing.JTextField tfCantJugadores;
     private javax.swing.JTextField tfPorcentajeComision;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void mostrarMontoRecaudado(int recaudacion) {
-        //lblRecaudado.setText("Total recaudado: $" + recaudacion);
-    }
-
-    @Override
-    public void mostrarManos(ArrayList<Mano> listaDeManos) {
-        manos = listaDeManos;
-        DefaultListModel<Mano> model = new DefaultListModel<>();
-        for (Mano mano : manos) {
-            model.addElement(mano);
-        }
-
-    }
-
-    @Override
-    public void borrarManos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'borrarManos'");
-    }
 
 }

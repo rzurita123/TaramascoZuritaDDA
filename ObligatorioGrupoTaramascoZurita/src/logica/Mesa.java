@@ -46,7 +46,18 @@ public class Mesa extends Observable{
         this.manoActual = new Mano();
     }
 
-
+    public static Mesa crearMesa(int minJugadores, int apuestaBase, int porcentajeComision) throws PokerException {
+        if(minJugadores < 2 || minJugadores > 5){
+            throw new PokerException("Cantidad de jugadores no válida");
+        }
+        if(apuestaBase < 1){
+            throw new PokerException("Apuesta base inválida");
+        }
+        if(porcentajeComision < 1 || porcentajeComision > 50){
+            throw new PokerException("Comisión inválida");
+        }
+        return new Mesa(minJugadores, apuestaBase, porcentajeComision);
+    }
 
     //Cuando un jugador quiere volver a jugar. Si tiene saldo, se lo agrega. si todos estan listos, inicia la mano.
     public void esperarComienzoSiguienteMano(Jugador j) throws PokerException {

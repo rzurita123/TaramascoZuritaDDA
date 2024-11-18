@@ -49,9 +49,15 @@ class SistemaJuego {
         figuras.add(new Poker());
     }
     
-    public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
-        Mesa nuevaMesa = new Mesa(minJugadores, apuestaBase, porcentajeComision);
-        mesas.add(nuevaMesa);
+    public String agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
+        try{
+            Mesa nuevaMesa = Mesa.crearMesa(minJugadores, apuestaBase, porcentajeComision);
+            mesas.add(nuevaMesa);
+            Fachada.getInstancia().avisar(Fachada.Eventos.seCreoMesa);
+            return null;
+        } catch (PokerException e) {
+            return e.getMessage();
+        }
     }
 
     public Figura getFiguraMasAlta(ArrayList<Carta> cartas) {

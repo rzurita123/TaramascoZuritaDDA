@@ -17,52 +17,40 @@ import observador.Observador;
  * @author Carry
  */
 public class ControladorCrearMesa implements Observador{
-    private VistaIngresoAMesa vistaIngresoAMesa;
-    private Jugador jugador;
-    private Mesa mesaSeleccionada;
-
-    public ControladorCrearMesa(VistaIngresoAMesa vista, Jugador j) {
-        vistaIngresoAMesa = vista;
-        this.jugador = j;
-        mostrarDatosJugador();
-        cargarMesasAbiertas();
+    private VistaCrearMesa vistaCrearMesa;
+    public ControladorCrearMesa(VistaCrearMesa vista) {
+        vistaCrearMesa = vista;
     }
 
-    public void ingresarAMesa(){
-        try{
-            mesaSeleccionada.agregarJugador(jugador);
-        } catch (PokerException e) {
-            vistaIngresoAMesa.mostrarError(e.getMessage());
-        }
-    }
-
-    public void seleccionMesa(Mesa seleccionada) {
-        if(seleccionada==null){
-            vistaIngresoAMesa.borrarDetalles();
-        } else {
-            mesaSeleccionada = seleccionada;
-            vistaIngresoAMesa.mostrarDetalles(seleccionada.getId(),
-                                        seleccionada.getMinJugadores(),
-                                        seleccionada.getApuestaBase(),
-                                        seleccionada.getJugadoresActuales(),
-                                        seleccionada.getPorcentajeComision());
-        }
-    }
-
-    public void mostrarDatosJugador(){
-        vistaIngresoAMesa.mostrarDatosJugador(jugador.getNombreCompleto(), jugador.getSaldo());
-    }
-
-    public void cargarMesasAbiertas(){
-        vistaIngresoAMesa.cargarMesasAbiertas(Fachada.getInstancia().getMesasAbiertas());
+    public void crearMesa(String mJugadores, String aBase, String pComision) {
+            //Valido que los string no sean vacios y parseables a int
+            if(mJugadores.isEmpty() || aBase.isEmpty() || pComision.isEmpty()){
+                vistaCrearMesa.mostrarMensajeError("Debe completar todos los campos");
+                return;
+            }
+            //valido que solo contenga numeros
+            if(!mJugadores.matches("[0-9]+") || !aBase.matches("[0-9]+") || !pComision.matches("[0-9]+")){
+                vistaCrearMesa.mostrarMensajeError("Los campos deben contener solo números");
+                return;
+            }
+            //parseo a int
+            int minJugadores = Integer.parseInt(mJugadores);
+            int apuestaBase = Integer.parseInt(aBase);
+            int porcentajeComision = Integer.parseInt(pComision);
+            String ret = Fachada.getInstancia().agregarMesa(minJugadores, apuestaBase, porcentajeComision);
+            if(ret == null){
+                vistaCrearMesa.mostrarMensajeExito();
+            } else{
+                vistaCrearMesa.mostrarMensajeError(ret);
+            }
+            //cargarMesas();
     }
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        /*if(evento.equals(Mesa.eventos.cambioIniciada)){
-            System.out.println("La mesa se ha iniciado");
+        /* if(evento.equals(Fachada.Eventos.seCreoMesa)){
             this.iniciarMesa();
-        } */
+        }  */
     }
 
 

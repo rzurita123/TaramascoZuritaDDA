@@ -24,15 +24,13 @@ public class ControladorAdministrarMesas implements Observador{
     private VistaAdministrarMesas vistaAdministrarMesas;
     private Administrador administrador;
     private Mesa mesaSeleccionada;
+    private Fachada fachada = Fachada.getInstancia();
 
     public ControladorAdministrarMesas(VistaAdministrarMesas vista, Administrador a) {
         vistaAdministrarMesas = vista;
         this.administrador = a;
         cargarMesas();
-    }
-
-    public void crearMesa(){
-        //mesaSeleccionada.agregarJugador(jugador);
+        fachada.agregarObservador(this);
     }
 
     public void seleccionMesa(Mesa seleccionada) {
@@ -56,10 +54,9 @@ public class ControladorAdministrarMesas implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        /*if(evento.equals(Mesa.eventos.cambioIniciada)){
-            System.out.println("La mesa se ha iniciado");
-            this.iniciarMesa();
-        } */
+        if(evento.equals(Fachada.Eventos.seCreoMesa)){
+            vistaAdministrarMesas.actualizarMesas(Fachada.getInstancia().getMesas());
+        } 
     }
 
 

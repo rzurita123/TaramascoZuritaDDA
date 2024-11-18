@@ -32,6 +32,7 @@ public class DatosPrueba {
     fachada.agregarMesa(3, 50, 4);
     fachada.agregarMesa(2, 100, 5);
     
+    
     fachada.agregarFiguras();
 
     }
