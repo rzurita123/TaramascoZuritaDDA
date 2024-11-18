@@ -1,5 +1,9 @@
 package controlador;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import logica.Administrador;
 import logica.Fachada;
 import logica.Jugador;
 import logica.Mesa;
@@ -16,45 +20,38 @@ import observador.Observador;
  *
  * @author Carry
  */
-public class ControladorIngresoAMesa implements Observador{
-    private VistaIngresoAMesa vistaIngresoAMesa;
-    private Jugador jugador;
+public class ControladorAdministrarMesas implements Observador{
+    private VistaAdministrarMesas vistaAdministrarMesas;
+    private Administrador administrador;
     private Mesa mesaSeleccionada;
 
-    public ControladorIngresoAMesa(VistaIngresoAMesa vista, Jugador j) {
-        vistaIngresoAMesa = vista;
-        this.jugador = j;
-        mostrarDatosJugador();
-        cargarMesasAbiertas();
+    public ControladorAdministrarMesas(VistaAdministrarMesas vista, Administrador a) {
+        vistaAdministrarMesas = vista;
+        this.administrador = a;
+        cargarMesas();
     }
 
-    public void ingresarAMesa(){
-        try{
-            mesaSeleccionada.agregarJugador(jugador);
-        } catch (PokerException e) {
-            vistaIngresoAMesa.mostrarError(e.getMessage());
-        }
+    public void crearMesa(){
+        //mesaSeleccionada.agregarJugador(jugador);
     }
 
     public void seleccionMesa(Mesa seleccionada) {
+        //Tengo que cargar la lista de manos
         if(seleccionada==null){
-            vistaIngresoAMesa.borrarDetalles();
+            vistaAdministrarMesas.borrarManos();
         } else {
             mesaSeleccionada = seleccionada;
-            vistaIngresoAMesa.mostrarDetalles(seleccionada.getId(),
-                                        seleccionada.getMinJugadores(),
-                                        seleccionada.getApuestaBase(),
-                                        seleccionada.getJugadoresActuales(),
-                                        seleccionada.getPorcentajeComision());
+            vistaAdministrarMesas.mostrarManos(seleccionada.getManos());
         }
+
     }
 
-    public void mostrarDatosJugador(){
-        vistaIngresoAMesa.mostrarDatosJugador(jugador.getNombreCompleto(), jugador.getSaldo());
+    public void calcularMontoRecaudado(ArrayList<Mesa> mesas){
+        vistaAdministrarMesas.mostrarMontoRecaudado(Fachada.getInstancia().recaudacionMesa());
     }
 
-    public void cargarMesasAbiertas(){
-        vistaIngresoAMesa.cargarMesasAbiertas(Fachada.getInstancia().getMesasAbiertas());
+    public void cargarMesas(){
+        vistaAdministrarMesas.cargarMesas(Fachada.getInstancia().getMesas());
     }
 
     @Override

@@ -39,9 +39,17 @@ public class Fachada {
     public void agregarJugador(String cedula, String password, String nombreCompleto, int saldo) {
         sAcceso.agregarJugador(cedula, password, nombreCompleto, saldo);
     }
+
+    public int recaudacionMesa(){
+        return sJuego.recaudacionMesa();
+    }
     
     public ArrayList<Mesa> getMesasAbiertas(){
         return sJuego.getMesasAbiertas();
+    }
+
+    public ArrayList<Mesa> getMesas() {
+        return sJuego.getMesas();
     }
     
     public void agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {

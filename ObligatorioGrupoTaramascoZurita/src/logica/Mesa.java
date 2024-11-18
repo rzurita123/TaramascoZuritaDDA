@@ -52,7 +52,6 @@ public class Mesa extends Observable{
         boolean saldoDescontado = j.descontarSaldo(apuestaBase, true);
         if (!saldoDescontado) {
             quitarJugador(j);
-            validarCantidadJugadores();
         } else {
             j.setEstadoJugador(EstadoJugador.ACCION_PENDIENTE);
         }
@@ -67,8 +66,13 @@ public class Mesa extends Observable{
 
     public void validarCantidadJugadores(){
         if(jugadoresActuales == 1){
+            manoActual.terminarMano();
             avisar(eventos.quedoUnJugador);
         }
+    }
+
+    public int getMontoRecaudado(){
+        return pozo;
     }
 
     public boolean validarEstadoJugadores(){
@@ -171,6 +175,7 @@ public class Mesa extends Observable{
         jugadores.remove(j);
         jugadoresActuales--;
         j.setMesa(null);
+        validarCantidadJugadores();
     }
     
     public boolean esAbierta() {

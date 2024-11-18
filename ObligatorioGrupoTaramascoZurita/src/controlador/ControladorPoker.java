@@ -155,7 +155,7 @@ public class ControladorPoker implements Observador{
                 vistaPoker.mostrarCartas(jugador, mesa);
                 determinarFiguraMasAlta();
             } else if(evento.equals(Mesa.eventos.quedoUnJugador)){
-                vistaPoker.mostrarError("La mesa ha finalizado.");
+                vistaPoker.mostrarQuedaUnJugador();
             }
         }
         //Eventos mano

@@ -25,8 +25,20 @@ class SistemaJuego {
         return mesasAbiertas;
     }
 
+    public ArrayList<Mesa> getMesas() {
+        return mesas;
+    }
+
     public ArrayList<Figura> getFiguras() {
         return figuras;
+    }
+
+    public int recaudacionMesa(){
+        int recaudacion = 0;
+        for (Mesa mesa : mesas) {
+            recaudacion += mesa.getPozo();
+        }
+        return recaudacion;
     }
 
     public void agregarFiguras(){

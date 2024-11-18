@@ -45,6 +45,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblGanaste.setVisible(false);
         lblPagar.setText("Ningún jugador ha realizado una apuesta.");
         lblError.setVisible(false);
+        lblFinalizado.setVisible(false);
         controladorPoker = new ControladorPoker(this, j);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -138,6 +139,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblGanador = new javax.swing.JLabel();
         lblGanaste = new javax.swing.JLabel();
         lblError = new javax.swing.JLabel();
+        lblFinalizado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -232,13 +234,25 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblError.setForeground(new java.awt.Color(255, 51, 51));
         lblError.setText("Error");
 
+        lblFinalizado.setBackground(new java.awt.Color(255, 153, 51));
+        lblFinalizado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFinalizado.setForeground(new java.awt.Color(255, 51, 51));
+        lblFinalizado.setText("La mesa ha finalizado.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(374, 374, 374)
+                .addComponent(lblError)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblFinalizado)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -303,10 +317,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                                             .addComponent(lblMesa, javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(lblMano, javax.swing.GroupLayout.Alignment.TRAILING))))))
                         .addGap(253, 253, 253))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(374, 374, 374)
-                .addComponent(lblError)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +339,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                     .addComponent(lblGanaste))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblError)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(panelCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,7 +369,9 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
                         .addComponent(lblMontoApostado)))
                 .addGap(18, 18, 18)
                 .addComponent(lblCartasPedidas)
-                .addGap(31, 31, 31)
+                .addGap(14, 14, 14)
+                .addComponent(lblFinalizado)
+                .addGap(1, 1, 1)
                 .addComponent(btnVolverAJugar)
                 .addGap(17, 17, 17))
         );
@@ -421,6 +433,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblEstadoMano;
     private javax.swing.JLabel lblFiguraActual;
+    private javax.swing.JLabel lblFinalizado;
     private javax.swing.JLabel lblGanador;
     private javax.swing.JLabel lblGanaste;
     private javax.swing.JLabel lblJugador;
@@ -498,6 +511,12 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         lblGanador.setVisible(false);
         lblCartasPedidas.setVisible(false);
         lblPagar.setText("Ningún jugador ha realizado una apuesta.");
+    }
+
+    @Override
+    public void mostrarQuedaUnJugador() {
+        lblFinalizado.setVisible(true);
+        btnVolverAJugar.setVisible(false);
     }
     
 }

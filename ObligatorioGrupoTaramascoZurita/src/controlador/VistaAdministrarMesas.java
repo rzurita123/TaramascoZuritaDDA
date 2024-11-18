@@ -4,17 +4,20 @@
  */
 package controlador;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import logica.Mano;
 import logica.Mesa;
 
 /**
  *
  * @author Carry
  */
-public interface VistaIngresoAMesa {
-    public void mostrarDatosJugador(String nombre, int saldo);
-    public void cargarMesasAbiertas(ArrayList<Mesa> listaMesas);
+public interface VistaAdministrarMesas {
+    public void mostrarMontoRecaudado(int recaudacion);
+    public void cargarMesas(ArrayList<Mesa> listaMesas);
     public void mostrarError(String mensaje);
-    public void mostrarDetalles(int id, int minJugadores, int apuestaBase, int jugadoresActuales, int porcentajeComision);
-    public void borrarDetalles();
+    public void mostrarManos(ArrayList<Mano> manos);
+    public void borrarManos();
 }

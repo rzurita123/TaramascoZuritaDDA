@@ -4,15 +4,21 @@
  */
 package iuGrafica;
 
+import controlador.ControladorAdministrarMesas;
 import controlador.ControladorIngresoAMesa;
+import controlador.VistaAdministrarMesas;
 import controlador.VistaIngresoAMesa;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+
+import logica.Administrador;
 import logica.Jugador;
+import logica.Mano;
 import logica.Mesa;
 import panelCartasPoker.PanelCartasPokerException;
 
@@ -20,20 +26,23 @@ import panelCartasPoker.PanelCartasPokerException;
  *
  * @author PC
  */
-public class Menu extends javax.swing.JFrame implements VistaIngresoAMesa {
+public class AdministrarMesas extends javax.swing.JFrame implements VistaAdministrarMesas {
 
     /**
      * Creates new form Menu
      */
-    private ControladorIngresoAMesa controladorIngresoAMesa;
-    private Jugador jugador;
+    private ControladorAdministrarMesas controladorAdministrarMesas;
     private ArrayList<Mesa> mesas = null;
+    private Mesa mesaSeleccionada = null;
+    private ArrayList<Mano> manos = null;
+    private Administrador administrador = null;
     
-    public Menu(Jugador j) {
+    public AdministrarMesas(Administrador admin) {
+        administrador = admin;
         initComponents();
         setLocationRelativeTo(null);
-        controladorIngresoAMesa = new ControladorIngresoAMesa(this, j);
-        jugador = j;
+        controladorAdministrarMesas = new ControladorAdministrarMesas(this, administrador);
+        //controladorIngresoAMesa = new ControladorIngresoAMesa(this, j);
     }
 
     /**
@@ -44,206 +53,175 @@ public class Menu extends javax.swing.JFrame implements VistaIngresoAMesa {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbNombre = new javax.swing.JLabel();
-        lbSaldo = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblRecaudado = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lbDetalleMesa = new javax.swing.JLabel();
-        lbId = new javax.swing.JLabel();
-        lbMinJugadores = new javax.swing.JLabel();
-        lbApuestaBase = new javax.swing.JLabel();
-        lbJugadoresActuales = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaMesaAbierta = new javax.swing.JList();
-        lbPorcentajeComision = new javax.swing.JLabel();
-        btnIngresarMesa = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaMesas = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnCrearMesa = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listaManos = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lbNombre.setText("Nombre:");
+        lblNombre.setText("Nombre:");
 
-        lbSaldo.setText("Saldo:");
+        lblRecaudado.setText("Total recaudado:");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel6.setText("Mesas abiertas");
+        jLabel6.setText("Administrar Mesas");
 
-        lbDetalleMesa.setText("Detalles de la mesa");
-
-        lbId.setText("ID:");
-
-        lbMinJugadores.setText("Min. jugadores:");
-
-        lbApuestaBase.setText("Valor apuesta base:");
-
-        lbJugadoresActuales.setText("Jugadores actuales:");
-
-        listaMesaAbierta.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+        listaMesas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                listaMesaAbiertaValueChanged(evt);
+                listaMesasValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(listaMesaAbierta);
+        jScrollPane2.setViewportView(listaMesas);
 
-        lbPorcentajeComision.setText("Porcentaje comisión:");
+        jLabel1.setText("Mesas:");
 
-        btnIngresarMesa.setText("Ingresar a la mesa");
-        btnIngresarMesa.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Manos de la mesa seleccionada:");
+
+        btnCrearMesa.setText("Crear Mesa");
+        btnCrearMesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarMesaActionPerformed(evt);
+                btnCrearMesaActionPerformed(evt);
             }
         });
+
+        listaManos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaManosValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(listaManos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lbNombre)
-                .addGap(411, 411, 411)
-                .addComponent(lbSaldo)
-                .addContainerGap(86, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(lbPorcentajeComision, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addGap(219, 219, 219))
+                        .addGap(332, 332, 332))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lbDetalleMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(220, 220, 220))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnIngresarMesa)
-                        .addGap(39, 39, 39))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(119, 119, 119)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lbId, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbMinJugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbApuestaBase, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbJugadoresActuales, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(223, Short.MAX_VALUE)))
+                        .addComponent(btnCrearMesa)
+                        .addGap(40, 40, 40))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(31, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(lblNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblRecaudado)
+                        .addGap(111, 111, 111))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNombre)
-                    .addComponent(lbSaldo))
+                    .addComponent(lblNombre)
+                    .addComponent(lblRecaudado))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(lbDetalleMesa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-                .addComponent(lbPorcentajeComision)
-                .addGap(9, 9, 9)
-                .addComponent(btnIngresarMesa)
-                .addGap(30, 30, 30))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(376, 376, 376)
-                    .addComponent(lbId)
-                    .addGap(12, 12, 12)
-                    .addComponent(lbMinJugadores)
-                    .addGap(12, 12, 12)
-                    .addComponent(lbApuestaBase)
-                    .addGap(12, 12, 12)
-                    .addComponent(lbJugadoresActuales)
-                    .addContainerGap(96, Short.MAX_VALUE)))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCrearMesa)
+                .addGap(33, 33, 33))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void listaMesaAbiertaValueChanged(javax.swing.event.ListSelectionEvent evt) {
-        detalles();
-    }
-
-    private void btnIngresarMesaActionPerformed(java.awt.event.ActionEvent evt) {
-        controladorIngresoAMesa.ingresarAMesa();
-        try {
-            new JugarPoker(jugador, this).setVisible(true);
-        } catch (PanelCartasPokerException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+    private void listaMesasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaMesasValueChanged
+        int pos = listaMesas.getSelectedIndex();
+        if(pos!=-1){ //hay seleccion
+            Mesa seleccionada = mesas.get(pos);
+            controladorAdministrarMesas.seleccionMesa(seleccionada);
+        } else { //se borro lo seleccionado
+            controladorAdministrarMesas.seleccionMesa(null);
         }
-    }
+
+    }//GEN-LAST:event_listaMesasValueChanged
+
+    private void btnCrearMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMesaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCrearMesaActionPerformed
+
+    private void listaManosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaManosValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listaManosValueChanged
 
     @Override
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, getTitle(), JOptionPane.ERROR_MESSAGE);
     }
 
-    @Override
-    public void mostrarDatosJugador(String nombre, int saldo) {
-        lbNombre.setText("Nombre: " + nombre);
-        lbSaldo.setText("Saldo: $" + saldo);
-        setTitle("Bienvenido " + nombre);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
-    public void cargarMesasAbiertas(ArrayList<Mesa> listaMesas) {
-    mesas = listaMesas;
+    public void cargarMesas(ArrayList<Mesa> listaDeMesas) {
+    mesas = listaDeMesas;
     DefaultListModel<Mesa> model = new DefaultListModel<>();
-    for (Mesa mesa : listaMesas) {
+    for (Mesa mesa : listaDeMesas) {
         model.addElement(mesa);
     }
-    listaMesaAbierta.setModel(model);
+    listaMesas.setModel(model);
     }
     
-    private void detalles() {
-        int pos = listaMesaAbierta.getSelectedIndex();
-        if(pos!=-1){ //hay seleccion
-            Mesa mesaSeleccionada = mesas.get(pos);
-            controladorIngresoAMesa.seleccionMesa(mesaSeleccionada);
-        }else {//se borro lo seleccionado
-            controladorIngresoAMesa.seleccionMesa(null);
-        }
-    }
-
-    @Override
-    public void mostrarDetalles(int id, int minJugadores, int apuestaBase, int jugadoresActuales, int porcentajeComision) {
-        lbId.setText("Id: " + id);
-        lbMinJugadores.setText("Min. jugadores: " + minJugadores);
-        lbApuestaBase.setText("Valor apuesta base: " + apuestaBase);
-        lbJugadoresActuales.setText("Jugadores actuales: " + jugadoresActuales);
-        lbPorcentajeComision.setText("Porcentaje comisión: " + porcentajeComision + '%');
-    }
-
-    @Override
-    public void borrarDetalles() {
-        lbId.setText("Id: ");
-        lbMinJugadores.setText("Min. jugadores: ");
-        lbApuestaBase.setText("Valor apuesta base: ");
-        lbJugadoresActuales.setText("Jugadores actuales: ");
-        lbPorcentajeComision.setText("Porcentaje comisión: ");
-    }
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIngresarMesa;
+    private javax.swing.JButton btnCrearMesa;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbApuestaBase;
-    private javax.swing.JLabel lbDetalleMesa;
-    private javax.swing.JLabel lbId;
-    private javax.swing.JLabel lbJugadoresActuales;
-    private javax.swing.JLabel lbMinJugadores;
-    private javax.swing.JLabel lbNombre;
-    private javax.swing.JLabel lbPorcentajeComision;
-    private javax.swing.JLabel lbSaldo;
-    private javax.swing.JList listaMesaAbierta;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblRecaudado;
+    private javax.swing.JList listaManos;
+    private javax.swing.JList listaMesas;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarMontoRecaudado(int recaudacion) {
+        lblRecaudado.setText("Total recaudado: $" + recaudacion);
+    }
+
+    @Override
+    public void mostrarManos(ArrayList<Mano> listaDeManos) {
+        manos = listaDeManos;
+        DefaultListModel<Mano> model = new DefaultListModel<>();
+        for (Mano mano : manos) {
+            model.addElement(mano);
+        }
+        listaManos.setModel(model);
+    }
+
+    @Override
+    public void borrarManos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'borrarManos'");
+    }
 
 }

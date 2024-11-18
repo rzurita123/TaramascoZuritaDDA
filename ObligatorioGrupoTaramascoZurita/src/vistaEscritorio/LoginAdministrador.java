@@ -6,6 +6,10 @@ package vistaEscritorio;
 
 import controlador.ControladorLoginAbstracto;
 import controlador.ControladorLoginAdministrador;
+import iuGrafica.AdministrarMesas;
+import iuGrafica.Menu;
+import logica.Administrador;
+
 import java.awt.Frame;
 
 /**
@@ -26,7 +30,7 @@ public class LoginAdministrador extends LoginAbstracto{
 
     @Override
     public void proximoCasoUso(Object retorno) {
-          //new Menu(null, false, (Administrador)u.setVisible(true));
+        new AdministrarMesas((Administrador)retorno).setVisible(true);
     }
 
     

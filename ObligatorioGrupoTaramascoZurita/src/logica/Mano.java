@@ -12,6 +12,7 @@ import observador.Observable;
  * @author sabrina
  */
 public class Mano extends Observable {
+    private static int id = 0;
     private Jugador jugadorGanador;
     private EstadoMano estadoMano;
     private ArrayList<Jugador> jugadores = new ArrayList();
@@ -23,6 +24,7 @@ public class Mano extends Observable {
 
     public Mano(ArrayList<Jugador> jugadoresMesa) {
         //Cuando arranca la mano tiene a todos los jugadores de la mesa.
+        this.id = ++id;
         jugadores = jugadoresMesa;
         this.estadoMano = EstadoMano.ESPERANDO_APUESTA;
     }
@@ -134,6 +136,10 @@ public class Mano extends Observable {
         return estadoMano;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setEstadoMano(EstadoMano estadoMano) {
         this.estadoMano = estadoMano;
     }
@@ -162,5 +168,19 @@ public class Mano extends Observable {
         this.jugadorGanador = jugadorGanador;
     }
 
+    //toString con -Número de mano -Cantidad de jugadores participantes -Total apostado en la mano -Estado actual de la mano (*2) -Nombre del jugador ganador -Nombre de la figura con la que ga
+    @Override
+    public String toString() {
+        String nombreGanador;
+        String figuraGanadora;
+        if(jugadorGanador != null){
+            nombreGanador = jugadorGanador.getNombreCompleto();
+            figuraGanadora = jugadorGanador.figuraMasAlta().getNombre();
+        } else {
+            nombreGanador = "-";
+            figuraGanadora = "-";
+        }
+        return "Mano " + id + "Cantidad de Jugadores: " + jugadores.size() + "Total apostado en la mano" + "Estado actual de la mano" + estadoMano + "Jugador ganador " + nombreGanador + "Figura ganadora:" + figuraGanadora;
+    }
 
 }
