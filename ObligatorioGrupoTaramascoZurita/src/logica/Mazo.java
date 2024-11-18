@@ -37,7 +37,6 @@ public class Mazo {
     public void repartir(Jugador jugador) {
         if(jugador.getCartas().size() < 5 && cartasMazo.size() > 4){
             for (int i = 0; i < 5; i++) {
-                System.out.println("Repartiendo carta" + cartasMazo.get(i).getValorCarta());
                 jugador.getCartas().add(cartasMazo.get(0));
                 cartasMazo.remove(0);
             }

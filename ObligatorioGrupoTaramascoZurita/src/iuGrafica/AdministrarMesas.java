@@ -167,9 +167,8 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
         int pos = listaMesas.getSelectedIndex();
         if(pos!=-1){ //hay seleccion
             Mesa seleccionada = mesas.get(pos);
+            mesaSeleccionada = seleccionada;
             controladorAdministrarMesas.seleccionMesa(seleccionada);
-        } else { //se borro lo seleccionado
-            controladorAdministrarMesas.seleccionMesa(null);
         }
 
     }//GEN-LAST:event_listaMesasValueChanged
@@ -200,7 +199,6 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     for (Mesa mesa : listaDeMesas) {
         model.addElement(mesa.datosAdministrador());
         recaudacion += mesa.getMontoRecaudado();
-        this.mostrarManos(mesa.getManos());
     }
     lblRecaudado.setText("Total recaudado: $" + recaudacion);
     listaMesas.setModel(model);
@@ -235,13 +233,12 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     }
 
     @Override
-    public void borrarManos() {
-        listaManos.setModel(new DefaultListModel<>());
-    }
-
-    @Override
     public void actualizarMesas(ArrayList<Mesa> listaMesas) {
         this.cargarMesas(listaMesas);
+        if(mesaSeleccionada!=null){
+            this.mostrarManos(mesaSeleccionada.getManos());
+        }
+        
     }
 
 }

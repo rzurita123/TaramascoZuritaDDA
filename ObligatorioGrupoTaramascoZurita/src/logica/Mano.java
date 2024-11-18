@@ -58,10 +58,8 @@ public class Mano extends Observable {
     public void validarEstadoJugadores(){
         boolean quedanSinJugar = false;
         boolean todosNoApostaron = true;
-        System.out.println("CANTIDAD JUGADORES: " + jugadores.size());
         for (Jugador j : jugadores) {
             //Caso alguno hizo una apuesta
-            System.out.println("Estado del jugador " + j.getNombreCompleto() + ": " + j.getEstadoJugador());
             if(j.getEstadoJugador() == Jugador.EstadoJugador.ACCION_PENDIENTE){
                 quedanSinJugar = true;
             }
@@ -121,7 +119,6 @@ public class Mano extends Observable {
 
     public void terminarMano(){
         jugadorGanador = determinarGanador();
-        System.out.println("El ganador de la mano es: " + jugadorGanador.getNombreCompleto());
         estadoMano = EstadoMano.TERMINADA;
         avisar(eventos.cambioEstadoMano);
         Fachada.getInstancia().avisar(Fachada.Eventos.huboCambioEnMesa);

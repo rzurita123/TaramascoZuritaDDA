@@ -485,7 +485,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
 
     @Override
     public void recargarPanel() {
-        System.out.println("Recargando panel...");
         panelCartas = new PanelCartasPoker();
         panelCartas.setVisible(true);
     }

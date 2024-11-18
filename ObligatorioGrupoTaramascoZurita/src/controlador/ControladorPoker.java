@@ -154,7 +154,6 @@ public class ControladorPoker implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        System.out.println("Evento: " + evento + " Origen: " + origen);
         //Eventos mesa
         if(origen instanceof Mesa){
             if(evento.equals(Mesa.eventos.cambioIniciada)){

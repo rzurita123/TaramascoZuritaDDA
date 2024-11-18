@@ -40,9 +40,7 @@ public class ControladorAdministrarMesas implements Observador{
 
     public void seleccionMesa(Mesa seleccionada) {
         //Tengo que cargar la lista de manos
-        if(seleccionada==null){
-            vistaAdministrarMesas.borrarManos();
-        } else {
+        if(seleccionada!=null){
             mesaSeleccionada = seleccionada;
             vistaAdministrarMesas.mostrarManos(seleccionada.getManos());
         }

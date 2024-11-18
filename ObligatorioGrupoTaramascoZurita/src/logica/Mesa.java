@@ -112,7 +112,6 @@ public class Mesa extends Observable{
     }
 
     public void nuevaMano(){
-        System.out.println("JUGADORES MESA: " + jugadores.size());
         manoActual = new Mano(jugadores);
         manos.add(manoActual);
         this.repartir();

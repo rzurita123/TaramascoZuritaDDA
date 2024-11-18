@@ -59,10 +59,6 @@ public class ControladorIngresoAMesa implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        /*if(evento.equals(Mesa.eventos.cambioIniciada)){
-            System.out.println("La mesa se ha iniciado");
-            this.iniciarMesa();
-        } */
     }
 
 

@@ -19,6 +19,5 @@ public interface VistaAdministrarMesas {
     public void cargarMesas(ArrayList<Mesa> listaMesas);
     public void mostrarError(String mensaje);
     public void mostrarManos(ArrayList<Mano> manos);
-    public void borrarManos();
     public void actualizarMesas(ArrayList<Mesa> listaMesas);
 }

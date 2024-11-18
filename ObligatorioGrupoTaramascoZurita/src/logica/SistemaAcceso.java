@@ -55,11 +55,8 @@ public class SistemaAcceso {
     }
 
     public boolean yaLogueado(Usuario u){
-        System.out.println("yaLogueado");
         for(Sesion s:sesiones){
-            System.out.println("sesion: "+s.getUsuario().getNombreCompleto());
             if(s.getUsuario().equals(u)){
-                System.out.println("retorné true");
                 return true;
             }
         }
