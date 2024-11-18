@@ -393,7 +393,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void tfMontoApuestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfMontoApuestaActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_tfMontoApuestaActionPerformed
 
     private void btnNoPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoPagarActionPerformed
@@ -453,7 +452,6 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     @Override
     public void mostrarApuestaRealizada(String nombre, int monto) {
         lblMontoApostado.setText("Monto apostado: " + monto);
-        //TODO: Actualizar en la vista de todos los jugadores la ultima apuesta.
     }
 
     @Override

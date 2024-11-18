@@ -59,9 +59,7 @@ public class ControladorAdministrarMesas implements Observador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if(evento.equals(Fachada.Eventos.seCreoMesa)){
-            vistaAdministrarMesas.actualizarMesas(Fachada.getInstancia().getMesas());
-        } 
+        vistaAdministrarMesas.actualizarMesas(Fachada.getInstancia().getMesas());
     }
 
 

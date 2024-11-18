@@ -179,7 +179,6 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     }//GEN-LAST:event_btnCrearMesaActionPerformed
 
     private void listaManosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaManosValueChanged
-        // TODO add your handling code here:
     }//GEN-LAST:event_listaManosValueChanged
 
     @Override
@@ -201,6 +200,7 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     for (Mesa mesa : listaDeMesas) {
         model.addElement(mesa.datosAdministrador());
         recaudacion += mesa.getMontoRecaudado();
+        this.mostrarManos(mesa.getManos());
     }
     lblRecaudado.setText("Total recaudado: $" + recaudacion);
     listaMesas.setModel(model);
@@ -236,8 +236,7 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
 
     @Override
     public void borrarManos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'borrarManos'");
+        listaManos.setModel(new DefaultListModel<>());
     }
 
     @Override

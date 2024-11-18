@@ -21,7 +21,6 @@ public class SinFigura extends Figura {
         return true; //Siempre tengo 'sin figura'
     }
 
-    //TODO: Cambiar esto
     @Override
     public int obtenerValorClave(ArrayList<Carta> mano) {
         return 0;

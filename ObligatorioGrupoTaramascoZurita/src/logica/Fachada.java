@@ -24,7 +24,7 @@ public class Fachada extends Observable {
         return instancia;
     }
 
-    public enum Eventos{seCreoMesa};
+    public enum Eventos{seCreoMesa, huboCambioEnMesa};
     
     private Fachada () {
     }

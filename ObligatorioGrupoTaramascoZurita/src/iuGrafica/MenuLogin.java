@@ -76,12 +76,10 @@ public class MenuLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugadoresActionPerformed
-        // TODO add your handling code here:
         new LoginJugador(this, false).setVisible(true);
     }//GEN-LAST:event_btnJugadoresActionPerformed
 
     private void btnAdministradoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradoresActionPerformed
-        // TODO add your handling code here:
         new LoginAdministrador(this, false).setVisible(true);
     }//GEN-LAST:event_btnAdministradoresActionPerformed
 

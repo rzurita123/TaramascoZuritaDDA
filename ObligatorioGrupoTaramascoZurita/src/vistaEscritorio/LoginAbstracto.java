@@ -104,7 +104,6 @@ public abstract class LoginAbstracto extends javax.swing.JDialog implements Vist
     }//GEN-LAST:event_bLoginActionPerformed
 
     private void tfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPasswordActionPerformed
-        // TODO add your handling code here:
         login();
     }//GEN-LAST:event_tfPasswordActionPerformed
 

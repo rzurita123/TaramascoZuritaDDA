@@ -12,7 +12,8 @@ import observador.Observable;
  * @author sabrina
  */
 public class Mano extends Observable {
-    private static int id = 0;
+    private static int contador = 0;
+    private int id;
     private Jugador jugadorGanador;
     private EstadoMano estadoMano;
     private int apostadoEnLaMano;
@@ -25,7 +26,7 @@ public class Mano extends Observable {
 
     public Mano(ArrayList<Jugador> jugadoresMesa) {
         //Cuando arranca la mano tiene a todos los jugadores de la mesa.
-        this.id = ++id;
+        this.id = ++contador;
         jugadores = jugadoresMesa;
         this.estadoMano = EstadoMano.ESPERANDO_APUESTA;
     }
@@ -123,6 +124,7 @@ public class Mano extends Observable {
         System.out.println("El ganador de la mano es: " + jugadorGanador.getNombreCompleto());
         estadoMano = EstadoMano.TERMINADA;
         avisar(eventos.cambioEstadoMano);
+        Fachada.getInstancia().avisar(Fachada.Eventos.huboCambioEnMesa);
     }
 
     public void noApostar(Jugador j) throws PokerException{

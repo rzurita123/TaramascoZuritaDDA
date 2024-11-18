@@ -28,6 +28,7 @@ public class Mesa extends Observable{
     private int porcentajeComision;
     private EstadoMesa estadoMesa;
     private Mazo mazo;
+    private Fachada fachada;
     public enum EstadoMesa {
         ABIERTA, FINALIZADA, INICIADA
     }
@@ -44,6 +45,7 @@ public class Mesa extends Observable{
         this.pozo = 0;
         this.mazo = new Mazo();
         this.manoActual = new Mano();
+        fachada = Fachada.getInstancia();
     }
 
     public static Mesa crearMesa(int minJugadores, int apuestaBase, int porcentajeComision) throws PokerException {
@@ -115,6 +117,7 @@ public class Mesa extends Observable{
         manos.add(manoActual);
         this.repartir();
         avisar(eventos.nuevaMano);
+        fachada.avisar(Fachada.Eventos.huboCambioEnMesa);
     }
 
     public void pedirCartas(Jugador j, ArrayList<Carta> cartasACambiar) throws PokerException{
@@ -140,6 +143,7 @@ public class Mesa extends Observable{
         this.pozo += monto;
         ultimaApuesta.setMonto(monto);
         ultimaApuesta.setJugador(jugador);
+        Fachada.getInstancia().avisar(Fachada.Eventos.huboCambioEnMesa);
     }
     
     public String listadoJugadores(){
@@ -175,6 +179,7 @@ public class Mesa extends Observable{
             comienzoMano();
             avisar(eventos.cambioIniciada);
         }
+        fachada.avisar(Fachada.Eventos.huboCambioEnMesa);
     }
 
     public void repartir(){
