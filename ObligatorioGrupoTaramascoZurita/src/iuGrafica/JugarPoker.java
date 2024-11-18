@@ -380,7 +380,7 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
     }// </editor-fold>//GEN-END:initComponents
     //#endregion
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
-        controladorPoker.apostar(Integer.parseInt(tfMontoApuesta.getText()));
+        controladorPoker.apostar(tfMontoApuesta.getText());
     }//GEN-LAST:event_btnApostarActionPerformed
     
     private void salir(){

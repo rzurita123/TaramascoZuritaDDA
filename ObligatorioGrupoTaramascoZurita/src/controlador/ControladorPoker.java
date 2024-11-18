@@ -64,14 +64,26 @@ public class ControladorPoker implements Observador{
         vistaPoker.mostrarFiguraMasAlta(figura);
     }
 
-    public void apostar(int monto){
+    public void apostar(String monto){
+        //Valido que la apuesta no sean vacia
+        if(monto.isEmpty()){
+            vistaPoker.mostrarError("Debe completar el campo de apuesta");
+            return;
+        }
+        //valido que solo contenga numeros
+        if(!monto.matches("[0-9]+")){
+            vistaPoker.mostrarError("El campo de apuesta debe contener solo números");
+            return;
+        }
+        
+        int montoInt = Integer.parseInt(monto);
         try {
-            mano.apostar(monto, jugador);
+            mano.apostar(montoInt, jugador);
         } catch (PokerException e) {
             vistaPoker.mostrarError(e.getMessage());
         }
         // Actualizar la vista con el valor de la apuesta y el estado de la mano
-        vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), monto);
+        vistaPoker.mostrarApuestaRealizada(jugador.getNombreCompleto(), montoInt);
         vistaPoker.mostrarEstadoMano(mano.getEstadoMano());
     }
 
