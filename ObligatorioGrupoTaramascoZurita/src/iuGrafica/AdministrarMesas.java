@@ -167,7 +167,7 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     }//GEN-LAST:event_listaMesasValueChanged
 
     private void btnCrearMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMesaActionPerformed
-        // TODO add your handling code here:
+        new CrearMesa().setVisible(true);
     }//GEN-LAST:event_btnCrearMesaActionPerformed
 
     private void listaManosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaManosValueChanged
@@ -183,9 +183,10 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     @Override
     public void cargarMesas(ArrayList<Mesa> listaDeMesas) {
     mesas = listaDeMesas;
-    DefaultListModel<Mesa> model = new DefaultListModel<>();
+    DefaultListModel<String> model = new DefaultListModel<>();
     for (Mesa mesa : listaDeMesas) {
-        model.addElement(mesa);
+        model.addElement(mesa.datosAdministrador());
+
     }
     listaMesas.setModel(model);
     }

@@ -21,6 +21,7 @@ public class Mesa extends Observable{
     private ArrayList<Mano> manos = new ArrayList();
     private Mano manoActual;
     private int pozo;
+    private int totalApostado;
     private int apuestaBase;
     private int jugadoresActuales;
     private Apuesta ultimaApuesta;
@@ -123,6 +124,8 @@ public class Mesa extends Observable{
     }
 
     public void agregarApuesta(int monto, Jugador jugador){
+        manoActual.setApostadoEnLaMano(manoActual.getApostadoEnLaMano() + monto);
+        this.totalApostado += monto;
         this.pozo += monto;
         ultimaApuesta.setMonto(monto);
         ultimaApuesta.setJugador(jugador);
@@ -278,8 +281,19 @@ public class Mesa extends Observable{
         this.porcentajeComision = porcentajeComision;
     }
     
+    public String datosAdministrador(){
+        return "Número de mesa: " + id + "|" + 
+                " Jugadores requeridos: " + minJugadores + "|" +
+                " Apuesta base: " + apuestaBase + "|" +
+                " Jugadores: " + jugadoresActuales + "|" +
+                " Mano actual " + manoActual.getId() + "|" +
+                " Monto total apostado " + totalApostado + "|" +
+                " Porcentaje de comisión: " + porcentajeComision + "%" + "|" +
+                " Estado: " + estadoMesa + "|";
+    }
+
     @Override
-public String toString() {
-    return "Número de mesa: " + id + "\n";
-}
+    public String toString() {
+        return "Número de mesa: " + id;
+    }
 }

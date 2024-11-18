@@ -15,6 +15,7 @@ public class Mano extends Observable {
     private static int id = 0;
     private Jugador jugadorGanador;
     private EstadoMano estadoMano;
+    private int apostadoEnLaMano;
     private ArrayList<Jugador> jugadores = new ArrayList();
     private ArrayList<Jugador> pidieronCartas = new ArrayList();
     public enum EstadoMano {
@@ -140,6 +141,14 @@ public class Mano extends Observable {
         return id;
     }
 
+    public int getApostadoEnLaMano() {
+        return apostadoEnLaMano;
+    }
+
+    public void setApostadoEnLaMano(int apostadoEnLaMano) {
+        this.apostadoEnLaMano = apostadoEnLaMano;
+    }
+
     public void setEstadoMano(EstadoMano estadoMano) {
         this.estadoMano = estadoMano;
     }
@@ -177,10 +186,10 @@ public class Mano extends Observable {
             nombreGanador = jugadorGanador.getNombreCompleto();
             figuraGanadora = jugadorGanador.figuraMasAlta().getNombre();
         } else {
-            nombreGanador = "-";
-            figuraGanadora = "-";
+            nombreGanador = "NO DEFINIDO";
+            figuraGanadora = "NO DEFINIDA";
         }
-        return "Mano " + id + "Cantidad de Jugadores: " + jugadores.size() + "Total apostado en la mano" + "Estado actual de la mano" + estadoMano + "Jugador ganador " + nombreGanador + "Figura ganadora:" + figuraGanadora;
+        return "Mano " + id + " | " + "Cantidad de Jugadores: " + jugadores.size() + " | " + " Total apostado en la mano " + apostadoEnLaMano + " | " + " Estado actual de la mano " + estadoMano + " | " + " Jugador ganador " + nombreGanador + " | " + " Figura ganadora: " + figuraGanadora;
     }
 
 }
