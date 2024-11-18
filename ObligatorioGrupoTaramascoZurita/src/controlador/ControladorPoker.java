@@ -50,6 +50,7 @@ public class ControladorPoker implements Observador{
     public void iniciarMano(){
         //se llama cuando se observó que la mesa pasó a iniciada.
         vistaPoker.mostrarCartas(jugador, mesa);
+        vistaPoker.resetLabels();
         vistaPoker.mostrarFigurasDefinidas(Fachada.getInstancia().getFiguras());
         determinarFiguraMasAlta();
     }
@@ -99,7 +100,7 @@ public class ControladorPoker implements Observador{
         try {
             mesa.esperarComienzoSiguienteMano(jugador);
         } catch (PokerException e) {
-            vistaPoker.mostrarError(e.getMessage());
+            vistaPoker.mostrarCartelError(e.getMessage());
             vistaPoker.cerrarVentana();
         }
     }
@@ -146,7 +147,6 @@ public class ControladorPoker implements Observador{
                 this.iniciarMano();
             }
             else if(evento.equals(Mesa.eventos.nuevaMano)){
-                System.out.println("ENTRE AL IF DE MESA EVENTOS NUEVAMANO");
                 mano.quitarObservador(this);
                 mano = mesa.getManoActual();
                 mano.agregarObservador(this);

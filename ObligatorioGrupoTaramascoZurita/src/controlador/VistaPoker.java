@@ -30,4 +30,6 @@ public interface VistaPoker {
     public void mostrarGanaste(int montoGanado);
     public void recargarPanel();
     public void cerrarVentana();
+    public void mostrarCartelError(String mensaje);
+    public void resetLabels();
 }

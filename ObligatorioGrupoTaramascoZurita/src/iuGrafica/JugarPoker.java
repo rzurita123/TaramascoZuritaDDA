@@ -19,6 +19,8 @@ import controlador.VistaPoker;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import panelCartasPoker.CartaPoker;
 import panelCartasPoker.PanelCartasPoker;
 import panelCartasPoker.PanelCartasPokerException;
@@ -483,5 +485,19 @@ public class JugarPoker extends javax.swing.JFrame implements VistaPoker {
         dispose();
     }
 
+    @Override
+    public void mostrarCartelError(String mensaje) {
+        //cartel de error joptionpane
+        JOptionPane.showMessageDialog(null,mensaje,"Error",JOptionPane.ERROR_MESSAGE);
+        lblError.setVisible(true);
+    }
+
+    @Override
+    public void resetLabels() {
+        lblGanaste.setVisible(false);
+        lblGanador.setVisible(false);
+        lblCartasPedidas.setVisible(false);
+        lblPagar.setText("Ningún jugador ha realizado una apuesta.");
+    }
     
 }
