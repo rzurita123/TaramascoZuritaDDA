@@ -8,6 +8,8 @@ import controlador.ControladorAdministrarMesas;
 import controlador.ControladorIngresoAMesa;
 import controlador.VistaAdministrarMesas;
 import controlador.VistaIngresoAMesa;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -42,7 +44,13 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
         initComponents();
         setLocationRelativeTo(null);
         controladorAdministrarMesas = new ControladorAdministrarMesas(this, administrador);
-        //controladorIngresoAMesa = new ControladorIngresoAMesa(this, j);
+        lblNombre.setText("Nombre: " + admin.getNombreCompleto());
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                salir();
+            }
+        });
     }
 
     /**
@@ -64,7 +72,7 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
         jScrollPane3 = new javax.swing.JScrollPane();
         listaManos = new javax.swing.JList();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         lblNombre.setText("Nombre:");
 
@@ -178,16 +186,23 @@ public class AdministrarMesas extends javax.swing.JFrame implements VistaAdminis
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, getTitle(), JOptionPane.ERROR_MESSAGE);
     }
+    
+    private void salir(){
+        controladorAdministrarMesas.logout(administrador);
+        this.dispose();
+    }
 
     @SuppressWarnings("unchecked")
     @Override
     public void cargarMesas(ArrayList<Mesa> listaDeMesas) {
     mesas = listaDeMesas;
+    int recaudacion = 0;
     DefaultListModel<String> model = new DefaultListModel<>();
     for (Mesa mesa : listaDeMesas) {
         model.addElement(mesa.datosAdministrador());
-
+        recaudacion += mesa.getMontoRecaudado();
     }
+    lblRecaudado.setText("Total recaudado: $" + recaudacion);
     listaMesas.setModel(model);
     }
     

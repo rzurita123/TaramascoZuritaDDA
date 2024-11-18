@@ -54,6 +54,10 @@ public class Fachada extends Observable {
     public ArrayList<Mesa> getMesas() {
         return sJuego.getMesas();
     }
+
+    public Sesion getSesion(Usuario user) {
+        return sAcceso.getSesion(user);
+    }
     
     public String agregarMesa(int minJugadores, int apuestaBase, int porcentajeComision) {
         return sJuego.agregarMesa(minJugadores, apuestaBase, porcentajeComision);

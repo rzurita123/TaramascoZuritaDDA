@@ -31,7 +31,9 @@ public class ControladorPoker implements Observador{
         this.jugador = j;
         j.agregarObservador(this);
         this.mesa = jugador.getMesa();
-        mesa.agregarObservador(this);
+        if(mesa != null){
+            mesa.agregarObservador(this);
+        }
         mano = mesa.getManoActual();
         mano.agregarObservador(this);
         if(mesa.esIniciada()){

@@ -33,6 +33,11 @@ public class ControladorAdministrarMesas implements Observador{
         fachada.agregarObservador(this);
     }
 
+    public void logout(Administrador admin){
+        fachada.quitarObservador(this);
+        fachada.logout(fachada.getSesion(admin));
+    }
+
     public void seleccionMesa(Mesa seleccionada) {
         //Tengo que cargar la lista de manos
         if(seleccionada==null){

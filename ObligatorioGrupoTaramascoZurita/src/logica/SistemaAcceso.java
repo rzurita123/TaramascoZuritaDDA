@@ -29,6 +29,7 @@ public class SistemaAcceso {
      public Administrador loginAdministrador(String cedula,String password){
        return (Administrador) login(cedula, password, administradores);
     }
+
     public void logout(Sesion s){
         sesiones.remove(s);
     }
@@ -39,6 +40,15 @@ public class SistemaAcceso {
             usuario = (Usuario)o;
             if(usuario.getCedula().equals(cedula) && usuario.getContraseña().equals(password)){
                 return usuario;
+            }
+        }
+        return null;
+    }
+
+    public Sesion getSesion(Usuario u){
+        for(Sesion s:sesiones){
+            if(s.getUsuario().equals(u)){
+                return s;
             }
         }
         return null;
