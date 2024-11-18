@@ -143,7 +143,6 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
         model.addElement(mesa.datosAdministrador());
 
     }
-    listaMesas.setModel(model);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -159,7 +158,7 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
 
     @Override
     public void mostrarMontoRecaudado(int recaudacion) {
-        lblRecaudado.setText("Total recaudado: $" + recaudacion);
+        //lblRecaudado.setText("Total recaudado: $" + recaudacion);
     }
 
     @Override
@@ -169,7 +168,7 @@ public class CrearMesa extends javax.swing.JFrame implements VistaAdministrarMes
         for (Mano mano : manos) {
             model.addElement(mano);
         }
-        listaManos.setModel(model);
+
     }
 
     @Override

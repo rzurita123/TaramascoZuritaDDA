@@ -60,17 +60,33 @@ public class Fachada {
         return sJuego.getFiguraMasAlta(cartas);
     }
 
-    public Jugador loginJugador(String cedula, String password) {
-        return sAcceso.loginJugador(cedula, password);
-    }
-
     public void agregarAdministrador(String cedula, String password, String nombreCompleto) {
         sAcceso.agregarAdministrador(cedula, password, nombreCompleto);
+    }
+
+    public Jugador loginJugador(String cedula, String password) {
+        return sAcceso.loginJugador(cedula, password);
     }
 
     public Administrador loginAdministrador(String cedula, String password) {
         return sAcceso.loginAdministrador(cedula, password);
     }
-    
+
+    public void logout(Sesion sesion){
+        sAcceso.logout(sesion);
+    }
+
+    public boolean yaLogueado(Object user) {
+        return sAcceso.yaLogueado((Usuario) user);
+    }
+
+    protected Usuario validarLoginJugador(String nom, String pwd) {
+        return sAcceso.validarLoginJugador(nom, pwd);
+    }
+
+    protected Administrador validarLoginAdministrador(String nom, String pwd) {
+        return sAcceso.validarLoginAdministrador(nom, pwd);
+    }
+
     
 }

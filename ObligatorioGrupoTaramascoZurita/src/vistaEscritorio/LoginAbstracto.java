@@ -100,7 +100,6 @@ public abstract class LoginAbstracto extends javax.swing.JDialog implements Vist
     }// </editor-fold>//GEN-END:initComponents
 
     private void bLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLoginActionPerformed
-        // TODO add your handling code here:
         login();
     }//GEN-LAST:event_bLoginActionPerformed
 
@@ -129,7 +128,7 @@ public abstract class LoginAbstracto extends javax.swing.JDialog implements Vist
 
     @Override
     public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this,mensaje, getTitle(), JOptionPane.ERROR);
+        JOptionPane.showMessageDialog(this, mensaje, getTitle(), JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controlador;
+
+import logica.Fachada;
+
 /**
  *
  * @author sabrina
@@ -20,6 +23,11 @@ public abstract class ControladorLoginAbstracto {
          if(retorno==null){
              vista.mostrarError("Acceso denegado");
         }else{
+            boolean yaLogueado = Fachada.getInstancia().yaLogueado(retorno);
+            if(yaLogueado){
+                vista.mostrarError("Usuario ya logueado");
+                return;
+            }
             vista.cerrar();
             vista.proximoCasoUso(retorno);
         }

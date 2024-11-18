@@ -49,4 +49,14 @@ public abstract class Usuario extends Observable {
     public String toString() {
         return nombreCompleto;
     }
+
+    //para que funcione equals
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Usuario){
+            Usuario u = (Usuario)obj;
+            return u.getCedula().equals(cedula);
+        }
+        return false;
+    }
 }
